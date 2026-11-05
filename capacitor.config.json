@@ -1,0 +1,15 @@
+{
+  "appId": "com.neal.app",
+  "appName": "Neal App",
+  "webDir": "www",
+  "android": {
+    "adjustMarginsForEdgeToEdge": "force"
+  },
+  "plugins": {
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "LIGHT",
+      "backgroundColor": "#FFFFFF"
+    }
+  }
+}

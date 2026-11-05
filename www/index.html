@@ -1,0 +1,1465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Neal App</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: one narrow column on one screen. Round, session map and calorie bar sit at the top; the ring takes the spare height; title and controls close the column. */
+:root {
+  --bg: #FFFFFF; --glass: rgba(255,255,255,.56); --glass-line: rgba(255,255,255,.8); --glass-shadow: 0 10px 30px rgba(70,105,80,.13), inset 0 1px 0 rgba(255,255,255,.75);
+  --menu: #FFFFFF; --leaf: #3E5A3A; --fill: linear-gradient(180deg, rgba(255,171,150,.78), rgba(255,122,97,.72)); --veil: rgba(238,246,237,.82); --fg: #000000; --muted: #2E3430; --line: #D5E2D6; --track: rgba(95,143,110,.2); --input-line: #93AF99;
+  --cta: #FF8A73; --on-cta: #000000; --dot: #C93F26; --second: #5F8F6E; --wash: #CDE2CC; --wash2: #E2EFE1; --wash3: rgba(255,138,115,.09);
+  --display: "Unbounded", "Google Sans", Roboto, system-ui, sans-serif;
+  --body: "Google Sans", Roboto, "Segoe UI", system-ui, sans-serif;
+  --ring: clamp(170px, min(84vw, calc(100vh - 455px)), 480px);
+}
+@supports (height: 100dvh) { :root { --ring: clamp(170px, min(84vw, calc(100dvh - 455px)), 480px); } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --menu: #16181C; --leaf: #B8CFB0; --fill: linear-gradient(180deg, rgba(255,171,150,.86), rgba(255,122,97,.8)); --bg: #08090B; --glass: rgba(255,255,255,.055); --glass-line: rgba(255,255,255,.13); --glass-shadow: 0 12px 34px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.09);
+    --veil: rgba(8,9,11,.84); --fg: #FFFFFF; --muted: #C3C7CC; --line: #26292E; --track: rgba(255,255,255,.12); --input-line: rgba(255,255,255,.22);
+    --cta: #FF8F78; --on-cta: #000000; --dot: #FF8F78; --second: #A9CBAE; --wash: rgba(169,203,174,.13); --wash2: rgba(169,203,174,.07); --wash3: rgba(255,138,115,.11);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --menu: #16181C; --leaf: #B8CFB0; --fill: linear-gradient(180deg, rgba(255,171,150,.86), rgba(255,122,97,.8)); --bg: #08090B; --glass: rgba(255,255,255,.055); --glass-line: rgba(255,255,255,.13); --glass-shadow: 0 12px 34px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.09);
+  --veil: rgba(8,9,11,.84); --fg: #FFFFFF; --muted: #C3C7CC; --line: #26292E; --track: rgba(255,255,255,.12); --input-line: rgba(255,255,255,.22);
+  --cta: #FF8F78; --on-cta: #000000; --dot: #FF8F78; --second: #A9CBAE; --wash: rgba(169,203,174,.13); --wash2: rgba(169,203,174,.07); --wash3: rgba(255,138,115,.11);
+}
+* { box-sizing: border-box; }
+html { height: 100%; }
+body { min-height: 100%; display: flex; flex-direction: column; background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 17px; line-height: 1.5; }
+h1, h2, h3, p, ul, ol { margin: 0; padding: 0; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+button:disabled { cursor: default; opacity: .4; }
+:focus-visible { outline: 3px solid var(--fg); outline-offset: 2px; }
+.sr { position: fixed; top: 0; left: 0; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+
+.wash { position: fixed; inset: -20%; z-index: -1; pointer-events: none;
+  background: radial-gradient(42% 38% at 80% 16%, var(--wash) 0%, transparent 72%), radial-gradient(38% 36% at 18% 34%, var(--wash3) 0%, transparent 72%), radial-gradient(48% 42% at 14% 88%, var(--wash) 0%, transparent 72%), radial-gradient(36% 34% at 78% 78%, var(--wash3) 0%, transparent 72%), radial-gradient(32% 32% at 52% 56%, var(--wash2) 0%, transparent 70%); }
+
+.app { flex: 1 0 auto; width: 100%; display: grid; grid-template-rows: auto 1fr auto auto; gap: 12px; max-width: 560px; margin-inline: auto; padding-block: 14px 18px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* Round */
+.top { min-width: 0; }
+.round { min-width: 0; display: grid; gap: 6px; justify-items: center; text-align: center; }
+.days button { min-height: 38px; padding: 6px 12px; border: 0; border-radius: 99px; background: transparent; font-family: var(--display); font-weight: 500; font-size: .86rem; letter-spacing: -.01em; }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.bar { flex: none; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--glass); border-bottom: 1px solid var(--glass-line); -webkit-backdrop-filter: blur(18px) saturate(165%); backdrop-filter: blur(18px) saturate(165%); }
+.barin { max-width: 640px; margin-inline: auto; display: flex; align-items: center; gap: 10px; padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.brand { flex: none; font-family: var(--display); font-weight: 500; font-size: 1.05rem; letter-spacing: -.02em; }
+.nv { flex: 1 1 auto; min-width: 0; display: flex; justify-content: center; gap: 4px; }
+.nv button { min-height: 40px; padding: 8px 14px; border: 0; border-radius: 99px; background: transparent; font-weight: 600; font-size: .9rem; line-height: 1.25; }
+.nv button[aria-current="true"] { background: var(--cta); color: var(--on-cta); }
+.tools { flex: none; position: relative; }
+.drawer { position: fixed; inset: 0; z-index: 20; overflow-y: auto; background: var(--bg); transform: translateX(100%); visibility: hidden; transition: transform .28s cubic-bezier(.3,.8,.4,1), visibility 0s .28s;
+  padding-top: calc(14px + env(safe-area-inset-top, 0px)); padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px)); padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.drawer.open { transform: none; visibility: visible; transition: transform .28s cubic-bezier(.3,.8,.4,1); }
+.dwrap { max-width: 560px; margin-inline: auto; display: grid; gap: 16px; }
+.dhead { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 40px; }
+.dhead h2 { font-family: var(--display); font-weight: 500; font-size: 1.4rem; letter-spacing: -.02em; }
+.item { display: flex; align-items: center; gap: 10px; width: 100%; min-height: 44px; padding: 8px 10px; border: 0; border-radius: 11px; background: none; font-weight: 500; font-size: .95rem; text-align: left; }
+.item:hover { background: var(--track); }
+.item svg { flex: none; width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.icon { width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 1px solid var(--glass-line); border-radius: 50%; background: var(--glass); transition: border-color .2s; }
+.icon:hover { border-color: var(--fg); }
+.icon svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* Session map: one segment per round, then the stretches */
+.segs { display: flex; gap: 8px; width: min(280px, 76%); justify-self: center; }
+.segw { flex: 1 1 0; min-width: 0; display: grid; gap: 4px; justify-items: center; font-size: .74rem; font-weight: 600; line-height: 1.2; color: var(--muted); }
+.segw .seg { width: 100%; }
+.seg { position: relative; height: 5px; border-radius: 99px; background: var(--track); overflow: hidden; min-width: 0; }
+.seg i { position: absolute; inset: 0 auto 0 0; width: 0; border-radius: 99px; background: var(--second); }
+
+/* Ring */
+.hold { min-height: 0; display: grid; place-items: center; }
+.ring { position: relative; width: var(--ring); height: var(--ring); max-width: 100%; }
+.ring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring circle { fill: none; }
+.ring .tr { stroke: var(--track); stroke-width: 2; }
+.ring .pr { stroke: var(--cta); stroke-width: 4; stroke-linecap: round; }
+.ring[data-kind="stretch"] .pr, .ring[data-kind="ready"] .pr, .ring[data-kind="rest"] .pr { stroke: var(--second); }
+.inner { position: absolute; inset: 0; display: grid; grid-template-rows: 1fr auto 1fr; justify-items: center; text-align: center; padding: 15%; gap: 4px; }
+.label { font-weight: 500; font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); align-self: end; }
+.clock { display: flex; justify-content: center; font-family: var(--display); font-weight: 300; line-height: 1; letter-spacing: -.03em; font-size: calc(var(--ring) * .235); }
+.clock span { display: block; width: .78em; text-align: center; }
+.clock .c { width: .32em; }
+.clock.end { color: var(--dot); }
+.paused .clock { opacity: .5; }
+.word { font-family: var(--display); font-weight: 300; line-height: 1; letter-spacing: -.03em; font-size: calc(var(--ring) * .19); }
+.lift { display: grid; gap: 6px; justify-items: center; }
+.reps { display: flex; align-items: baseline; justify-content: center; gap: 8px; font-size: 1rem; font-weight: 500; }
+.reps b { font-family: var(--display); font-weight: 300; line-height: 1; letter-spacing: -.03em; font-size: calc(var(--ring) * .235); }
+.kg { font-family: var(--display); font-weight: 400; font-size: calc(var(--ring) * .055); line-height: 1.2; letter-spacing: -.01em; }
+.liftset { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.mini { display: flex; align-items: center; justify-content: space-between; gap: 4px; min-width: 0; padding: 3px; border: 1px solid var(--line); border-radius: 99px; background: var(--glass); font-weight: 600; font-size: .92rem; font-variant-numeric: tabular-nums; }
+.mini span { min-width: 0; text-align: center; }
+.mini button { flex: none; width: 38px; height: 38px; padding: 0; border: 0; border-radius: 50%; background: var(--track); font-size: 1.15rem; line-height: 1; }
+.todaycard { grid-column: 1 / -1; min-width: 0; display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--glass-line); border-radius: 20px; background: linear-gradient(120deg, rgba(255,138,115,.24), rgba(255,138,115,.06)), var(--glass); box-shadow: var(--glass-shadow); }
+.tview, .tform { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.flame { flex: none; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: var(--cta); color: var(--on-cta); }
+.flame svg { width: 20px; height: 20px; fill: currentColor; }
+.ttext { flex: 1 1 auto; min-width: 0; display: grid; }
+.ttext .label { align-self: auto; font-size: .7rem; }
+.tval { display: flex; align-items: baseline; gap: 5px; font-size: .9rem; font-weight: 500; color: var(--muted); font-variant-numeric: tabular-nums; }
+.tval b { font-family: var(--display); font-weight: 500; font-size: 1.45rem; line-height: 1.1; letter-spacing: -.02em; color: var(--fg); }
+.tbtn { flex: none; min-height: 40px; padding: 7px 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--glass); font-weight: 600; font-size: .9rem; }
+.tbtn.save { background: var(--cta); border-color: var(--cta); color: var(--on-cta); }
+.tform input { flex: 1 1 auto; min-width: 0; height: 42px; padding-inline: 12px; border: 1.5px solid var(--input-line); border-radius: 14px; background: var(--glass); font-weight: 600; font-variant-numeric: tabular-nums; }
+.tbar { height: 6px; border-radius: 99px; background: var(--track); overflow: hidden; }
+.tbar i { display: block; height: 100%; width: 0; border-radius: 99px; background: var(--cta); }
+.finish { width: 100%; max-width: 420px; display: grid; gap: 10px; justify-items: center; text-align: center; }
+.finish .label { align-self: auto; }
+.burn { display: grid; justify-items: center; gap: 2px; font-weight: 600; }
+.burn b { font-family: var(--display); font-weight: 300; font-size: clamp(3.4rem, 18vw, 5.4rem); line-height: 1; letter-spacing: -.03em; }
+.took { color: var(--muted); }
+.ask { margin-top: 14px; font-family: var(--display); font-weight: 500; font-size: clamp(1.15rem, 5vw, 1.4rem); line-height: 1.2; letter-spacing: -.02em; text-wrap: balance; }
+.choose { width: 100%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 4px; }
+.choose button { min-width: 0; min-height: 64px; padding: 8px; border: 1px solid rgba(255,255,255,.6); border-radius: 22px; background: linear-gradient(135deg, rgba(255,171,150,.96), rgba(255,122,97,.96)); color: #000000; font-weight: 700; font-size: 1.05rem; line-height: 1.2; }
+.choose button:active { transform: scale(.97); }
+.finish .closer { color: var(--fg); }
+.after, .pick { width: 100%; display: grid; gap: 10px; justify-items: center; }
+.picks { width: 100%; display: grid; gap: 8px; }
+.picks button { width: 100%; display: grid; gap: 2px; padding: 12px 16px; border: 1px solid var(--glass-line); border-radius: 18px; background: var(--glass); box-shadow: var(--glass-shadow); text-align: left; }
+.picks button:hover { border-color: var(--fg); }
+.picks b { font-family: var(--display); font-weight: 500; font-size: 1rem; line-height: 1.25; letter-spacing: -.01em; }
+.picks span { color: var(--muted); font-size: .9rem; line-height: 1.3; }
+.app.finished .lower { display: none; }
+.app.finished .hold { grid-column: 1 / -1; }
+.plus { justify-self: center; min-width: 132px; }
+.next { font-size: .86rem; line-height: 1.25; color: var(--muted); max-width: 100%; text-wrap: balance; }
+
+/* Title and controls */
+.lower { min-width: 0; display: grid; gap: 12px; }
+.title { display: grid; gap: 2px; text-align: center; }
+.name { font-family: var(--display); font-weight: 500; letter-spacing: -.02em; line-height: 1.15; font-size: clamp(1.25rem, 5.4vw, 1.6rem); text-wrap: balance; }
+.cue { text-align: center; color: var(--muted); font-size: .94rem; line-height: 1.35; text-wrap: balance; }
+.controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.total { grid-column: 1 / -1; text-align: center; font-size: .9rem; font-weight: 500; color: var(--muted); }
+.total b { font-family: var(--display); font-weight: 400; font-size: 1.05rem; letter-spacing: -.01em; color: var(--fg); font-variant-numeric: tabular-nums; }
+.controls .name { grid-column: 1 / -1; text-align: center; padding-bottom: 4px; }
+.go { grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 14px; min-height: 78px; padding: 12px 24px; border: 1px solid rgba(255,255,255,.6); border-radius: 28px; color: #000000; font-size: clamp(1.5rem, 5vw, 1.9rem); font-weight: 700; letter-spacing: -.01em;
+  background: linear-gradient(135deg, rgba(255,171,150,.96), rgba(255,122,97,.96)); box-shadow: 0 14px 32px rgba(255,122,97,.3), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -10px 20px rgba(214,84,60,.18);
+  transition: transform .22s cubic-bezier(.3,1.6,.5,1); }
+.go svg { width: 1em; height: 1em; flex: none; }
+.go:hover { transform: translateY(-2px) scale(1.01); }
+.go:active { transform: scale(.96); }
+.go.calm { color: var(--fg); background: var(--glass); border-color: var(--fg); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px) saturate(165%); backdrop-filter: blur(18px) saturate(165%); }
+.btn { min-width: 0; min-height: 46px; border: 1px solid var(--line); background: var(--glass); padding: 8px 12px; border-radius: 99px; font-weight: 600; font-size: .95rem; line-height: 1.2; transition: border-color .2s, transform .15s; }
+.btn:hover:not(:disabled) { border-color: var(--fg); }
+.btn:active:not(:disabled) { transform: scale(.97); }
+.btn.armed { background: var(--cta); border-color: var(--cta); color: var(--on-cta); }
+
+/* Plan overlay */
+.over { position: fixed; inset: 0; z-index: 30; overflow-y: auto; background: var(--veil); -webkit-backdrop-filter: blur(26px) saturate(165%); backdrop-filter: blur(26px) saturate(165%); animation: fadein .25s ease-out;
+  padding-top: calc(16px + env(safe-area-inset-top, 0px)); padding-bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+@keyframes fadein { from { opacity: 0; } to { opacity: 1; } }
+.sheet { max-width: 620px; margin-inline: auto; display: grid; gap: 24px; }
+.sheethead { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.sheet h2 { font-family: var(--display); font-weight: 500; letter-spacing: -.02em; font-size: clamp(1.45rem, 5vw, 2rem); line-height: 1.12; }
+.sheet h3 { font-family: var(--display); font-weight: 500; font-size: 1.02rem; line-height: 1.3; }
+.closer { background: none; border: 0; padding: 6px 0; text-decoration: underline; text-underline-offset: 3px; }
+.settings { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.setting { display: grid; gap: 8px; min-width: 0; }
+.setting .label { align-self: auto; }
+.stepper { display: flex; align-items: center; gap: 6px; }
+.stepper .btn { flex: none; width: 46px; padding: 0; font-size: 1.2rem; }
+.stepper output, .stepper input { flex: 1 1 auto; min-width: 0; text-align: center; font-family: var(--body); font-weight: 600; font-size: 1.15rem; }
+.stepper input { width: 100%; height: 46px; padding-inline: 6px; background: var(--glass); border: 1.5px solid var(--input-line); border-radius: 14px; }
+.group { display: grid; gap: 8px; }
+.rows { list-style: none; display: grid; }
+.rows li { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 14px; padding-block: 8px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.rows span:nth-child(n+2) { text-align: right; min-width: 3.4em; color: var(--muted); }
+.summary { font-weight: 600; }
+.small { color: var(--muted); font-size: .92rem; }
+
+/* A phone propped sideways: ring on the left, title and controls on the right */
+@media (max-height: 520px) and (min-width: 640px) {
+  :root { --ring: clamp(150px, calc(100vh - 176px), 300px); }
+  .app { max-width: 900px; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: auto 1fr auto; gap: 8px 24px; padding-block: 8px; }
+  .top, .segs { grid-column: 1 / -1; }
+  .round { display: flex; align-items: baseline; gap: 12px; }
+  .lower { align-self: center; gap: 8px; }
+  .name { font-size: 1.15rem; }
+  .cue { font-size: .86rem; }
+  .go { min-height: 56px; font-size: 1.3rem; }
+  .btn { min-height: 40px; }
+  .next { font-size: .76rem; }
+  .inner { padding: 13%; }
+}
+
+/* Recipes: carried over from Daily, using this app's colors and fonts */
+.recipes, dialog { --ink: var(--fg); --surface: var(--menu); --haldi: var(--dot); --mirch: var(--leaf); --leaf-soft: var(--track); --btn: var(--cta); --btn-fg: var(--on-cta); --shadow: 0 20px 60px rgba(0,0,0,.28); }
+.recipes { width: 100%; max-width: 640px; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; padding-block: 20px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.rhead { display: flex; flex-direction: column; gap: 8px; }
+.eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf);font-weight:600}
+.sub{color:var(--muted);margin:0}
+.search{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--glass);backdrop-filter:blur(6px);color:var(--ink)}
+.search:focus-visible{outline:2px solid var(--leaf);outline-offset:2px}
+
+ol.index{list-style:none;margin:0;padding:0;border-top:1px solid var(--line)}
+ol.index li{border-bottom:1px solid var(--line)}
+.entry{all:unset;box-sizing:border-box;width:100%;cursor:pointer;display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:14px;padding:18px 4px}
+.entry:focus-visible{outline:2px solid var(--leaf);outline-offset:-2px;border-radius:6px}
+.num{font-family:var(--display);font-size:22px;color:var(--haldi);font-variant-numeric:tabular-nums}
+.rname{font-family:var(--display);font-size:21px;line-height:1.2;min-width:0}
+.meta{display:block;font-family:var(--body);font-size:13px;color:var(--muted);margin-top:3px}
+.arrow{color:var(--muted);font-size:20px;transition:transform .2s}
+.entry:hover .arrow{transform:translateX(4px);color:var(--leaf)}
+.entry:hover .rname{color:var(--leaf)}
+.empty{color:var(--muted);padding:18px 4px}
+
+/* Modal */
+dialog{border:none;padding:0;width:min(680px,calc(100% - 24px));max-height:calc(100dvh - 32px);border-radius:16px;
+  background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+dialog::backdrop{background:rgba(12,22,16,.55);backdrop-filter:blur(2px)}
+dialog[open]{animation:rise .25s ease-out}
+@keyframes rise{from{transform:translateY(16px);opacity:.4}to{transform:none;opacity:1}}
+.card{display:flex;flex-direction:column}
+.card-head{position:sticky;top:0;background:var(--surface);padding:22px 22px 16px;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:flex-start;z-index:1}
+.card-head .t{flex:1;min-width:0}
+.card-head h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,6vw,32px);line-height:1.1;margin:4px 0 0;text-wrap:balance}
+.close{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;display:grid;place-items:center;background:var(--btn);color:var(--btn-fg);font-size:20px;flex:none}
+.close:focus-visible{outline:2px solid var(--leaf)}
+.card-body{padding:20px 22px 28px;display:flex;flex-direction:column;gap:26px}
+dialog h3{font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin:0 0 10px;color:var(--mirch);font-weight:600}
+
+ul.ing{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+ul.ing li{border-bottom:1px dashed var(--line)}
+ul.ing label{display:grid;grid-template-columns:20px 1fr;gap:12px;padding:10px 0;cursor:pointer;align-items:start}
+ul.ing input{accent-color:var(--leaf);width:18px;height:18px;margin:2px 0 0}
+.ing-name{font-weight:600}
+.ing-qty{color:var(--muted)}
+ul.ing input:checked + span{opacity:.45;text-decoration:line-through}
+.hint{font-size:13px;color:var(--muted);margin:8px 0 0}
+
+ol.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:18px;counter-reset:s}
+ol.steps li{display:grid;grid-template-columns:34px 1fr;gap:12px;counter-increment:s}
+ol.steps li::before{content:counter(s);width:30px;height:30px;border-radius:50%;background:var(--btn);color:var(--btn-fg);display:grid;place-items:center;font-family:var(--display);font-size:15px}
+ol.steps li{grid-template-columns:34px 1fr}
+ol.steps label{display:grid;grid-template-columns:1fr 22px;gap:12px;cursor:pointer;align-items:start}
+ol.steps input{accent-color:var(--btn);width:20px;height:20px;margin:4px 0 0}
+ol.steps li:has(input:checked)::before{opacity:.4}
+ol.steps label:has(input:checked) > div{opacity:.45}
+ol.steps label:has(input:checked) .step-title{text-decoration:line-through}
+.step-title{font-weight:600;display:block;margin-bottom:2px}
+.badges{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 0;padding:0;list-style:none}
+.badge{display:inline-block;font-size:13.5px;line-height:1.35;padding:1px 9px;margin:2px 1px;white-space:nowrap;border-radius:999px;background:var(--leaf-soft);border:1px solid var(--line);color:var(--ink)}
+.badge b{font-weight:700;margin-right:4px}
+.tabs{display:flex;gap:4px;padding:4px;margin:14px 0 0;border-radius:999px;background:var(--leaf-soft);border:1px solid var(--line)}
+.tab{all:unset;box-sizing:border-box;cursor:pointer;flex:1;text-align:center;padding:9px 12px;border-radius:999px;font-weight:600;font-size:14px;color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--btn);color:var(--btn-fg)}
+.tab:focus-visible{outline:2px solid var(--leaf);outline-offset:2px}
+.tabs.four .tab{display:grid;place-items:center;padding:7px 3px;font-size:12.5px;line-height:1.15}
+.tabs.four .count{display:none}
+.tab .count{font-weight:500;opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
+.card-head{flex-wrap:wrap}
+.cat-tabs{margin:0;max-width:340px}
+.cat-tabs .tab{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.mark{width:14px;height:14px;border:1.5px solid;border-radius:2px;display:inline-grid;place-items:center;background:#fff;flex:none}
+.mark::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.mark.veg{color:#2e8b3d;border-color:#2e8b3d}
+.mark.nonveg{color:#9b3b1f;border-color:#9b3b1f}
+.mark.nonveg::after{border-radius:0;width:0;height:0;background:none;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid currentColor}
+.card-head .tabs{flex-basis:100%}
+.step-text{color:var(--ink);margin:0;max-width:62ch;line-height:1.85}
+.serve{background:var(--leaf-soft);border-radius:10px;padding:12px 14px;font-size:15px}
+
+.guide-btn{all:unset;box-sizing:border-box;cursor:pointer;align-self:flex-start;margin-top:10px;display:inline-flex;align-items:center;gap:10px;
+  background:var(--btn);color:var(--btn-fg);font-weight:600;font-size:15px;padding:12px 20px;border-radius:999px;transition:transform .15s,box-shadow .15s;box-shadow:0 6px 18px rgba(17,19,17,.18)}
+.guide-btn:hover{transform:translateY(-1px);box-shadow:0 10px 24px rgba(17,19,17,.24)}
+.guide-btn:focus-visible{outline:2px solid var(--haldi);outline-offset:3px}
+.guide-btn .dot{width:8px;height:8px;border-radius:50%;background:#a9c2a1}
+
+.g-intro{color:var(--muted);margin:0;max-width:60ch}
+.g-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
+.g-item{background:var(--glass);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.g-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.g-cat{font-family:var(--display);font-size:19px;line-height:1.2}
+.g-amt{font-size:12px;font-weight:600;letter-spacing:.04em;color:var(--leaf);background:var(--leaf-soft);padding:3px 9px;border-radius:999px;white-space:nowrap}
+.g-foods{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.g-foods li{font-size:13.5px;padding:3px 9px;border-radius:6px;border:1px solid var(--line);color:var(--ink)}
+
+@media (prefers-reduced-motion:reduce){dialog[open]{animation:none}.arrow,.guide-btn{transition:none}}
+.plate-row{display:flex;flex-wrap:wrap;gap:18px;align-items:center;margin-top:12px}
+#plate{width:min(240px,100%);height:auto;flex:none;filter:drop-shadow(0 10px 18px rgba(30,50,30,.22))}
+#plate .pseg{cursor:pointer;transition:transform .25s ease}
+#plate .pseg:focus-visible{outline:none}
+#plate .pseg:focus-visible path{stroke:#111;stroke-width:3}
+#plate text{font-family:var(--body);font-weight:700;pointer-events:none}
+.plate-legend{display:flex;flex-direction:column;gap:6px;flex:1 1 160px;min-width:0}
+.lg{all:unset;box-sizing:border-box;cursor:pointer;display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:10px;border:1px solid transparent;font-size:14px}
+.lg i{width:14px;height:14px;border-radius:4px;flex:none}
+.lg b{margin-left:auto;font-variant-numeric:tabular-nums}
+.lg[aria-pressed="true"]{background:var(--track);border-color:var(--line);font-weight:600}
+.lg:focus-visible{outline:2px solid var(--leaf)}
+.lg.side i{background:transparent;border:1.5px dashed var(--leaf)}
+.plate-detail{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.pd-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.pd-title{font-family:var(--display);font-size:22px}
+.pd-tip{font-size:14px;color:var(--muted);margin:0}
+.sec-title{font-family:var(--display);font-weight:400;font-size:clamp(26px,6vw,34px);line-height:1.1;margin:0;text-wrap:balance}
+.sec-title span{color:var(--haldi)}
+.recipes .sec-title { font-weight: 500; font-size: clamp(24px, 5.6vw, 30px); letter-spacing: -.02em; }
+.rname { font-weight: 500; font-size: 16.5px; letter-spacing: -.01em; }
+.num { font-size: 17px; }
+.card-head h2 { font-weight: 500; font-size: clamp(20px, 5vw, 26px); letter-spacing: -.02em; }
+ol.steps li::before { font-size: 13px; }
+.g-cat { font-size: 15.5px; font-weight: 500; }
+.pd-title { font-size: 17px; font-weight: 500; }
+.tab[aria-selected="true"] { font-weight: 700; }
+.guide-btn { box-shadow: 0 8px 20px rgba(255,122,97,.28); }
+
+@media (hover: none) { .icon:hover { border-color: var(--glass-line); } .btn:hover:not(:disabled) { border-color: var(--line); } }
+@media (prefers-reduced-motion: reduce) {
+  .over { animation: none; }
+  .go, .btn, .icon, .drawer, .drawer.open { transition: none; }
+}
+</style>
+
+<div class="wash" aria-hidden="true"></div>
+
+<nav class="bar" aria-label="Sections">
+  <div class="barin">
+    <span class="brand">Neal</span>
+    <div class="nv">
+      <button type="button" id="nav-workout" aria-current="true">Workout</button>
+      <button type="button" id="nav-recipes">Recipes</button>
+    </div>
+    <div class="tools" id="tools">
+      <button type="button" class="icon" id="menuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    </div>
+  </div>
+</nav>
+
+<div class="app" id="app">
+
+  <div class="segs" id="segs" aria-hidden="true"></div>
+
+  <div class="hold">
+    <div class="finish" id="finish" hidden>
+      <p class="label">Session complete</p>
+      <p class="burn"><b id="burnNum">0</b><span>calories burned</span></p>
+      <p class="took" id="took"></p>
+      <div class="after" id="after">
+        <h2 class="ask">Do you want to do another session?</h2>
+        <div class="choose">
+          <button type="button" id="againCardio">Cardio</button>
+          <button type="button" id="againWeights">Workout</button>
+        </div>
+        <button type="button" class="closer" id="doneToday">Finish for today</button>
+      </div>
+      <div class="pick" id="pick" hidden>
+        <h2 class="ask">Which workout?</h2>
+        <div class="picks" id="picks"></div>
+        <p class="took" id="lastDone"></p>
+        <button type="button" class="closer" id="pickBack">Back</button>
+      </div>
+    </div>
+    <div class="ring" id="ring">
+      <svg viewBox="0 0 200 200" aria-hidden="true">
+        <circle class="tr" cx="100" cy="100" r="96"></circle>
+        <circle class="pr" id="arc" cx="100" cy="100" r="96" pathLength="100" stroke-dasharray="0 100"></circle>
+      </svg>
+      <div class="inner">
+        <p class="label" id="stage"></p>
+        <div>
+          <div class="clock" id="clock" role="timer" aria-label="Time left in this exercise"><span id="d0"></span><span class="c">:</span><span id="d1"></span><span id="d2"></span></div>
+          <p class="word" id="word" hidden>Done</p>
+          <div class="lift" id="liftInfo" hidden>
+            <p class="reps"><b id="liftReps"></b> <span id="liftUnit"></span></p>
+            <p class="kg" id="liftKg"></p>
+          </div>
+        </div>
+        <p class="next" id="next"></p>
+      </div>
+    </div>
+  </div>
+
+  <section class="lower" aria-label="Exercise and controls">
+    <div class="liftset" id="liftset" hidden>
+      <div class="mini"><button type="button" data-f="reps" data-d="-1" aria-label="One rep fewer">−</button><span id="mReps"></span><button type="button" data-f="reps" data-d="1" aria-label="One rep more">+</button></div>
+      <div class="mini"><button type="button" data-f="kg" data-d="-0.5" aria-label="Half a kilo lighter">−</button><span id="mKg"></span><button type="button" data-f="kg" data-d="0.5" aria-label="Half a kilo heavier">+</button></div>
+    </div>
+    <button type="button" class="btn plus" id="plus" hidden>+10 sec</button>
+    <p class="cue" id="cue" hidden></p>
+    <div class="controls">
+      <p class="total" id="total" role="timer" aria-label="Total workout time">Total <b id="totalTime">0:00</b></p>
+      <h2 class="name" id="name"></h2>
+      <button type="button" class="go" id="go"></button>
+      <button type="button" class="btn" id="prev">Previous</button>
+      <button type="button" class="btn" id="skip">Next</button>
+      <button type="button" class="btn" id="reset">Reset</button>
+    </div>
+  </section>
+
+  <section class="todaycard" aria-label="Calories burned today">
+    <div class="tview" id="tView">
+      <span class="flame" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12.5 2.5c.6 3.6 5.5 6.2 5.5 11a6 6 0 0 1-12 0c0-2.4 1.1-4.2 2.5-5.5.2 1.8.9 2.8 2.1 3.2-.5-3-.1-6.2 1.9-8.7Z"/></svg></span>
+      <div class="ttext">
+        <span class="label">Burned today</span>
+        <span class="tval"><b id="todayNum">0</b> of 500 cal</span>
+      </div>
+      <button type="button" class="tbtn" id="todayEdit" aria-label="Edit calories burned today">Edit</button>
+    </div>
+    <form class="tform" id="tForm" hidden>
+      <label class="sr" for="todayInput">Calories burned today</label>
+      <input type="number" id="todayInput" min="0" max="20000" step="1" inputmode="numeric">
+      <button type="submit" class="tbtn save">Save</button>
+      <button type="button" class="tbtn" id="todayCancel">Cancel</button>
+    </form>
+    <div class="tbar" aria-hidden="true"><i id="todayBar"></i></div>
+  </section>
+</div>
+<section class="recipes" id="v-recipes" hidden>
+  <div class="rhead">
+    <div class="eyebrow">Recipe notebook</div>
+    <h2 class="sec-title">Ghar ki <span>Recipes</span></h2>
+    <p class="sub">Tap a recipe name to open it.</p>
+    <button class="guide-btn" id="guide-open"><span class="dot" aria-hidden="true"></span>Daily Food Guide</button>
+  </div>
+
+  <div class="tabs cat-tabs" role="tablist" aria-label="Recipe type">
+    <button class="tab" role="tab" id="cat-veg" aria-selected="true"><span class="mark veg" aria-hidden="true"></span>Veg<span class="count" id="n-veg"></span></button>
+    <button class="tab" role="tab" id="cat-nonveg" aria-selected="false"><span class="mark nonveg" aria-hidden="true"></span>Non-Veg<span class="count" id="n-nonveg"></span></button>
+  </div>
+
+  <input class="search" id="search" type="search" placeholder="Search recipes or ingredients" aria-label="Search recipes">
+
+  <ol class="index" id="index"></ol>
+</section>
+<aside class="drawer" id="menu" role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="dwrap">
+    <div class="dhead">
+      <h2>Menu</h2>
+      <button type="button" class="closer" id="menuClose">Close</button>
+    </div>
+    <div>
+      <button type="button" class="item" id="planBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6h11M9 12h11M9 18h11M4 6h.01M4 12h.01M4 18h.01"/></svg><span>Plan</span></button>
+      <button type="button" class="item" id="soundBtn" aria-pressed="true"></button>
+      <button type="button" class="item" id="fullBtn" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5"/></svg><span id="fullText">Full screen</span></button>
+      <button type="button" class="item" id="modeBtn"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg><span id="modeText">Dark mode</span></button>
+    </div>
+  </div>
+</aside>
+<p class="sr" id="live" aria-live="polite"></p>
+
+<div class="over" id="over" role="dialog" aria-modal="true" aria-labelledby="planTitle" hidden>
+  <div class="sheet">
+    <div class="sheethead">
+      <h2 id="planTitle">Your session</h2>
+      <button type="button" class="closer" id="closePlan">Close</button>
+    </div>
+    <div class="settings">
+      <div class="setting">
+        <label class="label" for="kg">Your weight (kg)</label>
+        <div class="stepper"><input type="number" id="kg" min="35" max="200" step="1" inputmode="numeric"></div>
+      </div>
+    </div>
+    <p class="summary" id="planSum"></p>
+    <p class="small" id="lockNote" hidden>Reset the session to change your weight.</p>
+    <div class="group" id="gCardio">
+      <h3 id="circuitTitle"></h3>
+      <ul class="rows" id="circuitRows"></ul>
+    </div>
+    <div class="group" id="gLift">
+      <h3 id="liftTitle"></h3>
+      <ul class="rows" id="liftRows"></ul>
+    </div>
+    <div class="group" id="gStretch">
+      <h3>Lower back stretches, once at the end</h3>
+      <ul class="rows" id="stretchRows"></ul>
+    </div>
+    <p class="small">Calories are estimates. Fat converts them at about 7.7 calories per gram of body fat, so treat it as a rough equivalent. Stop if you feel pain, dizziness or chest tightness.</p>
+  </div>
+</div>
+
+<dialog id="modal" aria-labelledby="m-title">
+  <div class="card">
+    <div class="card-head">
+      <div class="t">
+        <div class="eyebrow" id="m-num"></div>
+        <h2 id="m-title"></h2>
+      </div>
+      <button class="close" id="m-close" aria-label="Close recipe">×</button>
+      <div class="tabs" id="m-tabs" role="tablist" aria-label="Recipe sections">
+        <button class="tab" role="tab" id="tab-ing" aria-controls="panel-ing" aria-selected="true">Ingredients<span class="count" id="c-ing"></span></button>
+        <button class="tab" role="tab" id="tab-steps" aria-controls="panel-steps" aria-selected="false"><span id="l-steps">Method</span><span class="count" id="c-steps"></span></button>
+        <button class="tab" role="tab" id="tab-p1" aria-controls="panel-steps" aria-selected="false" hidden></button>
+        <button class="tab" role="tab" id="tab-p2" aria-controls="panel-steps" aria-selected="false" hidden></button>
+      </div>
+    </div>
+    <div class="card-body">
+      <section id="panel-ing" role="tabpanel" aria-labelledby="tab-ing">
+        <ul class="ing" id="m-ing" style="margin-top:-6px"></ul>
+        <p class="hint">Tick items off as you gather them.</p>
+      </section>
+      <section id="panel-steps" role="tabpanel" aria-labelledby="tab-steps" hidden>
+        <ol class="steps" id="m-steps"></ol>
+        <p class="hint">Tick each step once it's done.</p>
+        <p class="serve" id="m-serve" hidden></p>
+      </section>
+    </div>
+  </div>
+</dialog>
+
+<dialog id="guide" aria-labelledby="g-title">
+  <div class="card">
+    <div class="card-head">
+      <div class="t">
+        <div class="eyebrow">What to eat each day</div>
+        <h2 id="g-title">Daily Food Guide</h2>
+      </div>
+      <button class="close" id="g-close" aria-label="Close food guide">×</button>
+    </div>
+    <div class="card-body">
+      <section class="plate-wrap">
+        <h3>Your plate</h3>
+        <p class="g-intro">How to fill a lunch or dinner plate. Tap a part of the plate to see what to put there.</p>
+        <div class="plate-row">
+          <svg id="plate" viewBox="-130 -130 260 260" role="group" aria-label="Plate split by food group"></svg>
+          <div class="plate-legend" id="plate-legend"></div>
+        </div>
+        <div class="plate-detail" id="plate-detail" aria-live="polite"></div>
+      </section>
+      <section>
+        <h3>All food groups</h3>
+        <p class="g-intro" style="margin-bottom:12px">Sixteen food groups with everyday Indian choices and how often to eat them.</p>
+        <ul class="g-list" id="g-list"></ul>
+      </section>
+    </div>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = 'neal-workout-v1';
+  var REST_SEC = 30;
+  var SETS = 4;
+  var KCAL_PER_G = 7.7;
+  var BASE_KG = 90;
+  var STRETCH_CAL_PER_MIN = 3;
+  var SOUND_ON = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z"/><path d="M16 9a4.2 4.2 0 0 1 0 6M18.8 6.5a8 8 0 0 1 0 11"/></svg>';
+  var SOUND_OFF = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5L12 18.5v-13L7.5 9.5H4Z"/><path d="m16 9.5 5 5M21 9.5l-5 5"/></svg>';
+
+  var LIFT = {
+    row: { key: 'row', name: 'One Arm Row', sec: 60, cal: 8, reps: 12, kg: 7.5, cue: 'Do all your reps on one arm, then switch arms.' },
+    chest: { key: 'chest', name: 'Chest Press', sec: 45, cal: 6, reps: 12, kg: 7.5, cue: 'Lower slowly, then press up.' },
+    skull: { key: 'skull', name: 'Skull Crushers', sec: 45, cal: 6, reps: 12, kg: 5, cue: 'Bend only at the elbows.' },
+    squat: { key: 'squat', name: 'Squat', sec: 45, cal: 6, reps: 12, kg: 7.5, cue: 'Sit your hips back and keep your chest up.' },
+    shoulder: { key: 'shoulder', name: 'Shoulder Press', sec: 45, cal: 6, reps: 12, kg: 5, cue: 'Press overhead without arching your back.' },
+    curl: { key: 'curl', name: 'Bicep Curls', sec: 45, cal: 6, reps: 12, kg: 5, cue: 'Keep your elbows close to your sides.' },
+    raise: { key: 'raise', name: 'Lateral Raises', sec: 45, cal: 6, reps: 12, kg: 2.5, cue: 'Raise your arms to shoulder height.' }
+  };
+  var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>';
+  var DAYS = [[LIFT.row, LIFT.chest, LIFT.skull], [LIFT.squat, LIFT.shoulder, LIFT.curl], [LIFT.row, LIFT.chest, LIFT.raise]];
+  var DAY_NAMES = ['Chest & Triceps', 'Legs, Shoulders & Biceps', 'Back, Chest & Shoulders'];
+  var picking = false;
+  var CARDIO = [
+    { name: 'March in place', cal: 6 },
+    { name: 'Fast march in place', cal: 8 },
+    { name: 'Spot run', cal: 13 },
+    { name: 'High knees', cal: 14 },
+    { name: 'High knees with claps', cal: 14 },
+    { name: 'Boxer shuffle', cal: 12 }
+  ];
+  var STRETCHES = [
+    { name: "Child's pose", sec: 30, cue: 'Kneel, sit back on your heels, and reach your arms forward.' },
+    { name: 'Knee-to-chest, left', sec: 30, cue: 'Lie on your back and gently pull your left knee in.' },
+    { name: 'Knee-to-chest, right', sec: 30, cue: 'Switch sides and gently pull your right knee in.' },
+    { name: 'Spinal twist, left', sec: 30, cue: 'Lower both bent knees to the left. Keep your shoulders down.' },
+    { name: 'Spinal twist, right', sec: 30, cue: 'Lower both bent knees to the right. Keep your shoulders down.' },
+    { name: 'Cat-cow', sec: 45, cue: 'On hands and knees, slowly round your back, then gently arch it.' },
+    { name: 'Pelvic tilt', sec: 60, cue: 'Knees bent, press your lower back into the floor for 3 to 5 seconds, then release.' }
+  ];
+
+  var cfg = { mode: 'cardio', day: 0, kg: BASE_KG, sound: true, theme: null, lifts: {}, today: { date: '', kcal: 0 }, last: null };
+  function lastText() {
+    if (!cfg.last) return 'No workout done yet.';
+    var d = new Date(cfg.last.date), when = cfg.last.date === new Date().toDateString() ? 'today' : cfg.last.date === new Date(Date.now() - 864e5).toDateString() ? 'yesterday' : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' });
+    return 'Last workout: ' + DAY_NAMES[cfg.last.day] + ', ' + when;
+  }
+  function todayLog() {
+    var d = new Date().toDateString();
+    if (cfg.today.date !== d) cfg.today = { date: d, kcal: 0 };
+    return cfg.today;
+  }
+  function liftVal(k) {
+    if (!cfg.lifts[k]) cfg.lifts[k] = { reps: LIFT[k].reps, kg: LIFT[k].kg };
+    return cfg.lifts[k];
+  }
+  function kgText(v) { return v > 0 ? v + ' kg' : 'Bodyweight'; }
+  function onSet() { return S.status !== 'idle' && S.status !== 'done' && !!steps[S.idx].open; }
+  var cardioSec = 40;
+  var S = fresh();
+  var steps = [], planCal = 0, segSpans = [];
+  var last = 0, lastSecond = null, lastSave = 0, wake = null, audio = null, armed = null;
+
+  function fresh() { return { status: 'idle', idx: 0, ms: 0, kcal: 0, active: 0, started: 0, ended: 0 }; }
+  /* Total time follows the clock from Start to finish, so it keeps running through a pause */
+  function paintTotal() {
+    var sec = S.started ? Math.floor(((S.ended || Date.now()) - S.started) / 1000) : 0;
+    set('totalTime', longTime(sec));
+  }
+
+  /* Build the step list */
+  /* Cardio sets come first, then the day's weights, then the stretches */
+  function restStep(seg, f, cue) { return { kind: 'rest', seg: seg, name: 'Rest', sec: REST_SEC, cal: f, cue: cue }; }
+  function cardioSession(sec, f) {
+    var out = [{ kind: 'ready', seg: 0, name: 'Get ready', sec: 10, cal: 0, cue: 'Clear some space and take a breath.' }];
+    CARDIO.forEach(function (x, i) {
+      for (var c = 1; c <= SETS; c++) {
+        out.push({ kind: 'work', seg: i, pos: c, name: x.name, sec: sec, cal: x.cal * sec / 60 * f });
+        if (c < SETS) out.push(restStep(i, f, ''));
+      }
+      if (i < CARDIO.length - 1) out.push(restStep(i, f, ''));
+    });
+    return out;
+  }
+  function weightsSession(f) {
+    var seg = 0, out = [{ kind: 'ready', seg: 0, name: 'Get your weights', sec: 15, cal: 0, cue: 'Pick up your weights.' }];
+    DAYS[cfg.day].forEach(function (lift, i) {
+      seg = i;
+      if (i) out.push(restStep(seg, f, ''));
+      for (var s = 1; s <= SETS; s++) {
+        out.push({ kind: 'lift', open: true, lift: lift.key, seg: seg, pos: s, name: lift.name, sec: lift.sec, cal: lift.cal * f, cue: lift.cue });
+        if (s < SETS) out.push(restStep(seg, f, ''));
+      }
+    });
+    seg = DAYS[cfg.day].length;
+    out.push({ kind: 'ready', seg: seg, name: 'Get on your mat', sec: 15, cal: 0, cue: 'Slow your breathing and get down on the floor.' });
+    STRETCHES.forEach(function (x, i) {
+      out.push({ kind: 'stretch', seg: seg, pos: i + 1, name: x.name, sec: x.sec, cal: STRETCH_CAL_PER_MIN * x.sec / 60 * f, cue: x.cue });
+    });
+    return out;
+  }
+  function build() {
+    var f = cfg.kg / BASE_KG;
+    steps = cfg.mode === 'cardio' ? cardioSession(cardioSec, f) : weightsSession(f);
+    planCal = steps.reduce(function (a, s) { return a + s.cal; }, 0);
+    buildSegs();
+  }
+  function buildSegs() {
+    var box = $('segs'), n = steps[steps.length - 1].seg + 1;
+    box.textContent = ''; segSpans = [];
+    for (var i = 0; i < n; i++) segSpans.push({ total: 0 });
+    steps.forEach(function (s) { segSpans[s.seg].total += s.sec; });
+    segSpans.forEach(function (g, i) {
+      var w = document.createElement('div'), d = document.createElement('div'), b = document.createElement('i');
+      w.className = 'segw'; d.className = 'seg';
+      d.append(b); w.append(d); box.append(w); g.bar = b;
+    });
+  }
+
+  /* Formatting */
+  function clockText(sec) { var m = Math.floor(sec / 60), s = sec % 60; return { m: String(m), s: (s < 10 ? '0' : '') + s }; }
+  function longTime(sec) {
+    var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60, ss = (s < 10 ? '0' : '') + s;
+    return h ? h + ':' + (m < 10 ? '0' : '') + m + ':' + ss : m + ':' + ss;
+  }
+  function set(id, v) { var e = $(id); if (e.textContent !== v) e.textContent = v; }
+
+  /* Paint */
+  function shown() { return S.status === 'idle' ? steps[1] : steps[Math.min(S.idx, steps.length - 1)]; }
+  function paint() {
+    var done = S.status === 'done', idle = S.status === 'idle', st = shown();
+    var idx = idle ? 1 : S.idx;
+    var left = idle ? st.sec : Math.max(0, Math.ceil((st.sec * 1000 - S.ms) / 1000));
+    var t = clockText(left);
+    var open = onSet();
+    var liftShown = open || (idle && !!st.open);
+    $('clock').hidden = done || liftShown; $('word').hidden = !done;
+    $('liftInfo').hidden = !liftShown; $('liftset').hidden = !open;
+    $('ring').hidden = done; $('finish').hidden = !done;
+    $('app').classList.toggle('finished', done);
+    if (done) {
+      set('burnNum', String(Math.round(S.kcal)));
+      set('took', 'in ' + longTime(Math.floor((S.ended - S.started) / 1000)));
+      $('after').hidden = picking; $('pick').hidden = !picking;
+      set('lastDone', lastText());
+    }
+    $('plus').hidden = idle || done || st.kind !== 'rest';
+    $('name').hidden = st.kind === 'rest';
+    if (liftShown) {
+      var lv = liftVal(st.lift);
+      set('liftReps', String(lv.reps));
+      set('liftUnit', st.lift === 'row' ? 'reps each arm' : 'reps');
+      set('liftKg', lv.kg > 0 ? lv.kg + ' kg each hand' : 'Bodyweight');
+      set('mReps', lv.reps + ' reps');
+      set('mKg', kgText(lv.kg));
+    }
+    set('d0', t.m); set('d1', t.s[0]); set('d2', t.s[1]);
+    $('clock').classList.toggle('end', S.status === 'run' && left <= 3);
+    $('app').classList.toggle('paused', S.status === 'pause');
+
+    var cue = '';
+    if (done) {
+      set('stage', 'Session complete');
+      set('name', 'Well done');
+      set('next', '');
+    } else {
+      set('stage', S.status === 'pause' ? 'Paused' : st.kind === 'work' ? 'Cardio set ' + st.pos + ' of ' + SETS : st.kind === 'lift' ? 'Set ' + st.pos + ' of ' + SETS : st.kind === 'rest' ? 'Rest' : st.kind === 'stretch' ? 'Stretch ' + st.pos + ' of ' + STRETCHES.length : 'Starting soon');
+      set('name', st.name);
+      var n = steps[idx + 1];
+      set('next', idle ? '10 second countdown first' : n ? 'Next: ' + n.name : 'Last one');
+      cue = st.cue || '';
+    }
+    set('cue', cue);
+    $('cue').hidden = !cue;
+
+    var go = $('go'), calm = S.status === 'run' && !open;
+    var word = S.status === 'run' ? (open ? 'Set done' : 'Pause') : S.status === 'pause' ? 'Resume' : done ? 'Start again' : 'Start';
+    if (go.dataset.w !== word) {
+      go.dataset.w = word; go.classList.toggle('calm', calm);
+      go.innerHTML = (word === 'Set done' ? CHECK : calm ? '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="5" height="16" rx="1.5"/><rect x="14" y="4" width="5" height="16" rx="1.5"/></svg>' : '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4.5v15a1 1 0 0 0 1.5.86l12.5-7.5a1 1 0 0 0 0-1.72L8.5 3.64A1 1 0 0 0 7 4.5Z"/></svg>') + '<span></span>';
+      go.querySelector('span').textContent = word;
+    }
+    $('prev').disabled = idle || done; $('skip').disabled = idle || done; $('reset').disabled = idle;
+
+    var active = S.status === 'run' || S.status === 'pause';
+    paintTotal();
+    var todayCal = Math.round(todayLog().kcal + (active ? S.kcal : 0));
+    set('todayNum', String(todayCal));
+    $('todayBar').style.width = Math.min(100, todayCal / 5) + '%';
+
+
+    var p = done ? 100 : idle ? 0 : open ? (st.pos - 1) / SETS * 100 : Math.min(100, S.ms / (st.sec * 1000) * 100);
+    $('ring').dataset.kind = st.kind;
+    $('arc').setAttribute('stroke-dasharray', p + ' 100');
+    $('arc').style.opacity = p > 0 ? 1 : 0;
+
+    var seen = segSpans.map(function () { return 0; });
+    if (!idle) steps.forEach(function (s, i) {
+      if (done || i < S.idx) seen[s.seg] += s.sec; else if (i === S.idx) seen[s.seg] += S.ms / 1000;
+    });
+    segSpans.forEach(function (g, i) { g.bar.style.width = Math.min(100, seen[i] / g.total * 100) + '%'; });
+  }
+
+  /* Engine: all time comes from the clock, so a throttled tab stays accurate */
+  function tick() {
+    if (S.status !== 'run') return;
+    var now = Date.now(), d = now - last;
+    last = now;
+    while (d > 0 && S.status === 'run') {
+      var st = steps[S.idx], span = st.sec * 1000, use = Math.min(span - S.ms, d);
+      if (st.open) break;
+      S.ms += use; S.kcal += st.cal * use / span; S.active += use; d -= use;
+      if (S.ms >= span) move(1, true);
+    }
+    if (S.status === 'run') {
+      var left = Math.ceil((steps[S.idx].sec * 1000 - S.ms) / 1000);
+      if (left !== lastSecond) { lastSecond = left; if (left <= 3 && left >= 1) beep(660, .09); }
+      if (now - lastSave > 5000) save();
+    }
+    paint();
+  }
+  function move(by, auto) {
+    var to = S.idx + by;
+    if (to >= steps.length) { finish(); return; }
+    S.idx = Math.max(0, to); S.ms = 0; lastSecond = null;
+    if (S.status === 'run') announce(steps[S.idx]);
+    set('live', steps[S.idx].name);
+    try { if (auto && navigator.vibrate) navigator.vibrate(60); } catch (e) {}
+    save();
+  }
+  function finish() {
+    S.status = 'done'; S.ended = Date.now(); S.idx = steps.length - 1;
+    todayLog().kcal += S.kcal;
+    if (cfg.mode === 'weights') cfg.last = { day: cfg.day, date: new Date().toDateString() }; S.ms = steps[S.idx].sec * 1000;
+    beep(523, .14); setTimeout(function () { beep(659, .14); }, 160); setTimeout(function () { beep(784, .28); }, 320);
+    say('Session complete. Well done.');
+    set('live', 'Session complete');
+    releaseWake(); save();
+  }
+  function start() {
+    S = fresh(); S.status = 'run'; last = Date.now(); S.started = last; lastSecond = null;
+    openAudio(); holdWake(); announce(steps[0]); save();
+  }
+  function resume() { S.status = 'run'; last = Date.now(); openAudio(); holdWake(); save(); }
+  function pause() { tick(); if (S.status === 'run') { S.status = 'pause'; releaseWake(); save(); } }
+
+  /* Sound */
+  function openAudio() {
+    try {
+      if (!audio) { var C = window.AudioContext || window.webkitAudioContext; if (C) audio = new C(); }
+      if (audio && audio.state === 'suspended') audio.resume();
+    } catch (e) {}
+  }
+  function beep(freq, len) {
+    if (!cfg.sound || !audio) return;
+    try {
+      var o = audio.createOscillator(), g = audio.createGain(), t = audio.currentTime;
+      o.frequency.value = freq; o.type = 'sine';
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.3, t + .01); g.gain.exponentialRampToValueAtTime(.0001, t + len);
+      o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + len + .02);
+    } catch (e) {}
+  }
+  function say(text) {
+    if (!cfg.sound) return;
+    try { speechSynthesis.cancel(); speechSynthesis.speak(new SpeechSynthesisUtterance(text)); } catch (e) {}
+  }
+  function announce(st) { beep(880, .18); say(st.open ? st.name + ', ' + liftVal(st.lift).reps + ' reps' : st.name); }
+
+  /* Keep the screen on while the session runs */
+  function nativePlugin(name) { return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins[name]; }
+  function holdWake() {
+    var k = nativePlugin('KeepAwake');
+    if (k) { try { k.keepAwake().catch(function () {}); } catch (e) {} return; }
+    try { if (navigator.wakeLock && !wake) navigator.wakeLock.request('screen').then(function (w) { wake = w; w.addEventListener('release', function () { wake = null; }); }).catch(function () {}); } catch (e) {}
+  }
+  function releaseWake() {
+    var k = nativePlugin('KeepAwake');
+    if (k) { try { k.allowSleep().catch(function () {}); } catch (e) {} return; }
+    try { if (wake) wake.release(); } catch (e) {} wake = null; }
+
+  /* Remembered in this browser only */
+  function save() {
+    lastSave = Date.now();
+    try { localStorage.setItem(KEY, JSON.stringify({ cfg: cfg, S: S, len: steps.length, day: new Date().toDateString() })); } catch (e) {}
+  }
+  function load() {
+    try {
+      var o = JSON.parse(localStorage.getItem(KEY) || 'null');
+      if (!o) return;
+      if (o.cfg) {
+        if (o.cfg.day >= 0 && o.cfg.day < DAYS.length) cfg.day = o.cfg.day;
+        if (o.cfg.mode === 'weights') cfg.mode = 'weights';
+        if (o.cfg.last && o.cfg.last.day >= 0 && o.cfg.last.day < DAYS.length) cfg.last = { day: o.cfg.last.day, date: String(o.cfg.last.date) };
+        if (o.cfg.today && typeof o.cfg.today.kcal === 'number') cfg.today = { date: String(o.cfg.today.date || ''), kcal: o.cfg.today.kcal };
+        if (o.cfg.kg >= 35 && o.cfg.kg <= 200) cfg.kg = o.cfg.kg;
+        if (o.cfg.lifts && typeof o.cfg.lifts === 'object') Object.keys(LIFT).forEach(function (k) {
+          var v = o.cfg.lifts[k];
+          if (v && v.reps >= 1 && v.reps <= 50 && v.kg >= 0 && v.kg <= 100) cfg.lifts[k] = { reps: v.reps, kg: v.kg };
+        });
+        cfg.sound = o.cfg.sound !== false;
+        cfg.theme = o.cfg.theme === 'dark' || o.cfg.theme === 'light' ? o.cfg.theme : null;
+      }
+      return o;
+    } catch (e) {}
+  }
+
+  /* Plan sheet */
+  function row(a, b, c) {
+    var li = document.createElement('li');
+    [a, b, c].forEach(function (t) { var s = document.createElement('span'); s.textContent = t; li.append(s); });
+    return li;
+  }
+  function renderPlan() {
+    var f = cfg.kg / BASE_KG;
+    if (document.activeElement !== $('kg')) $('kg').value = cfg.kg;
+    var mins = Math.ceil(steps.reduce(function (a, s) { return a + s.sec; }, 0) / 60);
+    $('planSum').textContent = 'About ' + mins + ' minutes, ' + Math.round(planCal) + ' calories, ' + Math.round(planCal / KCAL_PER_G) + ' g of fat';
+    $('gCardio').hidden = cfg.mode !== 'cardio';
+    $('gLift').hidden = $('gStretch').hidden = cfg.mode === 'cardio';
+    $('circuitTitle').textContent = 'Cardio, ' + SETS + ' sets of each move';
+    $('liftTitle').textContent = DAY_NAMES[cfg.day] + ', ' + SETS + ' sets each';
+    var l = $('liftRows'); l.textContent = '';
+    DAYS[cfg.day].forEach(function (x) { l.append(row(x.name, liftVal(x.key).reps + ' reps · ' + kgText(liftVal(x.key).kg), Math.round((x.cal * SETS + SETS - 1) * f) + ' cal')); });
+    var c = $('circuitRows'), s = $('stretchRows');
+    c.textContent = ''; s.textContent = '';
+    CARDIO.forEach(function (x) { c.append(row(x.name, longTime(cardioSec) + ' a set', Math.round(x.cal * cardioSec / 60 * SETS * f) + ' cal')); });
+    STRETCHES.forEach(function (x) { s.append(row(x.name, longTime(x.sec), Math.round(STRETCH_CAL_PER_MIN * x.sec / 60 * f) + ' cal')); });
+    var locked = S.status !== 'idle' && S.status !== 'done';
+    $('lockNote').hidden = !locked;
+    $('kg').disabled = locked;
+  }
+  function changed() { if (S.status === 'done') S = fresh(); build(); renderPlan(); paint(); save(); }
+  function openPlan() { renderPlan(); $('over').hidden = false; document.body.style.overflow = 'hidden'; $('closePlan').focus({ preventScroll: true }); }
+  function closePlan() { $('over').hidden = true; document.body.style.overflow = ''; $('menuBtn').focus({ preventScroll: true }); }
+
+  /* Theme, sound and full screen buttons */
+  function isDark() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t ? t === 'dark' : !!(window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
+  }
+  function paintTools() {
+    var s = $('soundBtn');
+    set('modeText', isDark() ? 'Light mode' : 'Dark mode');
+    var want = cfg.sound ? 'on' : 'off';
+    if (s.dataset.s !== want) { s.dataset.s = want; s.innerHTML = (cfg.sound ? SOUND_ON : SOUND_OFF) + '<span>Sound ' + want + '</span>'; }
+    s.setAttribute('aria-pressed', String(cfg.sound));
+    set('fullText', document.fullscreenElement ? 'Exit full screen' : 'Full screen');
+  }
+
+  /* Wire up */
+  function goPress() {
+    if (S.status === 'run' && onSet()) {
+      var st = steps[S.idx];
+      S.kcal += st.cal; S.active += st.sec * 1000;
+      last = Date.now();
+      move(1, true);
+    }
+    else if (S.status === 'run') pause();
+    else if (S.status === 'pause') resume();
+    else if (S.status === 'idle') start();
+    paint();
+  }
+  $('go').onclick = goPress;
+  function editToday(on) { $('tView').hidden = on; $('tForm').hidden = !on; }
+  $('todayEdit').onclick = function () {
+    $('todayInput').value = $('todayNum').textContent;
+    editToday(true);
+    $('todayInput').focus(); $('todayInput').select();
+  };
+  $('todayCancel').onclick = function () { editToday(false); $('todayEdit').focus(); };
+  $('tForm').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var v = Math.round(Number($('todayInput').value));
+    if (!isFinite(v) || v < 0 || v > 20000) { $('todayInput').focus(); return; }
+    var live = S.status === 'run' || S.status === 'pause' ? S.kcal : 0;
+    todayLog().kcal = Math.max(0, v - live);
+    editToday(false); save(); paint(); $('todayEdit').focus();
+  });
+  $('plus').onclick = function () {
+    tick();
+    var st = steps[S.idx];
+    if ((S.status === 'run' || S.status === 'pause') && st.kind === 'rest') { st.sec += 10; st.cal += cfg.kg / BASE_KG / 3; lastSecond = null; paint(); }
+  };
+  $('liftset').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-f]');
+    if (!b || !onSet()) return;
+    var v = liftVal(steps[S.idx].lift), d = Number(b.dataset.d);
+    if (b.dataset.f === 'reps') v.reps = Math.min(50, Math.max(1, v.reps + d));
+    else v.kg = Math.min(100, Math.max(0, v.kg + d));
+    paint(); save();
+  });
+
+  /* Workout and Recipes views */
+  function showView(v) {
+    var rec = v === 'recipes';
+    $('app').hidden = rec; $('v-recipes').hidden = !rec;
+    if (rec) { $('nav-recipes').setAttribute('aria-current', 'true'); $('nav-workout').removeAttribute('aria-current'); }
+    else { $('nav-workout').setAttribute('aria-current', 'true'); $('nav-recipes').removeAttribute('aria-current'); }
+    window.scrollTo(0, 0);
+  }
+  ['workout', 'recipes'].forEach(function (v) {
+    $('nav-' + v).onclick = function () { try { location.hash = v; } catch (e) {} showView(v); };
+  });
+  window.addEventListener('hashchange', function () { showView(location.hash.slice(1)); });
+  showView(location.hash.slice(1));
+
+  /* Menu */
+  function menuOpen() { return $('menu').classList.contains('open'); }
+  function setMenu(open) {
+    $('menu').classList.toggle('open', open);
+    $('menuBtn').setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+    if (open) $('menuClose').focus({ preventScroll: true });
+    else $('menuBtn').focus({ preventScroll: true });
+  }
+  $('menuBtn').onclick = function () { setMenu(true); };
+  $('menuClose').onclick = function () { setMenu(false); };
+  $('skip').onclick = function () { tick(); if (S.status === 'run' || S.status === 'pause') { move(1); paint(); } };
+  $('prev').onclick = function () {
+    tick();
+    if (S.status !== 'run' && S.status !== 'pause') return;
+    if (S.ms > 3000) { S.ms = 0; lastSecond = null; save(); } else move(-1);
+    paint();
+  };
+  $('reset').onclick = function () {
+    var b = $('reset');
+    if (!armed) {
+      b.textContent = 'Tap again'; b.classList.add('armed');
+      armed = setTimeout(function () { armed = null; b.textContent = 'Reset'; b.classList.remove('armed'); }, 4000);
+      return;
+    }
+    clearTimeout(armed); armed = null; b.textContent = 'Reset'; b.classList.remove('armed');
+    todayLog().kcal += S.kcal;
+    cfg.mode = 'cardio'; S = fresh(); build(); releaseWake(); save(); paint();
+  };
+  $('planBtn').onclick = function () { setMenu(false); openPlan(); };
+  $('closePlan').onclick = closePlan;
+  function nextSession(mode) { cfg.mode = mode; picking = false; build(); start(); paint(); }
+  DAYS.forEach(function (d, n) {
+    var b = document.createElement('button'), h = document.createElement('b'), s = document.createElement('span');
+    b.type = 'button'; h.textContent = DAY_NAMES[n];
+    s.textContent = d.map(function (x) { return x.name; }).join(', ');
+    b.append(h, s);
+    b.onclick = function () { cfg.day = n; nextSession('weights'); };
+    $('picks').append(b);
+  });
+  $('againCardio').onclick = function () { nextSession('cardio'); };
+  $('againWeights').onclick = function () { picking = true; paint(); };
+  $('pickBack').onclick = function () { picking = false; paint(); };
+  $('doneToday').onclick = function () { cfg.mode = 'cardio'; S = fresh(); build(); save(); paint(); };
+  $('kg').addEventListener('change', function () {
+    var v = Math.round(Number(this.value));
+    cfg.kg = v >= 35 && v <= 200 ? v : cfg.kg;
+    this.value = cfg.kg; changed();
+  });
+  $('soundBtn').onclick = function () {
+    cfg.sound = !cfg.sound;
+    if (cfg.sound) { openAudio(); beep(880, .12); } else { try { speechSynthesis.cancel(); } catch (e) {} }
+    paintTools(); save();
+  };
+  $('modeBtn').onclick = function () {
+    cfg.theme = isDark() ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', cfg.theme);
+    paintTools(); save();
+  };
+  if (document.fullscreenEnabled) {
+    $('fullBtn').hidden = false;
+    $('fullBtn').onclick = function () {
+      var p = document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+      if (p && p.catch) p.catch(function () {});
+    };
+    document.addEventListener('fullscreenchange', paintTools);
+  }
+  document.addEventListener('keydown', function (e) {
+    if (!$('over').hidden) { if (e.key === 'Escape') closePlan(); return; }
+    if (menuOpen()) { if (e.key === 'Escape') setMenu(false); return; }
+    if ($('app').hidden || document.querySelector('dialog[open]') || e.target.tagName === 'INPUT') return;
+    if (e.key === ' ') { e.preventDefault(); goPress(); }
+    else if (e.key === 'ArrowRight' && !$('skip').disabled) $('skip').click();
+    else if (e.key === 'ArrowLeft' && !$('prev').disabled) $('prev').click();
+  });
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) return;
+    tick();
+    if (S.status === 'run') holdWake();
+  });
+  if (window.matchMedia) { try { matchMedia('(prefers-color-scheme: dark)').addEventListener('change', paintTools); } catch (e) {} }
+
+  /* Boot: an unfinished session from today comes back paused */
+  var saved = load();
+  if (cfg.theme) document.documentElement.setAttribute('data-theme', cfg.theme);
+  build();
+  if (saved && saved.S && saved.len === steps.length && saved.day === new Date().toDateString() && (saved.S.status === 'run' || saved.S.status === 'pause') && saved.S.idx < steps.length) {
+    S = { status: 'pause', idx: saved.S.idx, ms: Number(saved.S.ms) || 0, kcal: Number(saved.S.kcal) || 0, active: Number(saved.S.active) || 0, started: Number(saved.S.started) || Date.now(), ended: 0 };
+  } else if (cfg.mode !== 'cardio') { cfg.mode = 'cardio'; build(); }
+  paintTools();
+  paint();
+  setInterval(function () { tick(); paintTotal(); }, 100);
+
+  /* Android app: the phone's back button closes what is open before leaving the app */
+  var nativeApp = nativePlugin('App');
+  if (nativeApp) nativeApp.addListener('backButton', function () {
+    var d = document.querySelector('dialog[open]');
+    if (d) d.close();
+    else if (!$('over').hidden) closePlan();
+    else if (menuOpen()) setMenu(false);
+    else if ($('app').hidden) showView('workout');
+    else nativeApp.exitApp();
+  });
+})();
+</script>
+<script>
+(function () {
+"use strict";
+const GUIDE = [
+  ["Vegetables", "Daily", ["Bhindi","Lauki","Beans","Carrot","Pumpkin","Cauliflower","Cabbage","Broccoli","Beetroot","Brinjal"]],
+  ["Leafy Greens", "3–5 times/week", ["Palak","Methi","Lal saag","Amaranth","Drumstick leaves"]],
+  ["Eggs", "Most days", ["Boiled eggs","Omelette","Egg bhurji"]],
+  ["Fish", "2–3 times/week", ["Rohu","Katla","Salmon","Sardines","Mackerel"]],
+  ["Meat", "1–3 times/week", ["Chicken","Lean meat"]],
+  ["Vegetarian Protein", "Regularly", ["Paneer","Tofu","Soy chunks","Chickpeas","Sprouts"]],
+  ["Dal & Pulses", "Daily", ["Moong dal","Masoor dal","Toor dal","Chana dal","Rajma","Kala chana"]],
+  ["Carbohydrates", "Daily", ["Rice","Roti","Oats","Dalia","Sweet potato","Millets"]],
+  ["Fruits", "2 servings/day", ["Guava","Papaya","Apple","Orange","Banana","Pomegranate","Amla","Watermelon"]],
+  ["Nuts", "Daily", ["Almonds","Walnuts","Peanuts","Pistachios"]],
+  ["Seeds", "Daily", ["Flaxseed","Chia","Pumpkin seeds","Sesame seeds"]],
+  ["Dairy", "Daily if tolerated", ["Curd","Milk","Plain yogurt","Paneer"]],
+  ["Healthy Fats", "Daily, moderate amounts", ["Mustard oil","Olive oil","Groundnut oil"]],
+  ["Fermented Foods", "Regularly", ["Curd","Idli","Dosa","Fermented vegetables"]],
+  ["Herbs & Spices", "Daily", ["Turmeric","Ginger","Garlic","Cumin","Coriander","Cinnamon"]],
+  ["Hydration", "Daily", ["Water","Unsweetened lemon water","Buttermilk"]]
+];
+
+/* Add new recipes to this list — they appear in order, numbered automatically. */
+const RECIPES = [
+  {
+    name: "Sukhi Masala Bhindi",
+    type: "veg",
+    meta: "Dry okra masala · serve with rotis",
+    ingredients: [
+      ["Bhindi (Okra)", "~250–300 g, washed and chopped into 1-inch pieces"],
+      ["Mustard Oil", "3–4 tbsp"],
+      ["Salt", "To taste (divided: ~½ tsp while frying bhindi + ½ tsp for gravy)"],
+      ["Turmeric Powder", "¾ tsp total (divided: ¼ tsp for bhindi + ½ tsp for spice mix)"],
+      ["Cumin Seeds (Jeera)", "1 tsp"],
+      ["Green Chillies", "2–3, finely chopped"],
+      ["Onions", "2 medium, chopped"],
+      ["Ginger-Garlic Paste", "1 tbsp"],
+      ["Tomatoes", "2 medium, grated"],
+      ["Coriander Powder", "1 tsp"],
+      ["Kashmiri Red Chilli Powder", "1 tsp"],
+      ["Garam Masala", "½ tsp"]
+    ],
+    steps: [
+      ["Prep & Fry Okra", "Cut {Bhindi} into 1-inch pieces. Heat {3–4 tbsp|Mustard oil} in a pan, add {~250–300 g|Bhindi}, {¼ tsp|Turmeric}, and {½ tsp|Salt}. Fry on medium heat until lightly golden and non-sticky, then remove from pan."],
+      ["Sauté Aromatics", "In the remaining oil, add {1 tsp|Cumin seeds}, chopped {2–3|Green chillies}, and {2 medium|Onions}. Sauté until the onions turn golden brown."],
+      ["Cook Masala", "Add {1 tbsp|Ginger-garlic paste} and grated {2 medium|Tomatoes}. Season with {½ tsp|Salt}, {1 tsp|Coriander powder}, {1 tsp|Kashmiri red chilli powder}, {½ tsp|Turmeric}, and {½ tsp|Garam masala}. Stir-fry for 5 minutes until oil separates from the masala."],
+      ["Combine & Finish", "Add the {Fried bhindi} into the cooked masala, mix gently to coat, cover, and cook on low heat for 5 minutes."]
+    ],
+    serve: "Serve hot with rotis."
+  },
+  {
+    name: "Instant Pot Homestyle Chicken Curry",
+    type: "nonveg",
+    meta: "Pressure-cooked · 6 min on High",
+    ingredients: [
+      ["Chicken", "1.5 lbs (700 g) pieces — bone-in or boneless thighs work best"],
+      ["Quick Marinade", "3 tbsp yogurt, ½ tsp turmeric, ½ tsp salt, 1 tsp ginger-garlic paste"],
+      ["Oil or Ghee", "2 tbsp"],
+      ["Onions", "2 medium, finely chopped"],
+      ["Whole Spices", "1 bay leaf, 2 green cardamoms, 1 small cinnamon stick, 3 cloves"],
+      ["Ginger-Garlic Paste", "1 tbsp"],
+      ["Tomatoes", "2 medium, finely chopped or puréed"],
+      ["Spice Mix", "1 tsp coriander powder, ½ tsp cumin powder, 1 tsp Kashmiri red chilli powder, 1.5 tsp chicken masala powder, salt to taste"],
+      ["Warm Water", "¾ cup"],
+      ["Finishers", "½ tsp Kasuri methi (crushed), ½ tsp garam masala, fresh coriander (chopped)"]
+    ],
+    steps: [
+      ["Marinate the Chicken", "Mix {700 g|Chicken} pieces with {3 tbsp|Yogurt}, {½ tsp|Turmeric}, {½ tsp|Salt}, and {1 tsp|Ginger-garlic paste}. Set aside for 10–15 minutes to tenderize."],
+      ["Sauté Whole Spices & Onions", "Press Sauté on your Instant Pot and heat {2 tbsp|Oil or ghee}. Add whole spices ({1|Bay leaf}, {2|Green cardamoms}, {1 small|Cinnamon stick}, {3|Cloves}) and chopped {2 medium|Onions}. Sauté for 6–8 minutes until golden brown."],
+      ["Add Ginger-Garlic, Tomatoes & Ground Spices", "Stir in {1 tbsp|Ginger-garlic paste} for 1 minute. Add {2 medium|Tomatoes}, {1 tsp|Coriander powder}, {½ tsp|Cumin powder}, {1 tsp|Kashmiri chilli powder}, and {1.5 tsp|Chicken masala}. Sauté for 3–4 minutes until tomatoes break down."],
+      ["Sear Chicken & Deglaze", "Add the {Marinated chicken} and stir-fry for 3–4 minutes. Pour in {¾ cup|Warm water}. Scrape the bottom of the pot thoroughly with a wooden spoon to prevent a burn warning."],
+      ["Pressure Cook", "Cancel Sauté mode. Lock the lid, set valve to Sealing, and press Pressure Cook / Manual on High for 6 minutes."],
+      ["Natural Release & Finish", "Let the pot release pressure naturally for 10 minutes, then quick release remaining steam. Uncover, stir in crushed {½ tsp|Kasuri methi}, {½ tsp|Garam masala}, and {Fresh coriander}. Press Sauté for 1–2 minutes if a thicker gravy is preferred."]
+    ]
+  },
+  {
+    name: "One Pot Masoor Dal",
+    type: "veg",
+    meta: "Pressure cooker · serve with rice or roti",
+    ingredients: [
+      ["Tadka", "Ghee, mustard seeds (rai), cumin seeds (jeera), asafoetida (hing), green chillies, curry leaves, garlic (minced)"],
+      ["Onions", "Chopped"],
+      ["Tomatoes", "Chopped"],
+      ["Spices", "Salt, turmeric powder, red chilli powder"],
+      ["Masoor Dal", "Washed and soaked"],
+      ["Water", "As required"],
+      ["Garnish", "Fresh coriander leaves, kasuri methi"]
+    ],
+    steps: [
+      ["Prepare Tadka", "Heat {Ghee} in a pressure cooker and splutter {Mustard seeds}, {Cumin seeds}, {Asafoetida}, {Green chillies}, {Curry leaves}, and minced {Garlic}."],
+      ["Sauté Onions & Tomatoes", "Add {Onions} and cook until golden brown. Add chopped {Tomatoes} along with {4 tsp|Salt}, {Turmeric}, and {Red chilli powder}. Cook until the tomatoes turn soft."],
+      ["Cook Dal", "Add the {Masoor dal} along with {As required|Water}. Pressure cook for a couple of whistles until well cooked."],
+      ["Garnish & Serve", "Mix in fresh {Coriander leaves} and {Kasuri methi}."]
+    ],
+    serve: "Serve hot with rice or roti."
+  },
+  {
+    name: "Quick Paneer Ki Sabzi",
+    type: "veg",
+    meta: "One pan · serve with rotis or rice",
+    ingredients: [
+      ["Onions & Green Chillies", "Chopped"],
+      ["Tomatoes & Green Bell Peppers", "Diced"],
+      ["Spices", "Salt, turmeric, red chilli powder, coriander powder, cumin powder, garam masala"],
+      ["Fresh Cream", "Plus a splash of water"],
+      ["Paneer", "Cubed"]
+    ],
+    steps: [
+      ["Sauté Aromatics", "Sauté {Onions} and {Green chillies} in a pan."],
+      ["Add Vegetables", "Add {Tomatoes} and {Green bell peppers}; cook for 2 minutes."],
+      ["Season", "Season with {3 tsp|Salt}, {Turmeric}, {Red chilli powder}, {Coriander powder}, {Cumin powder}, and {Garam masala}."],
+      ["Add Cream & Paneer", "Add {Fresh cream}, {A splash|Water}, and {Paneer cubes}."]
+    ],
+    serve: "Serve hot with rotis or rice."
+  },
+  {
+    name: "Bengali Chicken Curry (Murgir Jhol)",
+    type: "nonveg",
+    meta: "Kadhai on induction · 450 g chicken · serve with steamed rice",
+    ingredients: [
+      ["Chicken", "450 g bone-in curry cut, washed and drained"],
+      ["Marinade", "3 tbsp curd, ½ tsp turmeric, 1 tsp Kashmiri red chilli powder, ½ tsp salt, 1 tsp ginger paste, 1 tsp garlic paste"],
+      ["Mustard Oil", "3 tbsp"],
+      ["Potatoes", "2 medium, peeled and halved"],
+      ["Sugar", "½ tsp (for the colour)"],
+      ["Whole Spices", "1 bay leaf, 1-inch cinnamon, 3 green cardamoms, 3 cloves"],
+      ["Onions", "2 medium, thinly sliced"],
+      ["Tomato", "1 medium, chopped"],
+      ["Ground Spices", "1 tsp cumin powder, 1 tsp coriander powder"],
+      ["Green Chillies", "2, slit"],
+      ["Salt", "½ tsp more, to taste (plus a pinch for the potatoes)"],
+      ["Hot Water", "1¼ cups"],
+      ["Finishers", "½ tsp garam masala, 1 tsp ghee"]
+    ],
+    steps: [
+      ["Marinate the Chicken", "Mix {450 g|Chicken} with {3 tbsp|Curd}, {½ tsp|Turmeric}, {1 tsp|Kashmiri chilli powder}, {½ tsp|Salt}, {1 tsp|Ginger paste} and {1 tsp|Garlic paste}. Rest for 30 minutes (15 minutes at the very least)."],
+      ["Fry the Potatoes", "Put the kadhai on the induction on high. Heat {3 tbsp|Mustard oil} until it just starts to smoke, then drop to medium. Add {2 medium|Potatoes} with a {pinch|Turmeric} and a {pinch|Salt} and fry for 4–5 minutes until golden on the outside. Lift them out and keep aside."],
+      ["Bengali Tempering", "Lower the induction to medium-low. Add {½ tsp|Sugar} to the same oil and let it melt and turn light brown, about 30 seconds. Straight away add {1|Bay leaf}, {1-inch|Cinnamon}, {3|Green cardamoms} and {3|Cloves} and stir until they smell fragrant."],
+      ["Brown the Onions", "Add {2 medium|Onions} and cook on medium for 8–10 minutes, stirring often, until deep golden brown. Induction heats fast, so keep stirring so they don't catch."],
+      ["Cook the Masala", "Add {1 medium|Tomato}, {1 tsp|Cumin powder} and {1 tsp|Coriander powder}. Cook for 3–4 minutes until the tomato breaks down. Splash in a little water if the masala sticks to the kadhai."],
+      ["Kosha (Bhuna) the Chicken", "Add the {Marinated chicken} with all its marinade. Cook on high for 2 minutes, then on medium for 10–12 minutes, stirring and scraping, until the chicken is browned and oil separates at the edges."],
+      ["Simmer the Jhol", "Return the fried {Potatoes} to the kadhai. Add {2|Green chillies}, {½ tsp|Salt} and {1¼ cups|Hot water}. Bring to a boil on high, then cover and simmer on low-medium for 15–18 minutes until the chicken and potatoes are tender. Taste and adjust salt."],
+      ["Finish & Rest", "Switch off the induction. Stir in {½ tsp|Garam masala} and {1 tsp|Ghee}, cover and let it rest for 5 minutes so the flavours settle."]
+    ],
+    serve: "Serve hot with steamed rice."
+  },
+  {
+    name: "Easy Chicken Korma (Shan Masala)",
+    type: "nonveg",
+    meta: "Kadhai on induction · 500 g chicken · Shan Korma Masala",
+    ingredients: [
+      ["Chicken", "500 g bone-in curry cut, washed and drained"],
+      ["Oil or Ghee", "5 tbsp (or a mix of both)"],
+      ["Onions", "2 medium, thinly sliced"],
+      ["Ginger-Garlic Paste", "1 tbsp"],
+      ["Shan Korma Masala", "About ½ packet (2–2½ tbsp)"],
+      ["Curd", "¾ cup, whisked smooth"],
+      ["Water", "½ cup"],
+      ["Salt", "None extra with ½ packet of masala (it already salts 500 g). Using only 1½ tbsp masala? Add ¼ tsp. Still flat at the end? Add ¼ tsp more."],
+      ["Finishers", "Fresh coriander (optional), 2 green chillies (optional)"]
+    ],
+    steps: [
+      ["Brown the Onions", "Put the kadhai on the induction on medium-high and heat {5 tbsp|Oil or ghee}. Add {2 medium|Onions} and fry for 8–10 minutes until deep golden brown. Lift them out, leaving the oil behind, and crush them by hand or blend with a spoon of {Curd} into a paste."],
+      ["Seal the Chicken", "Keep the induction on medium-high. Add {500 g|Chicken} and {1 tbsp|Ginger-garlic paste} to the same oil and stir-fry for 5 minutes until the chicken turns white on all sides."],
+      ["Add the Masala", "Lower to medium. Add {½ packet|Shan Korma Masala} and stir for 1 minute so the spices coat the chicken without burning."],
+      ["Add Curd & Onions", "Turn the induction to low and stir in {¾ cup|Curd} a little at a time so it doesn't split. Add the {Crushed onions} and mix well, then cook on medium for 5 minutes, stirring."],
+      ["Simmer Covered", "Pour in {½ cup|Water}. Bring to a boil, cover, and simmer on low-medium for 20 minutes until the chicken is tender, stirring once or twice."],
+      ["Finish", "Uncover and cook on medium for 3–5 minutes until oil floats on top and the gravy is as thick as you like. Taste now: with ½ packet of masala you shouldn't need any salt. If it tastes flat, add {¼ tsp|Salt}, stir and taste again. Add {2|Green chillies} and {Fresh coriander} if you like."]
+    ],
+    serve: "Serve hot with naan, roti or jeera rice."
+  },
+  {
+    name: "Quick Veg Pulao",
+    type: "veg",
+    meta: "Rice cooker · white-rice setting",
+    ingredients: [
+      ["Rice", "1 cup, washed and drained"],
+      ["Mixed Vegetables", "About 1 cup, washed (peas, carrot, beans, etc.)"],
+      ["Ghee", "1 tbsp"],
+      ["Salt", "½ level tsp"],
+      ["Jeera (Cumin Seeds)", "½ tsp"],
+      ["Ginger-Garlic Paste", "½ tsp"],
+      ["Garam Masala", "½ tsp"],
+      ["Turmeric", "¼ tsp"],
+      ["Bay Leaf", "1"],
+      ["Green Chilli", "1 (optional)"],
+      ["Water", "1¾ cups (use your cooker's recommended amount if different)"]
+    ],
+    steps: [
+      ["Wash the Rice", "Wash {1 cup|Rice} 2–3 times and drain."],
+      ["Load the Cooker", "Add the rice and {1 cup|Mixed vegetables} to the rice cooker."],
+      ["Add Spices", "Mix in {½ tsp|Jeera}, {½ tsp|Ginger-garlic paste}, {½ tsp|Garam masala}, {¼ tsp|Turmeric}, {1|Bay leaf}, {1|Green chilli} (optional), {1 tbsp|Ghee} and {½ level tsp|Salt}."],
+      ["Add Water", "Pour in {1¾ cups|Water} and stir. Use the water quantity recommended by your cooker if different."],
+      ["Cook", "Cook using the normal white-rice setting until done."],
+      ["Rest & Fluff", "Rest for 5 minutes, then fluff gently with a fork."]
+    ],
+    serve: "Serve hot."
+  },
+  {
+    name: "Two-Way Boneless Chicken (Kadhai Masala + Pepper Garlic)",
+    parts: ["Kadhai Masala", "Pepper Garlic"],
+    type: "nonveg",
+    meta: "One sear, two dishes · kadhai on induction · 600 g chicken · about 45 min",
+    ingredients: [
+      ["Boneless Chicken", "600 g thighs, cut into 1½-inch pieces and patted very dry"],
+      ["Sear Rub", "1 tsp salt, ½ tsp turmeric, ½ tsp black pepper, 1 tsp ginger-garlic paste"],
+      ["Mustard Oil", "2 tbsp, for searing"],
+      ["Kadhai Masala: Base", "1 tbsp oil, ½ tsp cumin seeds, 1 medium onion (finely chopped), 1 tsp ginger-garlic paste, 1 medium tomato (puréed)"],
+      ["Kadhai Masala: Spices", "1 tsp coriander powder, ½ tsp Kashmiri red chilli powder, ¼ tsp turmeric, ½ tsp salt"],
+      ["Kadhai Masala: Finish", "½ cup hot water, ½ tsp garam masala, ½ tsp kasuri methi (crushed), fresh coriander"],
+      ["Pepper Garlic: Base", "1 tbsp butter, 6 garlic cloves (thinly sliced), 1 green chilli (slit), 1 tsp coarsely crushed black pepper"],
+      ["Pepper Garlic: Finish", "¼ cup water, ¼ tsp salt, ¼ cup fresh cream, juice of ½ lemon, fresh coriander"]
+    ],
+    steps: [
+      ["Rub the Chicken", "Pat {600 g|Boneless chicken} very dry so it browns well. Toss with {1 tsp|Salt}, {½ tsp|Turmeric}, {½ tsp|Black pepper} and {1 tsp|Ginger-garlic paste}. Rest for 10 minutes."],
+      ["Sear in Two Batches", "Heat {2 tbsp|Mustard oil} in the kadhai on high until it just starts to smoke, then drop to medium-high. Add half the chicken in one layer. Leave it alone for 2 minutes, then turn and sear for 2 minutes more until golden. Lift out and repeat with the rest. The inside can still be slightly pink, as it finishes cooking in the next steps."],
+      ["Divide the Chicken", "Split the seared chicken and its juices into two bowls, about {300 g|each}. Finish both dishes in this same cooking session. Don't store half-cooked chicken to finish later."],
+      ["Kadhai Masala: Build the Base", "In the same kadhai on medium, heat {1 tbsp|Oil}. Add {½ tsp|Cumin seeds}, then {1 medium|Onion}, and cook for 7–8 minutes until golden, scraping up the browned bits. Stir in {1 tsp|Ginger-garlic paste} for 1 minute. Add {1 medium|Tomato}, {1 tsp|Coriander powder}, {½ tsp|Kashmiri chilli powder}, {¼ tsp|Turmeric} and {½ tsp|Salt}. Cook for 4–5 minutes until oil separates."],
+      ["Kadhai Masala: Finish", "Add the first bowl of chicken and {½ cup|Hot water}. Cover and simmer on low-medium for 6–7 minutes until the chicken has no pink left and the juices run clear (74°C if you have a thermometer). Stir in {½ tsp|Garam masala}, {½ tsp|Kasuri methi} and {Fresh coriander}. Move to a serving bowl and cover. Wipe the kadhai clean."],
+      ["Pepper Garlic: Bloom the Aromatics", "Put the kadhai back on medium-low. Melt {1 tbsp|Butter}, add {6 cloves|Garlic} and {1|Green chilli}, and stir for 1 minute without browning. Add {1 tsp|Crushed black pepper} and stir for 20 seconds."],
+      ["Pepper Garlic: Finish", "Add the second bowl of chicken, {¼ cup|Water} and {¼ tsp|Salt}. Cover and cook on low-medium for 5 minutes until the chicken has no pink left and the juices run clear (74°C). Lower the heat, stir in {¼ cup|Fresh cream} and warm for 1 minute without boiling. Switch off, then stir in {½|Lemon juice} and {Fresh coriander}."]
+    ],
+    serve: "Serve the Kadhai Masala with rotis, and the Pepper Garlic with rice or toast."
+  },
+  {
+    name: "Two-Way Tikka Masala + Kali Mirch Chicken",
+    parts: ["Tikka Masala", "Kali Mirch"],
+    type: "nonveg",
+    meta: "One sear, two dishes · kadhai on induction · 600 g chicken · about 1 hour",
+    ingredients: [
+      ["Boneless Chicken", "600 g thighs, cut into 1½-inch pieces and patted dry"],
+      ["Marinade", "2 tbsp thick curd, 1 tsp ginger-garlic paste, 1 tsp salt, ½ tsp turmeric, 1 tsp lemon juice"],
+      ["Oil", "2 tbsp, for searing"],
+      ["Tikka Masala: Base", "1 tbsp butter, 1 medium onion (finely chopped), 1 tsp ginger-garlic paste, 2 medium tomatoes (puréed)"],
+      ["Tikka Masala: Spices", "1 tsp Kashmiri red chilli powder, 1 tsp coriander powder, ½ tsp roasted cumin powder, ½ tsp salt"],
+      ["Tikka Masala: Finish", "½ cup hot water, 2 tbsp fresh cream, ½ tsp garam masala, ½ tsp kasuri methi (crushed)"],
+      ["Kali Mirch: Base", "1 tbsp ghee, 1 small onion (thinly sliced), 4 garlic cloves (finely chopped), 1 green chilli (slit)"],
+      ["Kali Mirch: Spices", "1½ tsp coarsely crushed black pepper, ½ tsp roasted cumin powder, ¼ tsp salt"],
+      ["Kali Mirch: Finish", "3 tbsp curd (whisked smooth), ¼ cup water, 1 tsp lemon juice, fresh coriander"]
+    ],
+    steps: [
+      ["Marinate the Chicken", "Mix {600 g|Boneless chicken} with {2 tbsp|Thick curd}, {1 tsp|Ginger-garlic paste}, {1 tsp|Salt}, {½ tsp|Turmeric} and {1 tsp|Lemon juice}. Rest for 20 minutes."],
+      ["Sear in Two Batches", "Heat {2 tbsp|Oil} in the kadhai on high, then drop to medium-high. Shake off extra marinade and add half the chicken in one layer. Leave it alone for 2 minutes, then turn and sear for 2 minutes more until golden with a few dark spots. Lift out and repeat with the rest. The inside can still be slightly pink, as it finishes cooking in the next steps."],
+      ["Divide the Chicken", "Split the seared chicken and its juices into two bowls, about {300 g|each}. Finish both dishes in this same cooking session. Don't store half-cooked chicken to finish later."],
+      ["Tikka Masala: Build the Gravy", "In the same kadhai on medium, melt {1 tbsp|Butter}. Add {1 medium|Onion} and cook for 7–8 minutes until golden, scraping up the browned bits. Stir in {1 tsp|Ginger-garlic paste} for 1 minute. Add {1 tsp|Kashmiri chilli powder}, {1 tsp|Coriander powder} and {½ tsp|Roasted cumin powder} and stir for 20 seconds. Add {2 medium|Tomatoes} and {½ tsp|Salt}, then cook for 6–8 minutes until oil separates."],
+      ["Tikka Masala: Finish", "Add the first bowl of chicken and {½ cup|Hot water}. Cover and simmer on low-medium for 6–7 minutes until the chicken has no pink left and the juices run clear (74°C if you have a thermometer). Lower the heat and stir in {2 tbsp|Fresh cream}, {½ tsp|Garam masala} and {½ tsp|Kasuri methi}. Move to a serving bowl and cover. Wipe the kadhai clean."],
+      ["Kali Mirch: Fry the Aromatics", "Put the kadhai back on medium. Heat {1 tbsp|Ghee} and cook {1 small|Onion} for 4–5 minutes until light golden. Add {4 cloves|Garlic} and {1|Green chilli} and stir for 1 minute. Add {1½ tsp|Black pepper}, {½ tsp|Roasted cumin powder} and {¼ tsp|Salt} and stir for 20 seconds."],
+      ["Kali Mirch: Add Curd & Chicken", "Turn the induction to low and stir in {3 tbsp|Curd} a little at a time so it doesn't split. Add the second bowl of chicken and {¼ cup|Water}. Cover and cook on low-medium for 5 minutes."],
+      ["Kali Mirch: Dry It Down", "Uncover and cook on medium for 2–3 minutes, stirring, until the masala clings to the chicken, no pink is left and the juices run clear (74°C). Stir in {1 tsp|Lemon juice} and {Fresh coriander}."]
+    ],
+    serve: "Serve the Tikka Masala with naan, and the Kali Mirch hot as a starter or with roti."
+  }
+];
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, "0");
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+let CAT = "veg";
+const serial = i => RECIPES.slice(0, i + 1).filter(x => x.type === RECIPES[i].type).length;
+function setCat(c) {
+  CAT = c;
+  ["veg", "nonveg"].forEach(t => $("cat-" + t).setAttribute("aria-selected", t === c));
+  renderIndex($("search").value);
+}
+["veg", "nonveg"].forEach(t => {
+  $("n-" + t).textContent = RECIPES.filter(r => r.type === t).length;
+  $("cat-" + t).addEventListener("click", () => setCat(t));
+});
+function renderIndex(q = "") {
+  const term = q.trim().toLowerCase();
+  const rows = RECIPES.map((r, i) => ({r, i})).filter(({r}) => r.type === CAT).filter(({r}) =>
+    !term || r.name.toLowerCase().includes(term) ||
+    r.ingredients.some(([n]) => n.toLowerCase().includes(term)));
+  $("index").innerHTML = rows.length ? rows.map(({r, i}) => `
+    <li><button class="entry" data-i="${i}">
+      <span class="num">${pad(serial(i))}</span>
+      <span class="rname">${esc(r.name)}<span class="meta">${esc(r.meta || r.ingredients.length + " ingredients")}</span></span>
+      <span class="arrow" aria-hidden="true">→</span>
+    </button></li>`).join("")
+    : `<li class="empty">${term ? `No ${CAT === "veg" ? "veg" : "non-veg"} recipe matches “${esc(q)}”.` : "No recipes here yet."}</li>`;
+}
+
+function openRecipe(i) {
+  const r = RECIPES[i];
+  $("m-num").textContent = (r.type === "veg" ? "Veg " : "Non-Veg ") + "recipe " + pad(serial(i));
+  $("m-title").textContent = r.name;
+  CUR = i; TICKS = new Set();
+  showTab("ing");
+  const m = $("modal");
+  m.showModal();
+  m.querySelector(".card-head").parentElement.parentElement.scrollTop = 0;
+}
+
+/* Two-way recipes: all ingredients share one tab. Steps prefixed "Dish name: " live on that dish's tab; the rest are the searing method. */
+let CUR = 0, PART = "", TICKS = new Set();
+function drawRecipe() {
+  const i = CUR, r = RECIPES[i], parts = r.parts || [];
+  const partOf = t => parts.find(p => t.startsWith(p + ": ")) || "";
+  const shown = t => PART ? t.slice(PART.length + 2) : t;
+  const on = id => TICKS.has(id) ? " checked" : "";
+  $("m-tabs").classList.toggle("four", !!parts.length);
+  $("l-steps").textContent = parts.length ? "Searing" : "Method";
+  ["p1", "p2"].forEach((t, n) => { $("tab-" + t).hidden = !parts[n]; $("tab-" + t).textContent = parts[n] || ""; });
+  const ing = r.ingredients.map((x, k) => [x, k]);
+  const stp = r.steps.map((x, k) => [x, k]).filter(([x]) => partOf(x[0]) === PART);
+  $("m-ing").innerHTML = ing.map(([[n, q], k]) => `
+    <li><label for="ing-${i}-${k}"><input type="checkbox" id="ing-${i}-${k}"${on(`ing-${i}-${k}`)}>
+      <span><span class="ing-name">${esc(n)}</span> — <span class="ing-qty">${esc(q)}</span></span></label></li>`).join("");
+  const badge = s => { const [a, n] = s.includes("|") ? s.split("|") : ["", s];
+    return `<span class="badge">${a ? `<b>${esc(a)}</b>` : ""}${esc(n)}</span>`; };
+  const rich = d => esc(d).replace(/\{([^}]+)\}/g, (_, x) => badge(x.replace(/&amp;/g, "&")));
+  $("m-steps").innerHTML = stp.map(([[t, d], k], n) => `
+    <li><label for="step-${i}-${k}"><div><span class="step-title">${esc(shown(t))}</span><p class="step-text">${rich(d)}</p>
+      </div>
+      <input type="checkbox" id="step-${i}-${k}"${on(`step-${i}-${k}`)} aria-label="Mark step ${n + 1} done"></label></li>`).join("");
+  const serve = parts.length && !PART ? `Next: cook the ${parts[0]}, then the ${parts[1]}.` : r.serve;
+  $("m-serve").hidden = !serve;
+  $("m-serve").textContent = serve || "";
+  $("c-ing").textContent = ing.length;
+  $("c-steps").textContent = stp.length;
+}
+["m-ing", "m-steps"].forEach(id => $(id).addEventListener("change", e => {
+  if (e.target.checked) TICKS.add(e.target.id); else TICKS.delete(e.target.id);
+}));
+
+function showTab(which) {
+  const parts = RECIPES[CUR].parts || [];
+  PART = which === "p1" ? parts[0] : which === "p2" ? parts[1] : "";
+  drawRecipe();
+  ["ing", "steps", "p1", "p2"].forEach(t => $("tab-" + t).setAttribute("aria-selected", t === which));
+  $("panel-ing").hidden = which !== "ing";
+  $("panel-steps").hidden = which === "ing";
+  const sc = $("modal"); if (sc) sc.scrollTop = 0;
+}
+$("tab-ing").addEventListener("click", () => showTab("ing"));
+$("tab-steps").addEventListener("click", () => showTab("steps"));
+$("tab-p1").addEventListener("click", () => showTab("p1"));
+$("tab-p2").addEventListener("click", () => showTab("p2"));
+
+$("index").addEventListener("click", e => {
+  const b = e.target.closest(".entry");
+  if (b) openRecipe(+b.dataset.i);
+});
+$("m-close").addEventListener("click", () => $("modal").close());
+$("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
+$("search").addEventListener("input", e => renderIndex(e.target.value));
+
+$("g-list").innerHTML = GUIDE.map(([c, a, f]) => `
+  <li class="g-item"><div class="g-top"><span class="g-cat">${esc(c)}</span><span class="g-amt">${esc(a)}</span></div>
+  <ul class="g-foods">${f.map(x => `<li>${esc(x)}</li>`).join("")}</ul></li>`).join("");
+$("guide-open").addEventListener("click", () => $("guide").showModal());
+
+/* Plate: a common balanced-plate split. Tap a part to list matching food groups from GUIDE. */
+const PLATE = [
+  { key: "veg", name: "Vegetables", pct: 35, color: "#6f9a5f", text: "#fff", tip: "Make this the biggest part: cooked sabzi, salad or both.", groups: ["Vegetables"] },
+  { key: "greens", name: "Leafy Greens", pct: 15, color: "#2f5a34", text: "#fff", tip: "Add a bowl of saag or greens in your sabzi, 3–5 times a week.", groups: ["Leafy Greens"] },
+  { key: "protein", name: "Protein", pct: 25, color: "#b9824e", text: "#fff", tip: "Pick one or two: a katori of dal, eggs, fish, chicken or paneer.", groups: ["Dal & Pulses", "Vegetarian Protein", "Eggs", "Fish", "Meat"] },
+  { key: "carbs", name: "Carbohydrates", pct: 25, color: "#e6cf8f", text: "#3a2e12", tip: "About a quarter: 1–2 rotis or a small serving of rice or millets.", groups: ["Carbohydrates"] }
+];
+const SIDES = { key: "sides", name: "On the side", tip: "Not on the plate, but part of the day: fruit, curd, nuts, seeds and water.", groups: ["Fruits", "Dairy", "Fermented Foods", "Nuts", "Seeds", "Healthy Fats", "Herbs & Spices", "Hydration"] };
+const groupCard = ([c, a, f]) => `
+  <li class="g-item"><div class="g-top"><span class="g-cat">${esc(c)}</span><span class="g-amt">${esc(a)}</span></div>
+  <ul class="g-foods">${f.map(x => `<li>${esc(x)}</li>`).join("")}</ul></li>`;
+let plateSel = "veg";
+function drawPlate() {
+  const R = 112; let a0 = -Math.PI / 2; const parts = [];
+  PLATE.forEach(p => {
+    const a1 = a0 + p.pct / 100 * Math.PI * 2, mid = (a0 + a1) / 2, sel = p.key === plateSel;
+    const x0 = R * Math.cos(a0), y0 = R * Math.sin(a0), x1 = R * Math.cos(a1), y1 = R * Math.sin(a1);
+    const d = `M0 0 L${x0.toFixed(2)} ${y0.toFixed(2)} A${R} ${R} 0 ${a1 - a0 > Math.PI ? 1 : 0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)} Z`;
+    const off = sel ? 9 : 0, tx = Math.cos(mid) * off, ty = Math.sin(mid) * off;
+    const lx = Math.cos(mid) * 66, ly = Math.sin(mid) * 66;
+    parts.push(`<g class="pseg" data-k="${p.key}" tabindex="0" role="button" aria-pressed="${sel}" aria-label="${p.name}, ${p.pct}% of the plate" style="transform:translate(${tx.toFixed(1)}px,${ty.toFixed(1)}px)">
+      <path d="${d}" fill="${p.color}" stroke="rgba(255,255,255,.85)" stroke-width="2" opacity="${plateSel === "sides" || sel ? 1 : .72}"></path>
+      <text x="${lx.toFixed(1)}" y="${(ly - 4).toFixed(1)}" text-anchor="middle" fill="${p.text}" font-size="17">${p.pct}%</text>
+      <text x="${lx.toFixed(1)}" y="${(ly + 12).toFixed(1)}" text-anchor="middle" fill="${p.text}" font-size="10" font-weight="600">${p.name === "Carbohydrates" ? "Carbs" : p.name}</text>
+    </g>`);
+    a0 = a1;
+  });
+  $("plate").innerHTML = `<circle r="124" fill="rgba(255,255,255,.55)" stroke="rgba(255,255,255,.9)" stroke-width="1.5"></circle>` + parts.join("");
+  $("plate-legend").innerHTML = PLATE.map(p => `<button class="lg" data-k="${p.key}" aria-pressed="${p.key === plateSel}"><i style="background:${p.color}"></i>${p.name}<b>${p.pct}%</b></button>`).join("") +
+    `<button class="lg side" data-k="sides" aria-pressed="${plateSel === "sides"}"><i></i>On the side<b>+</b></button>`;
+  const s = PLATE.find(p => p.key === plateSel) || SIDES;
+  $("plate-detail").innerHTML = `<div class="pd-head"><span class="pd-title">${s.name}</span>${s.pct ? `<span class="g-amt">${s.pct}% of plate</span>` : ""}</div>
+    <p class="pd-tip">${s.tip}</p>
+    <ul class="g-list">${s.groups.map(g => GUIDE.find(x => x[0] === g)).filter(Boolean).map(groupCard).join("")}</ul>`;
+}
+const pickPlate = e => { const t = e.target.closest("[data-k]"); if (!t) return; plateSel = t.dataset.k; drawPlate(); };
+$("plate").addEventListener("click", pickPlate);
+$("plate").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); pickPlate(e); $("plate").querySelector(`[data-k="${plateSel}"]`)?.focus(); } });
+$("plate-legend").addEventListener("click", pickPlate);
+drawPlate();
+$("g-close").addEventListener("click", () => $("guide").close());
+$("guide").addEventListener("click", e => { if (e.target === $("guide")) $("guide").close(); });
+
+renderIndex();
+})();
+</script>
+
+</body>
+</html>
