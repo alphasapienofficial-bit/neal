@@ -1,6 +1,6 @@
 # Neal App
 
-Habits, a workout timer, recipes and a daily food guide, packaged for Android with Capacitor.
+Habits, to do, a workout timer, recipes and a daily food guide, packaged for Android with Capacitor.
 
 - The app is one page: `www/index.html`.
 - Each push to `main` builds an APK with GitHub Actions. Download `Neal-App.apk` from the repo's **latest** release.

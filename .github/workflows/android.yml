@@ -26,6 +26,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Create the Android project
         run: npx cap add android
+      - name: Add the transparent system bars code
+        run: cp native/*.java android/app/src/main/java/com/neal/app/
       - name: Allow habit notifications
         run: sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
       - name: Generate the app icon and splash screen
