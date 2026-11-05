@@ -26,6 +26,8 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Create the Android project
         run: npx cap add android
+      - name: Allow habit notifications
+        run: sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
       - name: Generate the app icon and splash screen
         run: npx capacitor-assets generate --android --iconBackgroundColor '#FF8A73' --iconBackgroundColorDark '#FF8A73' --splashBackgroundColor '#FFFFFF' --splashBackgroundColorDark '#08090B'
       - name: Copy the web app into Android
