@@ -207,7 +207,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .recipes, dialog { --ink: var(--fg); --surface: var(--menu); --haldi: var(--dot); --mirch: var(--leaf); --leaf-soft: var(--track); --btn: var(--cta); --btn-fg: var(--on-cta); --shadow: 0 20px 60px rgba(0,0,0,.28); }
 .recipes { width: 100%; max-width: 640px; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; padding-block: 20px 56px;
   padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-.rhead { display: flex; flex-direction: column; gap: 8px; }
+.rhead { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 12px; align-items: start; }
+.rhead > :not(.guide-btn) { grid-column: 1; }
+.rhead .guide-btn { grid-column: 2; grid-row: 1 / span 3; align-self: start; margin-top: 0; padding: 9px 13px; font-size: 13px; gap: 7px; white-space: nowrap; }
 .eyebrow{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--leaf);font-weight:600}
 .sub{color:var(--muted);margin:0}
 .search{width:100%;font:inherit;padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--glass);backdrop-filter:blur(6px);color:var(--ink)}
@@ -1339,6 +1341,32 @@ const RECIPES = [
       ["Finish", "Stir in {½ tsp|Garam masala}, {½ tsp|Kasuri methi} and {Fresh coriander}. Taste, adjust the salt, and rest for 5 minutes."]
     ],
     serve: "Serve hot with rice or roti."
+  },
+  {
+    name: "Easy Soya Bean Kadhai",
+    type: "veg",
+    meta: "One kadhai · soya chunks · about 20 min · serves 2",
+    ingredients: [
+      ["Soya Chunks", "1 cup (about 60 g)"],
+      ["Water", "3 cups for boiling, plus ¼ cup for the masala"],
+      ["Salt", "1 tsp total (½ tsp for boiling + ½ tsp for the masala)"],
+      ["Oil", "2 tbsp"],
+      ["Cumin Seeds (Jeera)", "1 tsp"],
+      ["Onion", "1 large, chopped"],
+      ["Green Chilli", "1, chopped"],
+      ["Ginger-Garlic Paste", "1 tsp"],
+      ["Tomato", "1 large, chopped"],
+      ["Ground Spices", "½ tsp turmeric, 1 tsp Kashmiri red chilli powder, 1 tsp coriander powder"],
+      ["Finishers", "½ tsp garam masala, fresh coriander"]
+    ],
+    steps: [
+      ["Boil the Chunks", "Boil {3 cups|Water} with {½ tsp|Salt} in the kadhai. Add {1 cup|Soya chunks}, boil for 5 minutes, then switch off and leave for 5 minutes. Drain, rinse in cold water and squeeze out the extra water. Wipe the kadhai dry."],
+      ["Fry the Onion", "Put the kadhai on medium and heat {2 tbsp|Oil}. Add {1 tsp|Cumin seeds}, {1 large|Onion} and {1|Green chilli}. Cook for 5 minutes until light golden. Stir in {1 tsp|Ginger-garlic paste} for 30 seconds."],
+      ["Cook the Masala", "Add {1 large|Tomato}, {½ tsp|Turmeric}, {1 tsp|Kashmiri chilli powder}, {1 tsp|Coriander powder} and {½ tsp|Salt}. Cook for 4–5 minutes until the tomato turns soft."],
+      ["Add the Chunks", "Add the squeezed chunks and stir for 2 minutes so they soak up the masala. Pour in {¼ cup|Water}, cover, and cook on low for 4–5 minutes."],
+      ["Finish", "Stir in {½ tsp|Garam masala} and {Fresh coriander}. Taste and adjust the salt."]
+    ],
+    serve: "Serve hot with roti or rice."
   }
 ];
 
