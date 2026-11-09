@@ -30,8 +30,12 @@ jobs:
         run: cp native/*.java android/app/src/main/java/com/neal/app/
       - name: Allow habit notifications
         run: sed -i 's#</manifest>#    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
-      - name: Generate the app icon and splash screen
-        run: npx capacitor-assets generate --android --iconBackgroundColor '#FF8A73' --iconBackgroundColorDark '#FF8A73' --splashBackgroundColor '#FFFFFF' --splashBackgroundColorDark '#08090B'
+      - name: Add the app icon and splash screen
+        run: |
+          RES=android/app/src/main/res
+          find $RES -name 'splash.png' -delete
+          rm -f $RES/mipmap-*/ic_launcher*.png $RES/mipmap-anydpi-v26/ic_launcher*.xml
+          cp -r native/res/. $RES/
       - name: Copy the web app into Android
         run: npx cap sync android
       - name: Use the fixed signing key so updates install over the old app
