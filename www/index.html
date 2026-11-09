@@ -144,7 +144,11 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: var(--band
 .wname i { flex: none; width: 24px; height: 24px; display: grid; place-items: center; border: 2px solid var(--lit); border-radius: 50%; color: transparent; }
 .wname i svg { width: 14px; height: 14px; }
 .wrow.done .wname i { background: var(--lit); color: var(--on-lit); }
-.wrow.done .wname span { text-decoration: line-through; text-decoration-color: var(--second); color: var(--muted); }
+.wname span { display: grid; gap: 1px; }
+.wrow.done .wname span { color: var(--muted); }
+.wname b { font-weight: 600; }
+.wrow.done .wname b { text-decoration: line-through; text-decoration-color: var(--second); }
+.wlog { color: var(--fg); font-weight: 500; font-size: .86rem; font-variant-numeric: tabular-nums; }
 .wstep { flex: none; display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 99px; background: var(--glass); font-variant-numeric: tabular-nums; }
 .wstep button { width: 34px; height: 34px; padding: 0; border: 0; border-radius: 50%; background: var(--seg); font-size: 1.1rem; line-height: 1; }
 .wstep output, .wstep .wfix { min-width: 58px; text-align: center; font-weight: 600; font-size: .92rem; }
@@ -167,7 +171,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: var(--band
   padding-top: calc(20px + var(--sat, env(safe-area-inset-top, 0px))); padding-bottom: calc(24px + var(--sab, env(safe-area-inset-bottom, 0px))); padding-left: max(16px, var(--sal, env(safe-area-inset-left, 0px))); padding-right: max(16px, var(--sar, env(safe-area-inset-right, 0px))); }
 .wtin { width: 100%; max-width: 420px; display: grid; gap: 18px; justify-items: center; text-align: center; }
 .wtname { font-family: var(--display); font-weight: 500; font-size: clamp(1.5rem, 7vw, 2rem); line-height: 1.15; letter-spacing: -.02em; text-wrap: balance; }
-.wtring { position: relative; width: min(78vw, 300px, calc(100vh - 330px)); min-width: 180px; aspect-ratio: 1; }
+.wtring { position: relative; width: min(70vw, 260px, calc(100vh - 420px)); min-width: 180px; aspect-ratio: 1; }
 .wtring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
 .wtring circle { fill: none; }
 .wtring .tr { stroke: var(--track); stroke-width: 3; }
@@ -175,7 +179,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: var(--band
 .wtmid { position: absolute; inset: 0; display: grid; place-content: center; gap: 4px; }
 .wttime { font-family: var(--display); font-weight: 300; font-size: clamp(3.2rem, 17vw, 4.6rem); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
 .wt.paused .wttime { opacity: .5; }
-.wtsub { color: var(--muted); font-weight: 500; }
+.wtlog { width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.wtf { display: grid; gap: 6px; justify-items: center; }
+.wtf .wstep input { width: 56px; }
 .wtbtns { width: 100%; display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
 .wtbtns .btn { min-height: 60px; border-radius: 22px; font-size: 1.05rem; }
 .wtdone { min-height: 60px; border: 1px solid rgba(255,255,255,.6); border-radius: 22px; background: linear-gradient(135deg, rgba(255,171,150,.96), rgba(255,122,97,.96)); color: #000000; font-weight: 700; font-size: 1.15rem; box-shadow: 0 12px 28px rgba(255,122,97,.3); }
@@ -781,7 +787,16 @@ ol.steps li::before { font-size: 13px; }
       <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="tr" cx="100" cy="100" r="94"></circle><circle class="pr" id="wtArc" cx="100" cy="100" r="94" pathLength="100" stroke-dasharray="0 100"></circle></svg>
       <div class="wtmid">
         <p class="wttime" id="wtTime" role="timer">0:00</p>
-        <p class="wtsub" id="wtSub"></p>
+      </div>
+    </div>
+    <div class="wtlog" id="wtLog">
+      <div class="wtf" id="wtRepsF">
+        <span class="label">Reps</span>
+        <div class="wstep"><button type="button" id="wtRepsDn" aria-label="One rep fewer">−</button><label><input type="number" id="wtReps" min="0" max="200" step="1" inputmode="numeric" aria-label="Reps done"></label><button type="button" id="wtRepsUp" aria-label="One rep more">+</button></div>
+      </div>
+      <div class="wtf" id="wtKgF">
+        <span class="label">Weight</span>
+        <div class="wstep"><button type="button" id="wtKgDn" aria-label="Half a kilo lighter">−</button><label><input type="number" id="wtKgIn" min="0" max="100" step="0.5" inputmode="decimal" aria-label="Weight in kilograms"> kg</label><button type="button" id="wtKgUp" aria-label="Half a kilo heavier">+</button></div>
       </div>
     </div>
     <div class="wtbtns">
@@ -915,6 +930,7 @@ ol.steps li::before { font-size: 13px; }
     return cfg.today;
   }
   function liftVal(k) {
+    if (!LIFT[k]) return null;
     if (!cfg.lifts[k]) cfg.lifts[k] = { reps: LIFT[k].reps, kg: LIFT[k].kg };
     return cfg.lifts[k];
   }
@@ -1296,9 +1312,10 @@ ol.steps li::before { font-size: 13px; }
     return cfg.wk;
   }
   function warmSec(k) { var v = cfg.lifts[k]; return v && v.sec >= 15 && v.sec <= 600 ? v.sec : WARM[k].sec; }
-  function wCalOf(k) {
-    var f = cfg.kg / BASE_KG;
-    if (WARM[k]) return WARM[k].cal * warmSec(k) / 60 * f;
+  function wCalOf(k, entry) {
+    var f = cfg.kg / BASE_KG, sec = entry && entry.sec ? entry.sec : null;
+    if (WARM[k]) return WARM[k].cal * (sec || warmSec(k)) / 60 * f;
+    if (k === 'plank' && sec) return PLANK.cal * sec / 30 * f;
     return ((k === 'plank' ? PLANK.cal : LIFT[k].cal) + 1) * f;
   }
   /* This week: share of the day's list done, kept per day */
@@ -1326,7 +1343,7 @@ ol.steps li::before { font-size: 13px; }
   }
   function wKey(r, k) { return r + ':' + k; }
   function wDoneIn(r) { var d = wLog().done; return FULL.filter(function (k) { return d[wKey(r, k)]; }).length; }
-  function wBurned() { var d = wLog().done; return Object.keys(d).reduce(function (a, x) { return a + wCalOf(x.split(':')[1]); }, 0); }
+  function wBurned() { var d = wLog().done; return Object.keys(d).reduce(function (a, x) { return a + wCalOf(x.split(':')[1], d[x]); }, 0); }
   function wPlan() { return FULL.reduce(function (a, k) { return a + wCalOf(k); }, 0) * ROUNDS; }
   function wNode(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function wName(k) { return WARM[k] ? WARM[k].name : k === 'plank' ? PLANK.name : LIFT[k].name; }
@@ -1351,44 +1368,34 @@ ol.steps li::before { font-size: 13px; }
       nb.setAttribute('aria-label', wName(k) + ', round ' + wRound + (done ? ', done' : ''));
       mark.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>';
       mark.setAttribute('aria-hidden', 'true');
-      nb.append(mark, wNode('span', '', wName(k)));
+      var lbl = wNode('span'); lbl.append(wNode('b', '', wName(k))); nb.append(mark, lbl);
       nb.onclick = function () { wToggle(k); };
-      var st = wNode('div', 'wstep');
-      if (k === 'plank') st.append(wNode('span', 'wfix', '30 sec'));
-      else if (WARM[k]) (function () {
-        var out = wNode('output', '', longTime(warmSec(k)));
-        var dn = wNode('button', '', '\u2212'), up = wNode('button', '', '+');
-        dn.type = up.type = 'button';
-        dn.setAttribute('aria-label', '15 seconds less of ' + wName(k)); up.setAttribute('aria-label', '15 seconds more of ' + wName(k));
-        function setSec(v) { cfg.lifts[k] = { sec: Math.max(15, Math.min(600, v)) }; out.textContent = longTime(warmSec(k)); save(); }
-        dn.onclick = function () { setSec(warmSec(k) - 15); };
-        up.onclick = function () { setSec(warmSec(k) + 15); };
-        st.append(dn, out, up);
-      })();
-      else {
-        var v = liftVal(k), out = wNode('output', '', v.reps + ' reps');
-        var dn = wNode('button', '', '−'), up = wNode('button', '', '+');
-        dn.type = up.type = 'button';
-        dn.setAttribute('aria-label', 'One rep fewer for ' + wName(k)); up.setAttribute('aria-label', 'One rep more for ' + wName(k));
-        dn.onclick = function () { v.reps = Math.max(1, v.reps - 1); out.textContent = v.reps + ' reps'; save(); };
-        up.onclick = function () { v.reps = Math.min(100, v.reps + 1); out.textContent = v.reps + ' reps'; save(); };
-        st.append(dn, out, up);
+      var e = log.done[wKey(wRound, k)];
+      if (e && typeof e === 'object') {
+        var bits = [];
+        if (e.reps) bits.push(e.reps + ' reps');
+        if (e.kg) bits.push(e.kg + ' kg');
+        if (e.sec) bits.push(longTime(e.sec));
+        if (bits.length) nb.querySelector('span').append(wNode('small', 'wlog', bits.join(' \u00b7 ')));
       }
       var go = wNode('button', 'wgo'); go.type = 'button'; go.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.2-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>';
-      go.setAttribute('aria-label', 'Start ' + wName(k));
+      go.setAttribute('aria-label', (done ? 'Redo ' : 'Start ') + wName(k));
       go.onclick = function () { wtOpen(k, wRound); };
-      row.append(nb, st, go);
+      row.append(nb, go);
       list.append(row);
     });
   }
   /* Exercise timer: counts down for timed moves, counts up for reps */
   var wt = null;
-  function wtSecFor(k) { return WARM[k] ? warmSec(k) : k === 'plank' ? PLANK.sec : 0; }
+  function wtNeedsReps(k) { return !WARM[k] && k !== 'plank'; }
+  function wtNeedsKg(k) { return wtNeedsReps(k) && k !== 'fbSquat'; }
   function wtOpen(k, r) {
-    var sec = wtSecFor(k);
-    wt = { k: k, r: r, sec: sec, ms: 0, running: true, last: Date.now(), beeped: -1 };
+    var prev = wLog().done[wKey(r, k)];
+    wt = { k: k, r: r, ms: 0, running: true, last: Date.now() };
     set('wtName', wName(k)); set('wtRound', 'Round ' + r + ' of ' + ROUNDS);
-    set('wtSub', sec ? longTime(sec) + ' total' : liftVal(k).reps + ' reps · ' + (k === 'fbSquat' ? 'bodyweight' : cfg.wkg + ' kg'));
+    $('wtRepsF').hidden = !wtNeedsReps(k); $('wtKgF').hidden = !wtNeedsKg(k); $('wtLog').hidden = !wtNeedsReps(k);
+    $('wtReps').value = prev && prev.reps ? prev.reps : liftVal(k) ? liftVal(k).reps : '';
+    $('wtKgIn').value = prev && prev.kg != null && typeof prev === 'object' ? prev.kg : cfg.wkg;
     $('wt').hidden = false; document.body.style.overflow = 'hidden';
     openAudio(); holdWake(); beep(880, .15); say(wName(k));
     wtPaint(); $('wtFinish').focus({ preventScroll: true });
@@ -1399,29 +1406,42 @@ ol.steps li::before { font-size: 13px; }
   function wtTick() {
     if (!wt || !wt.running) return;
     var now = Date.now(); wt.ms += now - wt.last; wt.last = now;
-    if (wt.sec) {
-      var left = Math.ceil((wt.sec * 1000 - wt.ms) / 1000);
-      if (left !== wt.beeped && left <= 3 && left >= 1) { wt.beeped = left; beep(660, .09); }
-      if (wt.ms >= wt.sec * 1000) { wtFinish(); return; }
-    }
     wtPaint();
   }
   function wtPaint() {
     if (!wt) return;
-    var sec = wt.sec ? Math.max(0, Math.ceil((wt.sec * 1000 - wt.ms) / 1000)) : Math.floor(wt.ms / 1000);
+    var sec = Math.floor(wt.ms / 1000);
     set('wtTime', longTime(sec));
-    $('wtArc').setAttribute('stroke-dasharray', (wt.sec ? Math.min(100, wt.ms / (wt.sec * 10)) : (wt.ms / 600) % 100) + ' 100');
+    $('wtArc').setAttribute('stroke-dasharray', ((wt.ms / 600) % 100) + ' 100');
     $('wtPause').textContent = wt.running ? 'Pause' : 'Resume';
     $('wt').classList.toggle('paused', !wt.running);
   }
   function wtFinish() {
     if (!wt) return;
-    var k = wt.k, r = wt.r;
+    wtTick();
+    var k = wt.k, r = wt.r, entry = { sec: Math.max(1, Math.round(wt.ms / 1000)) };
+    if (wtNeedsReps(k)) {
+      var reps = Math.round(Number($('wtReps').value));
+      if (reps > 0) { entry.reps = Math.min(200, reps); liftVal(k).reps = entry.reps; }
+    }
+    if (wtNeedsKg(k)) {
+      var kg = Number($('wtKgIn').value);
+      if (isFinite(kg) && kg >= 0) entry.kg = Math.min(100, Math.round(kg * 2) / 2);
+    }
     beep(523, .12); setTimeout(function () { beep(784, .2); }, 140);
     wtClose();
     wRound = r;
-    if (!wLog().done[wKey(r, k)]) wToggle(k); else renderWeights();
+    wLog().done[wKey(r, k)] && wUndo(k);
+    wToggle(k, entry);
   }
+  function wtStep(id, by, min, max) {
+    var i = $(id), v = Number(i.value) || 0;
+    i.value = String(Math.max(min, Math.min(max, Math.round((v + by) * 2) / 2)));
+  }
+  $('wtRepsDn').onclick = function () { wtStep('wtReps', -1, 0, 200); };
+  $('wtRepsUp').onclick = function () { wtStep('wtReps', 1, 0, 200); };
+  $('wtKgDn').onclick = function () { wtStep('wtKgIn', -0.5, 0, 100); };
+  $('wtKgUp').onclick = function () { wtStep('wtKgIn', 0.5, 0, 100); };
   $('wtPause').onclick = function () {
     if (!wt) return;
     if (wt.running) { wtTick(); wt.running = false; } else { wt.running = true; wt.last = Date.now(); }
@@ -1438,11 +1458,17 @@ ol.steps li::before { font-size: 13px; }
   $('wKg').addEventListener('change', function () { setWkg(Number(this.value)); });
   $('wKgDown').onclick = function () { setWkg(cfg.wkg - 0.5); };
   $('wKgUp').onclick = function () { setWkg(cfg.wkg + 0.5); };
-  function wToggle(k) {
-    var log = wLog(), key = wKey(wRound, k), cal = wCalOf(k), name = wName(k);
-    if (log.done[key]) { delete log.done[key]; todayLog().kcal = Math.max(0, todayLog().kcal - cal); }
+  function wUndo(k) {
+    var log = wLog(), key = wKey(wRound, k);
+    if (!log.done[key]) return;
+    todayLog().kcal = Math.max(0, todayLog().kcal - wCalOf(k, log.done[key]));
+    delete log.done[key];
+  }
+  function wToggle(k, entry) {
+    var log = wLog(), key = wKey(wRound, k), name = wName(k);
+    if (log.done[key]) { wUndo(k); }
     else {
-      log.done[key] = 1; todayLog().kcal += cal;
+      log.done[key] = entry || 1; todayLog().kcal += wCalOf(k, log.done[key]);
       try { if (navigator.vibrate) navigator.vibrate(30); } catch (e) {}
       var allDone = true, r;
       for (r = 1; r <= ROUNDS; r++) if (wDoneIn(r) < FULL.length) allDone = false;
