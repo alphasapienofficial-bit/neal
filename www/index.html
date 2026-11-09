@@ -156,6 +156,29 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: var(--band
 .wweight { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 12px 16px; border: 1px solid var(--glass-line); border-radius: 22px; background: var(--glass); box-shadow: var(--glass-shadow); }
 .wwl { min-width: 0; display: grid; }
 .wwl small { color: var(--muted); font-size: .84rem; }
+.wwl b { white-space: nowrap; }
+@media (max-width: 380px) { .wweight { padding-left: 14px; } .wstep input { width: 40px; } }
+.wgo { flex: none; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: linear-gradient(135deg, rgba(255,171,150,.96), rgba(255,122,97,.96)); color: #000000; box-shadow: 0 6px 14px rgba(255,122,97,.3); }
+.wgo svg { width: 17px; height: 17px; margin-left: 2px; }
+.wgo:active { transform: scale(.92); }
+.wrow { padding-right: 8px; gap: 8px; }
+.wstep output, .wstep .wfix { min-width: 52px; }
+.wt { position: fixed; inset: 0; z-index: 40; overflow-y: auto; display: grid; place-items: center; background: var(--bg);
+  padding-top: calc(20px + var(--sat, env(safe-area-inset-top, 0px))); padding-bottom: calc(24px + var(--sab, env(safe-area-inset-bottom, 0px))); padding-left: max(16px, var(--sal, env(safe-area-inset-left, 0px))); padding-right: max(16px, var(--sar, env(safe-area-inset-right, 0px))); }
+.wtin { width: 100%; max-width: 420px; display: grid; gap: 18px; justify-items: center; text-align: center; }
+.wtname { font-family: var(--display); font-weight: 500; font-size: clamp(1.5rem, 7vw, 2rem); line-height: 1.15; letter-spacing: -.02em; text-wrap: balance; }
+.wtring { position: relative; width: min(78vw, 300px, calc(100vh - 330px)); min-width: 180px; aspect-ratio: 1; }
+.wtring svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.wtring circle { fill: none; }
+.wtring .tr { stroke: var(--track); stroke-width: 3; }
+.wtring .pr { stroke: var(--cta); stroke-width: 6; stroke-linecap: round; }
+.wtmid { position: absolute; inset: 0; display: grid; place-content: center; gap: 4px; }
+.wttime { font-family: var(--display); font-weight: 300; font-size: clamp(3.2rem, 17vw, 4.6rem); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+.wt.paused .wttime { opacity: .5; }
+.wtsub { color: var(--muted); font-weight: 500; }
+.wtbtns { width: 100%; display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
+.wtbtns .btn { min-height: 60px; border-radius: 22px; font-size: 1.05rem; }
+.wtdone { min-height: 60px; border: 1px solid rgba(255,255,255,.6); border-radius: 22px; background: linear-gradient(135deg, rgba(255,171,150,.96), rgba(255,122,97,.96)); color: #000000; font-weight: 700; font-size: 1.15rem; box-shadow: 0 12px 28px rgba(255,122,97,.3); }
 .whint { text-align: center; color: var(--muted); font-size: .86rem; }
 .wrow + .wrow { border-top: 1px solid var(--line); }
 .todaycard { grid-column: 1 / -1; min-width: 0; display: grid; gap: 8px; padding: 10px 12px; border: 1px solid var(--glass-line); border-radius: 20px; background: linear-gradient(120deg, rgba(255,138,115,.24), rgba(255,138,115,.06)), var(--glass); box-shadow: var(--glass-shadow); }
@@ -601,7 +624,7 @@ ol.steps li::before { font-size: 13px; }
       <div class="h-days" id="wDays"></div>
     </div>
     <div class="wweight">
-      <span class="wwl"><b>Dumbbell weight</b><small>Used for every exercise</small></span>
+      <span class="wwl"><b>Dumbbell weight</b><small>For every exercise</small></span>
       <div class="wstep" role="group" aria-label="Dumbbell weight">
         <button type="button" id="wKgDown" aria-label="Half a kilo lighter">−</button>
         <label><input type="number" id="wKg" min="0" max="100" step="0.5" inputmode="decimal" aria-label="Dumbbell weight in kilograms"> kg</label>
@@ -610,7 +633,7 @@ ol.steps li::before { font-size: 13px; }
     </div>
     <div class="wrounds" id="wRounds" role="group" aria-label="Round"></div>
     <div class="wcard" id="wList"></div>
-    <p class="whint">Tap an exercise when you finish it.</p>
+    <p class="whint">Tap Start to time an exercise, or tap its name to tick it off.</p>
   </section>
 
   <section class="todaycard" aria-label="Calories burned today">
@@ -750,6 +773,24 @@ ol.steps li::before { font-size: 13px; }
     <div class="h-list" id="h-edList"></div>
   </div>
 </aside>
+<div class="wt" id="wt" role="dialog" aria-modal="true" aria-labelledby="wtName" hidden>
+  <div class="wtin">
+    <p class="label" id="wtRound"></p>
+    <h2 class="wtname" id="wtName"></h2>
+    <div class="wtring">
+      <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="tr" cx="100" cy="100" r="94"></circle><circle class="pr" id="wtArc" cx="100" cy="100" r="94" pathLength="100" stroke-dasharray="0 100"></circle></svg>
+      <div class="wtmid">
+        <p class="wttime" id="wtTime" role="timer">0:00</p>
+        <p class="wtsub" id="wtSub"></p>
+      </div>
+    </div>
+    <div class="wtbtns">
+      <button type="button" class="btn" id="wtPause">Pause</button>
+      <button type="button" class="wtdone" id="wtFinish">Finish</button>
+    </div>
+    <button type="button" class="closer" id="wtCancel">Cancel</button>
+  </div>
+</div>
 <p class="sr" id="live" aria-live="polite"></p>
 
 <dialog id="modal" aria-labelledby="m-title">
@@ -1333,10 +1374,63 @@ ol.steps li::before { font-size: 13px; }
         up.onclick = function () { v.reps = Math.min(100, v.reps + 1); out.textContent = v.reps + ' reps'; save(); };
         st.append(dn, out, up);
       }
-      row.append(nb, st);
+      var go = wNode('button', 'wgo'); go.type = 'button'; go.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.2-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>';
+      go.setAttribute('aria-label', 'Start ' + wName(k));
+      go.onclick = function () { wtOpen(k, wRound); };
+      row.append(nb, st, go);
       list.append(row);
     });
   }
+  /* Exercise timer: counts down for timed moves, counts up for reps */
+  var wt = null;
+  function wtSecFor(k) { return WARM[k] ? warmSec(k) : k === 'plank' ? PLANK.sec : 0; }
+  function wtOpen(k, r) {
+    var sec = wtSecFor(k);
+    wt = { k: k, r: r, sec: sec, ms: 0, running: true, last: Date.now(), beeped: -1 };
+    set('wtName', wName(k)); set('wtRound', 'Round ' + r + ' of ' + ROUNDS);
+    set('wtSub', sec ? longTime(sec) + ' total' : liftVal(k).reps + ' reps · ' + (k === 'fbSquat' ? 'bodyweight' : cfg.wkg + ' kg'));
+    $('wt').hidden = false; document.body.style.overflow = 'hidden';
+    openAudio(); holdWake(); beep(880, .15); say(wName(k));
+    wtPaint(); $('wtFinish').focus({ preventScroll: true });
+  }
+  function wtClose() {
+    wt = null; $('wt').hidden = true; document.body.style.overflow = ''; releaseWake();
+  }
+  function wtTick() {
+    if (!wt || !wt.running) return;
+    var now = Date.now(); wt.ms += now - wt.last; wt.last = now;
+    if (wt.sec) {
+      var left = Math.ceil((wt.sec * 1000 - wt.ms) / 1000);
+      if (left !== wt.beeped && left <= 3 && left >= 1) { wt.beeped = left; beep(660, .09); }
+      if (wt.ms >= wt.sec * 1000) { wtFinish(); return; }
+    }
+    wtPaint();
+  }
+  function wtPaint() {
+    if (!wt) return;
+    var sec = wt.sec ? Math.max(0, Math.ceil((wt.sec * 1000 - wt.ms) / 1000)) : Math.floor(wt.ms / 1000);
+    set('wtTime', longTime(sec));
+    $('wtArc').setAttribute('stroke-dasharray', (wt.sec ? Math.min(100, wt.ms / (wt.sec * 10)) : (wt.ms / 600) % 100) + ' 100');
+    $('wtPause').textContent = wt.running ? 'Pause' : 'Resume';
+    $('wt').classList.toggle('paused', !wt.running);
+  }
+  function wtFinish() {
+    if (!wt) return;
+    var k = wt.k, r = wt.r;
+    beep(523, .12); setTimeout(function () { beep(784, .2); }, 140);
+    wtClose();
+    wRound = r;
+    if (!wLog().done[wKey(r, k)]) wToggle(k); else renderWeights();
+  }
+  $('wtPause').onclick = function () {
+    if (!wt) return;
+    if (wt.running) { wtTick(); wt.running = false; } else { wt.running = true; wt.last = Date.now(); }
+    wtPaint();
+  };
+  $('wtFinish').onclick = wtFinish;
+  $('wtCancel').onclick = wtClose;
+  setInterval(wtTick, 100);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden) wtTick(); });
   function setWkg(v) {
     if (!isFinite(v) || v < 0) { $('wKg').value = String(cfg.wkg); return; }
     cfg.wkg = Math.min(100, Math.round(v * 2) / 2); $('wKg').value = String(cfg.wkg); save();
@@ -1382,6 +1476,7 @@ ol.steps li::before { font-size: 13px; }
     paintTools(); save();
   };
   document.addEventListener('keydown', function (e) {
+    if (wt) { if (e.key === 'Escape') wtClose(); else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); $('wtPause').click(); } return; }
     if (menuOpen()) { if (e.key === 'Escape') setMenu(false); return; }
     if ($('app').hidden || document.querySelector('dialog[open]') || e.target.tagName === 'INPUT') return;
     if (cfg.mode === 'weights') return;
@@ -1412,6 +1507,7 @@ ol.steps li::before { font-size: 13px; }
   if (nativeApp) nativeApp.addListener('backButton', function () {
     var d = document.querySelector('dialog[open]');
     if (d) d.close();
+    else if (wt) wtClose();
     else if (window.nealHabitsBack && window.nealHabitsBack()) return;
     else if (menuOpen()) setMenu(false);
     else if ($('v-habits').hidden) showView('habits');
