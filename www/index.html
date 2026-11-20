@@ -197,7 +197,7 @@ body { padding-bottom: calc(86px + var(--sab, env(safe-area-inset-bottom, 0px)))
 .wbf input { width: 100%; min-height: 52px; padding: 10px 16px; border: 1px solid var(--glass-line); border-radius: 16px; background: var(--seg); color: var(--fg); font: inherit; font-size: 1.1rem; font-weight: 600; }
 .wbf input:focus { outline: 2px solid var(--cta); outline-offset: 1px; }
 .wberr { margin: 0; color: var(--dot); font-weight: 600; font-size: .86rem; }
-.wtypes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px; padding: 4px; border: 1px solid var(--glass-line); border-radius: 99px; background: var(--glass); box-shadow: var(--glass-shadow); }
+.wtypes { display: grid; grid-auto-columns: 1fr; grid-auto-flow: column; gap: 4px; padding: 4px; border: 1px solid var(--glass-line); border-radius: 99px; background: var(--glass); box-shadow: var(--glass-shadow); }
 .wtypes button { min-width: 0; min-height: 42px; padding: 6px 6px; border: 0; border-radius: 99px; background: transparent; font-family: var(--display); font-weight: 500; font-size: .84rem; letter-spacing: -.01em; white-space: nowrap; }
 .wtypes button[aria-selected="true"] { background: var(--lit); color: var(--on-lit); }
 .wweight { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 12px 12px 16px; border: 1px solid var(--glass-line); border-radius: 22px; background: var(--glass); box-shadow: var(--glass-shadow); }
@@ -499,6 +499,111 @@ ol.steps li::before { font-size: 13px; }
 .guide-btn { box-shadow: 0 8px 20px rgba(255,122,97,.28); }
 
 
+/* Workout cards: name and video on the left, sets on the right */
+.wex { display: grid !important; grid-template-columns: 150px minmax(0, 1fr); column-gap: 10px !important; align-items: center; gap: 6px !important; padding: 12px 0 12px 12px !important; min-height: 0 !important; cursor: default !important; }
+.wex:active { background: none !important; }
+.wleft { display: flex; gap: 7px; min-width: 0; align-items: center; }
+.wmk { flex: none; width: 26px; height: 26px; display: grid; place-items: center; padding: 0; border: 2px solid var(--lit); border-radius: 50%; background: none; color: transparent; position: relative; }
+.wmk::after { content: ''; position: absolute; inset: -9px; }
+.wmk:active { transform: scale(.9); }
+.wmk svg { width: 14px; height: 14px; }
+.wex.done .wmk { background: var(--lit); color: var(--on-lit); }
+.winfo { display: grid; gap: 4px; min-width: 0; justify-items: start; flex: 1 1 auto; }
+.wtop { display: flex; align-items: flex-start; gap: 2px; min-width: 0; max-width: 100%; }
+.wnm { font-weight: 600; font-size: .95rem; line-height: 1.25; min-width: 0; padding-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(.8rem, 3.6vw, .95rem) !important; letter-spacing: -.01em; }
+.wex.done .wnm { color: var(--muted); }
+.wex .wtarget { font-size: .78rem; }
+.wyt { flex: none; position: relative; display: inline-grid; place-items: center; width: 32px; height: 28px; margin: -2px -4px -2px 0; padding: 0; border: 0; border-radius: 8px; background: none; color: var(--muted); font-weight: 800; font-size: .7rem; text-decoration: none; }
+.wyt svg { width: 22px; height: 22px; }
+.wyt span { position: absolute; right: 1px; bottom: 1px; width: 13px; height: 13px; display: grid; place-items: center; border-radius: 50%; background: var(--fg); color: var(--bg); line-height: 1; }
+.wyt.add svg rect { fill: var(--muted); opacity: .55; }
+.wex .wlast { margin-top: 2px; }
+.wsets { display: flex; align-items: center; gap: 6px; overflow-x: auto; padding: 2px 12px 2px 0; scrollbar-width: none; -webkit-overflow-scrolling: touch; overscroll-behavior-x: contain; }
+.wsets::-webkit-scrollbar { display: none; }
+.wset { flex: none; display: flex; align-items: center; gap: 2px; height: 44px; padding: 0 4px 0 2px; border: 1px solid var(--line); border-radius: 14px; background: var(--glass); color: var(--fg); font-variant-numeric: tabular-nums; }
+.wsn { flex: none; width: 14px; text-align: center; color: var(--muted); font-size: .72rem; font-weight: 800; }
+.wsf { display: inline-flex; align-items: baseline; gap: 1px; height: 34px; padding: 0 3px; border-radius: 10px; background: var(--seg); cursor: text; }
+.wsf input { width: 2.6ch; height: 34px; padding: 0; border: 0; background: none; color: var(--fg); font: inherit; font-size: 15px; font-weight: 700; text-align: center; -moz-appearance: textfield; appearance: textfield; }
+.wsf.kg input { width: 3.1ch; }
+.wsf.sec input { width: 3ch; }
+.wsf input::-webkit-outer-spin-button, .wsf input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.wsf input:focus { outline: none; }
+.wsf:focus-within { box-shadow: 0 0 0 2px var(--lit); }
+.wsu { font-size: .64rem; font-weight: 700; color: var(--muted); }
+.wsx { color: var(--muted); font-size: .8rem; font-weight: 700; }
+.wsck { flex: none; width: 28px; height: 28px; display: grid; place-items: center; margin-left: 2px; padding: 0; border: 2px solid var(--input-line); border-radius: 50%; background: none; color: transparent; }
+.wsck svg { width: 14px; height: 14px; }
+.wset.on { border-color: transparent; background: var(--fill); }
+.wset.on .wsf { background: rgba(255,255,255,.5); }
+.wset.on .wsf input, .wset.on .wsu, .wset.on .wsx, .wset.on .wsn { color: #000; }
+.wset.on .wsck { border-color: #000; background: #000; color: #fff; }
+.wsplay { border-color: transparent; background: var(--lit); color: var(--on-lit); }
+.wsplay svg { width: 14px; height: 14px; }
+.wset.run { border-color: var(--lit); box-shadow: 0 0 0 2px var(--lit) inset; }
+.wset.run .wsf { background: transparent; }
+.wset.run .wsplay { background: var(--fg); color: var(--bg); animation: wspulse 1.2s ease-in-out infinite; }
+@keyframes wspulse { 50% { transform: scale(.88); } }
+@media (prefers-reduced-motion: reduce) { .wset.run .wsplay { animation: none; } }
+.wsadd { flex: none; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1.5px dashed var(--line); border-radius: 50%; background: none; color: var(--muted); font-size: 1.1rem; font-weight: 700; }
+.wyfor { margin: 0; font-weight: 600; }
+
+/* Recipes: clean light look, in both themes */
+body.rl { color-scheme: light; --bg: #F6F6F3; --fg: #141614; --muted: #646B66; --line: #E7E8E4; --glass: #FFFFFF; --glass-line: #E7E8E4;
+  --glass-shadow: 0 1px 2px rgba(20,24,20,.04), 0 6px 18px rgba(20,24,20,.05); --menu: #FFFFFF; --track: #F0F1ED; --seg: #EEF0EB; --leaf: #3E5A3A;
+  --cta: #FF8A73; --on-cta: #000000; --dot: #D9482E; --lit: #FF8A73; --num-a: #F0694F; --num-b: #D9482E; --veil: rgba(246,246,243,.86); }
+dialog#modal, dialog#guide { color-scheme: light; --fg: #141614; --ink: #141614; --muted: #646B66; --line: #ECEDE9; --surface: #FFFFFF; --glass: #FAFAF8;
+  --leaf: #3E5A3A; --leaf-soft: #F3F4F0; --track: #F0F1ED; --btn: #FF8A73; --btn-fg: #000; --lit: #FF8A73; --haldi: #D9482E; --mirch: #3E5A3A; }
+body.rl .recipes .search { background: #FFFFFF; border-color: var(--line); border-radius: 14px; padding: 13px 16px; }
+body.rl #index { border-radius: 18px; }
+body.rl .cat-tabs { background: #EEF0EB; border-color: transparent; }
+body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(--fg); box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+#modal { position: fixed; inset: 0; width: 100%; max-width: none; height: 100%; max-height: none; margin: 0; border-radius: 0; box-shadow: none; background: #FFFFFF; overflow-y: auto; overscroll-behavior: contain; }
+#modal[open] { animation: rpage .28s cubic-bezier(.2,.8,.2,1); }
+@keyframes rpage { from { transform: translateX(28px); opacity: 0; } to { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { #modal[open] { animation: none; } }
+#modal .card { max-width: 680px; margin-inline: auto; min-height: 100%; }
+#modal .card-head { padding-top: calc(12px + var(--sat, env(safe-area-inset-top, 0px))) !important; padding-left: max(16px, var(--sal, env(safe-area-inset-left, 0px))) !important; padding-right: max(16px, var(--sar, env(safe-area-inset-right, 0px))) !important; align-items: flex-start; gap: 12px; background: rgba(255,255,255,.94); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+#modal .card-body { padding-bottom: calc(32px + var(--sab, env(safe-area-inset-bottom, 0px))) !important; padding-left: max(16px, var(--sal, env(safe-area-inset-left, 0px))) !important; padding-right: max(16px, var(--sar, env(safe-area-inset-right, 0px))) !important; }
+#modal .card-head .t { padding-top: 2px; }
+#modal::backdrop { background: #FFFFFF; }
+#modal .card-head { padding: 20px 20px 14px; border-bottom: 1px solid var(--line); flex-wrap: nowrap; }
+#modal .eyebrow { color: var(--haldi); font-size: 11.5px; }
+#modal .m-meta { margin: 6px 0 0; color: var(--muted); font-size: 13.5px; line-height: 1.45; }
+#modal .close { width: 40px; height: 40px; background: #F1F2EE; color: #141614; }
+#modal .close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
+#modal .card-body { padding: 18px 20px 26px; gap: 28px; }
+#modal h3 { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: -.01em; text-transform: none; color: var(--fg); margin: 0 0 8px; }
+#modal h3 .count { font-family: var(--body); font-size: 12px; font-weight: 700; color: var(--muted); background: #F1F2EE; border-radius: 99px; padding: 2px 8px; }
+#modal h4.part { margin: 18px 0 10px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--haldi); font-weight: 700; }
+#modal h4.part:first-child { margin-top: 4px; }
+#modal ul.ing li { border-bottom: 1px solid var(--line); }
+#modal ul.ing li:last-child { border-bottom: 0; }
+#modal ul.ing label { grid-template-columns: 20px minmax(0, 1.25fr) minmax(0, 1fr); gap: 12px; padding: 11px 0; align-items: baseline; }
+#modal ul.ing input { align-self: center; margin: 0; accent-color: #3E5A3A; }
+#modal .ing-name { font-weight: 600; min-width: 0; }
+#modal .ing-qty { color: var(--muted); text-align: right; font-size: 14px; line-height: 1.4; }
+#modal ul.ing input:checked ~ span { opacity: .4; text-decoration: line-through; }
+#modal .ing-grp { border: 0 !important; padding: 14px 0 2px; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--haldi); }
+#modal .ing-grp:first-child { padding-top: 0; }
+#modal ol.steps { gap: 0; }
+#modal ol.steps > li { padding: 14px 0; border-top: 1px solid var(--line); grid-template-columns: 30px minmax(0, 1fr); }
+#modal ol.steps > li:first-child { border-top: 0; padding-top: 4px; }
+#modal ol.steps > li::before { width: 26px; height: 26px; font-size: 12.5px; font-weight: 600; background: #141614; color: #FFFFFF; }
+#modal .step-title { font-size: 16px; margin-bottom: 6px; }
+#modal .sline { margin: 0 0 6px; line-height: 1.65; color: #2B302C; max-width: 62ch; }
+#modal .badge { background: #F3F4F0; border: 0; font-size: 13.5px; padding: 1px 8px; border-radius: 8px; }
+.addg { margin: 2px 0 10px; padding: 10px 12px; border-radius: 14px; background: #F6F7F3; display: grid; gap: 6px; max-width: 62ch; }
+.addv { font-weight: 700; font-size: 14px; }
+.addl { margin: 0; padding: 0 0 0 22px; display: grid; gap: 3px; }
+.addl li { display: list-item !important; list-style: decimal; padding: 0 !important; border: 0 !important; }
+.addl li::before { content: none !important; }
+.addl li::marker { color: var(--haldi); font-weight: 700; font-size: 13.5px; }
+.addl li { line-height: 1.5; counter-increment: none !important; }
+.addl .an { font-weight: 600; }
+.addl .aq { color: var(--muted); margin-left: 8px; font-size: 14px; white-space: nowrap; }
+.addr { margin: 2px 0 0; font-weight: 600; color: #141614; line-height: 1.55; }
+#modal .serve { margin-top: 16px; background: #FFF4F1; border-radius: 14px; padding: 12px 14px; font-size: 14.5px; line-height: 1.55; color: #3A2A26; }
+
 /* Habits: carried over from Tending */
 #v-habits, #v-todo { flex: 1 0 auto; width: 100%; }
 .h-main { max-width: 640px; margin-inline: auto; display: grid; gap: 32px; padding-block: 24px calc(128px + var(--sab, env(safe-area-inset-bottom, 0px)));
@@ -747,7 +852,7 @@ ol.steps li::before { font-size: 13px; }
     <div class="wtypes" id="wTypes" role="tablist" aria-label="Workout type"></div>
     <div class="wcard" id="wList"></div>
     <button type="button" class="wmark" id="wMarkDay"></button>
-    <p class="whint">Tap an exercise to log a set.</p>
+    <p class="whint">Type weight and reps in a set, then tick it.</p>
   </section>
 
   <section class="todaycard" aria-label="Calories burned today">
@@ -769,13 +874,6 @@ ol.steps li::before { font-size: 13px; }
   </section>
 </div>
 <section class="recipes" id="v-recipes" hidden>
-  <div class="rhead">
-    <div class="eyebrow">Recipe notebook</div>
-    <h2 class="sec-title">Ghar ki <span>Recipes</span></h2>
-    <p class="sub">Tap a recipe name to open it.</p>
-    <button class="guide-btn" id="guide-open"><span class="dot" aria-hidden="true"></span>Daily Food Guide</button>
-  </div>
-
   <div class="tabs cat-tabs" role="tablist" aria-label="Recipe type">
     <button class="tab" role="tab" id="cat-veg" aria-selected="true"><span class="mark veg" aria-hidden="true"></span>Veg<span class="count" id="n-veg"></span></button>
     <button class="tab" role="tab" id="cat-nonveg" aria-selected="false"><span class="mark nonveg" aria-hidden="true"></span>Non-Veg<span class="count" id="n-nonveg"></span></button>
@@ -898,13 +996,13 @@ ol.steps li::before { font-size: 13px; }
       </div>
     </div>
     <div class="wtlog" id="wtLog">
-      <div class="wtf" id="wtRepsF">
-        <span class="label">Reps</span>
-        <div class="wstep"><button type="button" id="wtRepsDn" aria-label="One rep fewer">−</button><label><input type="number" id="wtReps" min="0" max="200" step="1" inputmode="numeric" aria-label="Reps done"></label><button type="button" id="wtRepsUp" aria-label="One rep more">+</button></div>
-      </div>
       <div class="wtf" id="wtKgF">
         <span class="label">Weight</span>
         <div class="wstep"><button type="button" id="wtKgDn" aria-label="Half a kilo lighter">−</button><label><input type="number" id="wtKgIn" min="0" max="100" step="0.5" inputmode="decimal" aria-label="Weight in kilograms"> kg</label><button type="button" id="wtKgUp" aria-label="Half a kilo heavier">+</button></div>
+      </div>
+      <div class="wtf" id="wtRepsF">
+        <span class="label">Reps</span>
+        <div class="wstep"><button type="button" id="wtRepsDn" aria-label="One rep fewer">−</button><label><input type="number" id="wtReps" min="0" max="200" step="1" inputmode="numeric" aria-label="Reps done"></label><button type="button" id="wtRepsUp" aria-label="One rep more">+</button></div>
       </div>
     </div>
     <div class="wtok" id="wtOk" role="status" aria-live="polite">
@@ -926,6 +1024,19 @@ ol.steps li::before { font-size: 13px; }
       <button type="button" class="closer" id="wtReset" hidden>Reset exercise</button>
     </div>
   </div>
+</div>
+<div class="whveil" id="wyVeil" hidden></div>
+<div class="wh" id="wy" role="dialog" aria-modal="true" aria-labelledby="wyTitle" hidden>
+  <form class="whin" id="wyForm" novalidate>
+    <div class="whtop">
+      <div><p class="label">Form video</p><h2 id="wyTitle">Add video link</h2></div>
+      <button type="button" class="closer" id="wyClose">Close</button>
+    </div>
+    <p class="wyfor" id="wyFor"></p>
+    <label class="wbf"><span class="label">YouTube link</span><input id="wyUrl" type="url" inputmode="url" placeholder="https://youtube.com/shorts/..." autocomplete="off"></label>
+    <p class="wberr" id="wyErr" role="alert" hidden>Paste a link that starts with https://</p>
+    <div class="whacts"><button type="submit" class="wtdone" id="wySave">Save link</button><button type="button" class="closer" id="wyDel" hidden>Remove my link</button></div>
+  </form>
 </div>
 <div class="whveil" id="wbVeil" hidden></div>
 <div class="wh" id="wb" role="dialog" aria-modal="true" aria-labelledby="wbTitle" hidden>
@@ -956,26 +1067,21 @@ ol.steps li::before { font-size: 13px; }
 <dialog id="modal" aria-labelledby="m-title">
   <div class="card">
     <div class="card-head">
+      <button class="close" id="m-close" aria-label="Back to recipes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
       <div class="t">
         <div class="eyebrow" id="m-num"></div>
         <h2 id="m-title"></h2>
-      </div>
-      <button class="close" id="m-close" aria-label="Close recipe">×</button>
-      <div class="tabs" id="m-tabs" role="tablist" aria-label="Recipe sections">
-        <button class="tab" role="tab" id="tab-ing" aria-controls="panel-ing" aria-selected="true">Ingredients<span class="count" id="c-ing"></span></button>
-        <button class="tab" role="tab" id="tab-steps" aria-controls="panel-steps" aria-selected="false"><span id="l-steps">Method</span><span class="count" id="c-steps"></span></button>
-        <button class="tab" role="tab" id="tab-p1" aria-controls="panel-steps" aria-selected="false" hidden></button>
-        <button class="tab" role="tab" id="tab-p2" aria-controls="panel-steps" aria-selected="false" hidden></button>
+        <p class="m-meta" id="m-meta"></p>
       </div>
     </div>
     <div class="card-body">
-      <section id="panel-ing" role="tabpanel" aria-labelledby="tab-ing">
-        <ul class="ing" id="m-ing" style="margin-top:-6px"></ul>
-        <p class="hint">Tick items off as you gather them.</p>
+      <section class="rsec" aria-labelledby="h-ing">
+        <h3 id="h-ing">Ingredients <span class="count" id="c-ing"></span></h3>
+        <ul class="ing" id="m-ing"></ul>
       </section>
-      <section id="panel-steps" role="tabpanel" aria-labelledby="tab-steps" hidden>
-        <ol class="steps" id="m-steps"></ol>
-        <p class="hint">Tick each step once it's done.</p>
+      <section class="rsec" aria-labelledby="h-steps">
+        <h3 id="h-steps">Method <span class="count" id="c-steps"></span></h3>
+        <div id="m-steps"></div>
         <p class="serve" id="m-serve" hidden></p>
       </section>
     </div>
@@ -1035,24 +1141,25 @@ ol.steps li::before { font-size: 13px; }
     fbSwing: { key: 'fbSwing', name: 'Dumbbell Swings', sec: 45, cal: 8, reps: 15, kg: 7.5, one: true, cue: 'Hold one dumbbell in both hands. Push your hips back, then snap them forward to swing it to chest height.' },
     fbSquat: { key: 'fbSquat', name: 'Free Squats', sec: 45, cal: 6, reps: 15, kg: 7.5, cue: 'Sit your hips back and keep your chest up.' },
     fbRow: { key: 'fbRow', name: 'Bent-Over Rows', sec: 45, cal: 6, reps: 12, kg: 7.5, cue: 'Hinge forward with a flat back and pull both dumbbells to your ribs.' },
-    fbChest: { key: 'fbChest', name: 'Chest Press', sec: 45, cal: 6, reps: 12, kg: 7.5, cue: 'Lower slowly, then press up.' },
+    fbChest: { key: 'fbChest', name: 'DB Bench Press', sec: 45, cal: 6, reps: 12, kg: 7.5, cue: 'Lower slowly, then press up.' },
     fbRaise: { key: 'fbRaise', name: 'Shoulder Raises', sec: 45, cal: 5, reps: 12, kg: 2.5, cue: 'Raise your arms out to shoulder height, then lower slowly.' },
     fbCurl: { key: 'fbCurl', name: 'Bicep Curls', sec: 45, cal: 5, reps: 12, kg: 5, cue: 'Keep your elbows close to your sides.' },
     aCrunch: { key: 'aCrunch', name: 'Crunches', sec: 40, cal: 4, reps: 15, kg: 0, noKg: true, cue: '' },
     aLegRaise: { key: 'aLegRaise', name: 'Lying Leg Raises', sec: 40, cal: 4, reps: 12, kg: 0, noKg: true, cue: '' },
     aBicycle: { key: 'aBicycle', name: 'Bicycle Crunches', sec: 40, cal: 5, reps: 20, kg: 0, noKg: true, cue: '' },
-    squat: { key: 'squat', name: 'Squats', sec: 45, cal: 6, reps: 10, kg: 0, noKg: true, cue: '' },
+    squat: { key: 'squat', name: 'Free Squats', sec: 45, cal: 6, reps: 12, kg: 0, noKg: true, cue: '' },
     rdl: { key: 'rdl', name: 'Romanian Deadlifts', sec: 45, cal: 6, reps: 10, kg: 5, cue: '' },
     shPress: { key: 'shPress', name: 'Shoulder Press', sec: 45, cal: 5, reps: 10, kg: 5, cue: '' },
     shrug: { key: 'shrug', name: 'Shrugs', sec: 40, cal: 4, reps: 12, kg: 7.5, cue: '' },
     latRaise: { key: 'latRaise', name: 'Lateral Raises', sec: 45, cal: 5, reps: 12, kg: 2.5, cue: '' },
     lunge: { key: 'lunge', name: 'Lunges', sec: 60, cal: 7, reps: 10, kg: 0, noKg: true, cue: '' },
     bridge: { key: 'bridge', name: 'Glute Bridges', sec: 40, cal: 4, reps: 12, kg: 0, noKg: true, cue: '' },
-    oneRow: { key: 'oneRow', name: 'One-Arm Rows', sec: 60, cal: 6, reps: 10, kg: 7.5, cue: '' },
+    oneRow: { key: 'oneRow', name: 'One-Arm DB Row', sec: 60, cal: 6, reps: 10, kg: 7.5, cue: '' },
     vPress: { key: 'vPress', name: 'Vertical Press', sec: 45, cal: 5, reps: 10, kg: 5, cue: '' },
     hammer: { key: 'hammer', name: 'Hammer Curls', sec: 45, cal: 5, reps: 10, kg: 5, cue: '' },
     deadBug: { key: 'deadBug', name: 'Dead Bugs', sec: 45, cal: 4, reps: 10, kg: 0, noKg: true, cue: '' },
-    fbSkull: { key: 'fbSkull', name: 'Skull Crushers', sec: 45, cal: 5, reps: 12, kg: 5, cue: 'Bend only at the elbows.' }
+    fbSkull: { key: 'fbSkull', name: 'Skull Crushers', sec: 45, cal: 5, reps: 12, kg: 5, cue: 'Bend only at the elbows.' },
+    latRev: { key: 'latRev', name: 'Lat Raise + Rev Fly', sec: 60, cal: 6, reps: 12, kg: 6.5, cue: '' }
   };
   /* Full body: 3 rounds of these, in order. The plank is timed. */
   var ROUNDS = 3, ROUND_REST = 60;
@@ -1060,19 +1167,26 @@ ol.steps li::before { font-size: 13px; }
     wSpotKnees: { name: 'Spot Run', cal: 13.5, sec: 240 },
     cMarch: { name: 'March in Place', cal: 6, sec: 60 },
     cSpot: { name: 'Spot Run', cal: 13, sec: 60 },
-    cKnees: { name: 'High Knees', cal: 14, sec: 60 }
+    cKnees: { name: 'High Knees', cal: 14, sec: 60 },
+    wKnees: { name: 'High Knees', cal: 14, sec: 30 }
   };
   var TYPES = {
-    d1: { name: 'Day 1', items: ['fbChest', 'fbSkull', 'wSpotKnees'] },
-    d2: { name: 'Day 2', items: ['fbRow', 'fbCurl', 'wSpotKnees'] },
-    d3: { name: 'Day 3', items: ['shPress', 'latRaise', 'squat', 'lunge'] }
+    d1: { name: 'Day 1', items: ['fbChest', 'oneRow', 'fbCurl', 'squat', 'wSpotKnees'] },
+    d2: { name: 'Day 2', items: ['fbSkull', 'shPress', 'latRev', 'lunge', 'wKnees'] }
   };
   /* Sets and the target shown under each name */
   var PLAN = {
-    fbChest: [5, '5 \u00d7 10'], fbSkull: [5, '5 \u00d7 10'], wSpotKnees: [5, '5 \u00d7 1 min'],
-    fbRow: [5, '5 \u00d7 10'], fbCurl: [5, '5 \u00d7 10\u201312'],
-    shPress: [3, '3 \u00d7 10 \u00b7 superset'], latRaise: [3, '3 \u00d7 12\u201315 \u00b7 superset'],
-    squat: [5, '5 \u00d7 8\u201312'], lunge: [5, '5 \u00d7 10 per leg']
+    fbChest: [3, '3 \u00d7 10'], oneRow: [2, '2 \u00d7 10 per arm'], fbCurl: [3, '3 \u00d7 10\u201312'], squat: [3, '3 \u00d7 12'], wSpotKnees: [3, '3 \u00d7 1 min'],
+    fbSkull: [3, '3 \u00d7 10'], shPress: [2, '2 \u00d7 10'], latRev: [3, '3 \u00d7 12 \u00b7 raise + fly'], lunge: [3, '3 \u00d7 10 per leg'], wKnees: [3, '3 \u00d7 30 sec']
+  };
+  /* Starting weight for each exercise in this plan */
+  var PLAN_KG = { fbChest: 10, oneRow: 8, fbCurl: 8, fbSkull: 8, shPress: 8, latRev: 6.5 };
+  /* Form videos. Links you add yourself are saved in cfg.yt and win over these. */
+  var YT = {
+    fbChest: 'https://youtube.com/shorts/k8fvMnz42-g',
+    oneRow: 'https://youtube.com/shorts/Pw3glZCQMGM',
+    fbCurl: 'https://youtube.com/shorts/2jpteC44QKg',
+    squat: 'https://youtube.com/shorts/eFEVKmp3M4g'
   };
   var FULL = TYPES.d1.items;
   var PLANK = { name: 'Plank', sec: 30, cal: 3, cue: 'Forearms down, body in a straight line. Keep your hips level.' };
@@ -1095,7 +1209,7 @@ ol.steps li::before { font-size: 13px; }
     { name: 'Pelvic tilt', sec: 60, cue: 'Knees bent, press your lower back into the floor for 3 to 5 seconds, then release.' }
   ];
 
-  var cfg = { mode: 'weights', kg: BASE_KG, sound: true, theme: null, lifts: {}, today: { date: '', kcal: 0 }, last: null, wk: null, wkg: 5, wkHist: {}, wtype: 'd1', wkPast: {}, burn: {} };
+  var cfg = { mode: 'weights', kg: BASE_KG, sound: true, theme: null, lifts: {}, today: { date: '', kcal: 0 }, last: null, wk: null, wkg: 5, wkHist: {}, wtype: 'd1', wkPast: {}, burn: {}, yt: {}, setKg: {}, setReps: {}, planV: 0 };
   function todayLog() {
     var d = new Date().toDateString();
     if (cfg.today.date !== d) cfg.today = { date: d, kcal: 0 };
@@ -1346,11 +1460,15 @@ ol.steps li::before { font-size: 13px; }
         if (o.cfg.today && typeof o.cfg.today.kcal === 'number') cfg.today = { date: String(o.cfg.today.date || ''), kcal: o.cfg.today.kcal };
         if (o.cfg.kg >= 35 && o.cfg.kg <= 200) cfg.kg = o.cfg.kg;
         if (o.cfg.wkHist && typeof o.cfg.wkHist === 'object') cfg.wkHist = o.cfg.wkHist;
-        if (o.cfg.wtype === 'd2' || o.cfg.wtype === 'd3') cfg.wtype = o.cfg.wtype;
+        if (TYPES[o.cfg.wtype]) cfg.wtype = o.cfg.wtype;
+        if (o.cfg.yt && typeof o.cfg.yt === 'object') Object.keys(o.cfg.yt).forEach(function (k) { if (typeof o.cfg.yt[k] === 'string' && /^https:\/\//.test(o.cfg.yt[k])) cfg.yt[k] = o.cfg.yt[k]; });
+        if (o.cfg.setKg && typeof o.cfg.setKg === 'object') cfg.setKg = o.cfg.setKg;
+        if (o.cfg.setReps && typeof o.cfg.setReps === 'object') cfg.setReps = o.cfg.setReps;
+        if (o.cfg.planV) cfg.planV = o.cfg.planV;
         if (o.cfg.burn && typeof o.cfg.burn === 'object') cfg.burn = o.cfg.burn;
         if (o.cfg.wkPast && typeof o.cfg.wkPast === 'object') cfg.wkPast = o.cfg.wkPast;
         if (typeof o.cfg.wkg === 'number' && o.cfg.wkg >= 0 && o.cfg.wkg <= 100) cfg.wkg = o.cfg.wkg;
-        if (o.cfg.wk && typeof o.cfg.wk.done === 'object') cfg.wk = { date: String(o.cfg.wk.date), done: o.cfg.wk.done, extra: o.cfg.wk.extra && typeof o.cfg.wk.extra === 'object' ? o.cfg.wk.extra : {}, manual: o.cfg.wk.manual && typeof o.cfg.wk.manual === 'object' ? o.cfg.wk.manual : {} };
+        if (o.cfg.wk && typeof o.cfg.wk.done === 'object') cfg.wk = { date: String(o.cfg.wk.date), done: o.cfg.wk.done, extra: o.cfg.wk.extra && typeof o.cfg.wk.extra === 'object' ? o.cfg.wk.extra : {}, manual: o.cfg.wk.manual && typeof o.cfg.wk.manual === 'object' ? o.cfg.wk.manual : {}, draft: o.cfg.wk.draft && typeof o.cfg.wk.draft === 'object' ? o.cfg.wk.draft : {} };
         if (o.cfg.lifts && typeof o.cfg.lifts === 'object') Object.keys(LIFT).forEach(function (k) {
           var v = o.cfg.lifts[k];
           if (v && v.reps >= 1 && v.reps <= 50 && v.kg >= 0 && v.kg <= 100) cfg.lifts[k] = { reps: v.reps, kg: v.kg };
@@ -1435,8 +1553,10 @@ ol.steps li::before { font-size: 13px; }
       else $('nav-' + k).removeAttribute('aria-current');
     });
     set('pageTitle', { habits: 'Habits', todo: 'To do', workout: 'Workout', recipes: 'Recipes' }[v]);
+    document.body.classList.toggle('rl', v === 'recipes');
     window.scrollTo(0, 0);
     if (v === 'workout' && steps.length) paint();
+    if (v === 'workout' && window.nealFitNames) window.nealFitNames();
   }
   Object.keys(VIEWS).forEach(function (v) {
     $('nav-' + v).onclick = function () { try { location.hash = v; } catch (e) {} showView(v); };
@@ -1607,7 +1727,6 @@ ol.steps li::before { font-size: 13px; }
     head.append(wNode('b', '', 'Today \u00b7 ' + n + (n === 1 ? ' set' : ' sets')), wNode('span', 'wdtag', TYPES[cfg.wtype].name));
     for (s = 1; s <= n; s++) { var e = log.done[wKey(s, k)]; if (e) sl.append(wNode('span', '', 'Set ' + s + ': ' + wSetText(e))); }
     item.append(head, sl); box.textContent = ''; box.append(item);
-    if (wPastFor(k).length) { var lb = wNode('button', 'closer whlast', 'See last day'); lb.type = 'button'; lb.onclick = function () { wHistOpen(k); }; box.append(lb); }
     $('whMore').textContent = 'Add set ' + (n + 1);
     var rs = $('whReset'); rs.textContent = 'Reset exercise'; rs.classList.remove('armed');
     $('whMore').onclick = function () { wHistClose(); wSetExtra(k, wExtra(k) + 1); save(); renderWeights(); paint(); wtOpen(k, wSets(k)); };
@@ -1698,37 +1817,200 @@ ol.steps li::before { font-size: 13px; }
     });
     list.textContent = '';
     FULL.forEach(function (k) {
-      var sets = wSets(k), n = wCount(k), done = wDone(k), row = wNode('div', 'wrow' + (done ? ' done' : ''));
-      var nb = wNode('button', 'wname'), mark = wNode('i');
-      nb.type = 'button';
-      nb.setAttribute('aria-label', wName(k) + ', ' + n + ' of ' + sets + (sets === 1 ? ' set' : ' sets') + ' done. Open to log');
-      mark.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>';
-      mark.setAttribute('aria-hidden', 'true');
-      var lbl = wNode('span'); lbl.append(wNode('b', '', wName(k)));
-      lbl.append(wNode('small', 'wtarget', (PLAN[k] ? PLAN[k][1] : '') + (sets > 1 && n && !done ? ' \u00b7 ' + n + '/' + sets + ' done' : '')));
-      var logs = [], s;
-      for (s = 1; s <= sets; s++) {
-        var e = log.done[wKey(s, k)];
-        if (e && typeof e === 'object') {
-          if (e.reps && e.kg) logs.push(e.reps + ' \u00d7 ' + e.kg + ' kg');
-          else if (e.reps) logs.push(e.reps + ' reps');
-          else if (e.sec) logs.push(longTime(e.sec));
-        }
-      }
-      if (logs.length && !done) lbl.append(wNode('small', 'wlog', logs.join(' \u00b7 ')));
-      nb.append(mark, lbl);
-      row.onclick = function () { if (done) wDoneOpen(k); else wtOpen(k, wNext(k)); };
-      row.append(nb);
-      if (wPastFor(k).length) {
-        var ld = wNode('button', 'wlast', 'Last day'); ld.type = 'button';
-        ld.setAttribute('aria-label', 'Last day records for ' + wName(k));
-        ld.onclick = function (ev) { ev.stopPropagation(); wHistOpen(k); };
-        row.append(ld);
-      }
-      row.append(wNode('i', 'wchev'));
+      var sets = wSets(k), n = wCount(k), done = wDone(k), row = wNode('div', 'wrow wex' + (done ? ' done' : ''));
+      var left = wNode('div', 'wleft'), mark = wNode('button', 'wmk');
+      mark.type = 'button'; mark.innerHTML = CHECK;
+      mark.setAttribute('aria-label', done ? wName(k) + ' done. Show sets' : 'Mark ' + wName(k) + ' complete');
+      mark.setAttribute('aria-pressed', String(done));
+      mark.onclick = function (ev) { ev.stopPropagation(); if (done) wDoneOpen(k); else wComplete(k); };
+      var top = wNode('div', 'wtop'), nm = wNode('b', 'wnm', wName(k));
+      top.append(nm);
+      var info = wNode('div', 'winfo');
+      info.append(top);
+      left.append(mark, info);
+      var chips = wNode('div', 'wsets'), s;
+      for (s = 1; s <= sets; s++) chips.append(setChip(k, s));
+      var more = wNode('button', 'wsadd', '+'); more.type = 'button'; more.setAttribute('aria-label', 'Add a set to ' + wName(k));
+      more.onclick = function () { wSetExtra(k, wExtra(k) + 1); save(); renderWeights(); var rw = $('wList').querySelectorAll('.wex')[FULL.indexOf(k)]; if (rw) { var sc = rw.querySelector('.wsets'); sc.scrollLeft = sc.scrollWidth; } };
+      chips.append(more);
+      row.append(left, chips);
+      chips.setAttribute('aria-label', wName(k) + ' sets');
       list.append(row);
     });
+    fitNames();
   }
+  /* Keep every exercise name on one line: shrink the font a little where a name is too wide */
+  function fitNames() {
+    var els = $('wList').querySelectorAll('.wnm');
+    Array.prototype.forEach.call(els, function (el) {
+      el.style.fontSize = '';
+      if (!el.clientWidth) return;
+      var size = parseFloat(getComputedStyle(el).fontSize), guard = 0;
+      while (el.scrollWidth > el.clientWidth + 0.5 && size > 12 && guard++ < 20) { size -= 0.5; el.style.setProperty('font-size', size + 'px', 'important'); }
+    });
+  }
+  window.addEventListener('resize', function () { fitNames(); });
+  window.nealFitNames = fitNames;
+  /* Tick an exercise done: fill every set that isn't logged yet with its planned reps and weight, or time */
+  function wComplete(k) {
+    var log = wLog(), r, n = wBase(k);
+    for (r = 1; r <= n; r++) {
+      if (log.done[wKey(r, k)]) continue;
+      var e;
+      if (WARM[k]) e = { sec: wSetSec(k, r) };
+      else { e = { reps: wSetReps(k, r) }; if (!LIFT[k].noKg) { var kg = Number(wSetKg(k, r)); if (isFinite(kg)) e.kg = kg; } }
+      log.done[wKey(r, k)] = e; todayLog().kcal += wCalOf(k, e);
+    }
+    try { if (navigator.vibrate) navigator.vibrate(30); } catch (x) {}
+    var t = window.nealToast || function () {};
+    if (wAllDone()) { t(TYPES[cfg.wtype].name + ' done'); if (window.nealConfetti) window.nealConfetti(); }
+    else t(wName(k) + ' done');
+    wRecord(); save(); renderWeights(); paint();
+  }
+  /* Weight planned for one set: what you used for that set last time, else the exercise's weight */
+  /* Each set starts from what you typed today, else what you did in that set last time, else the plan */
+  function wDraft(k, r) { var d = wLog().draft; return d && d[k] && d[k][r] || null; }
+  function wLastSet(k, r) {
+    var past = cfg.wkPast || {}, days = Object.keys(past).sort(function (a, b) { return new Date(b) - new Date(a); });
+    for (var i = 0; i < days.length; i++) {
+      var day = past[days[i]], keys = Object.keys(day);
+      for (var j = 0; j < keys.length; j++) {
+        var p = keys[j].split(':');
+        if (p[2] === k && Number(p[1]) === r && day[keys[j]] && typeof day[keys[j]] === 'object') return day[keys[j]];
+      }
+    }
+    return null;
+  }
+  function wSetKg(k, r) {
+    var d = wDraft(k, r), l = wLastSet(k, r);
+    if (d && d.kg != null) return d.kg;
+    if (l && l.kg != null) return l.kg;
+    for (var q = r - 1; q >= 1; q--) { var e = wLog().done[wKey(q, k)]; if (e && e.kg != null) return e.kg; }
+    return liftVal(k) ? liftVal(k).kg : '';
+  }
+  /* Planned reps / time for one set: what you entered for that set, else the exercise's default */
+  function wSetReps(k, r) { var d = wDraft(k, r), l = wLastSet(k, r); return d && d.reps ? d.reps : l && l.reps ? l.reps : liftVal(k).reps; }
+  function wSetSec(k, r) { var d = wDraft(k, r), l = wLastSet(k, r); return d && d.sec ? d.sec : l && l.sec ? l.sec : (PLAN[k] && /30 sec/.test(PLAN[k][1]) ? 30 : 60); }
+  function wRemember(map, k, r, v) {
+    var log = wLog(), f = map === 'setKg' ? 'kg' : WARM[k] ? 'sec' : 'reps';
+    log.draft = log.draft || {}; log.draft[k] = log.draft[k] || {}; log.draft[k][r] = log.draft[k][r] || {}; log.draft[k][r][f] = v;
+  }
+  /* One set as a chip: type weight and reps straight in, tick to log it */
+  function setChip(k, r) {
+    var e = wLog().done[wKey(r, k)], c = wNode('div', 'wset' + (e ? ' on' : ''));
+    c.setAttribute('role', 'group'); c.setAttribute('aria-label', 'Set ' + r);
+    c.append(wNode('span', 'wsn', String(r)));
+    function field(cls, val, max, step, unit, label, onv) {
+      var w = wNode('label', 'wsf ' + cls), inp = document.createElement('input');
+      inp.type = 'number'; inp.min = '0'; inp.max = String(max); inp.step = String(step);
+      inp.inputMode = step < 1 ? 'decimal' : 'numeric'; inp.value = val === '' || val == null ? '' : String(val);
+      inp.setAttribute('aria-label', label + ', set ' + r);
+      inp.addEventListener('focus', function () { try { inp.select(); } catch (x) {} });
+      inp.addEventListener('change', function () {
+        var v = Number(inp.value);
+        if (!isFinite(v) || v < 0) { inp.value = ''; return; }
+        v = Math.min(max, step < 1 ? Math.round(v * 2) / 2 : Math.round(v)); inp.value = String(v);
+        onv(v);
+      });
+      w.append(inp); if (unit) w.append(wNode('span', 'wsu', unit));
+      return w;
+    }
+    /* Changing a logged set updates it in place, calories included */
+    function edit(key, v, map) {
+      wRemember(map, k, r, v);
+      var cur = wLog().done[wKey(r, k)];
+      if (cur && typeof cur === 'object') {
+        todayLog().kcal = Math.max(0, todayLog().kcal - wCalOf(k, cur));
+        cur[key] = v; todayLog().kcal += wCalOf(k, cur); wRecord();
+      }
+      save();
+    }
+    var kgIn = null, repIn = null, secIn = null;
+    if (WARM[k]) {
+      secIn = field('sec', e && e.sec ? e.sec : wSetSec(k, r), 600, 1, 's', 'Seconds', function (v) { edit('sec', Math.max(1, v), 'setReps'); });
+      c.append(secIn);
+    } else {
+      if (!LIFT[k].noKg) {
+        kgIn = field('kg', e && e.kg != null ? e.kg : wSetKg(k, r), 100, 0.5, '', 'Weight in kg', function (v) { edit('kg', v, 'setKg'); });
+        c.append(kgIn, wNode('span', 'wsx', 'kg ×'));
+      }
+      repIn = field('reps', e && e.reps ? e.reps : wSetReps(k, r), 200, 1, LIFT[k].noKg ? 'reps' : '', 'Reps', function (v) { edit('reps', Math.max(1, v), 'setReps'); });
+      c.append(repIn);
+    }
+    var ck = wNode('button', 'wsck'); ck.type = 'button'; ck.innerHTML = CHECK;
+    ck.setAttribute('aria-pressed', String(!!e)); ck.setAttribute('aria-label', e ? 'Set ' + r + ' done. Undo' : 'Log set ' + r);
+    ck.onclick = function () {
+      if (wLog().done[wKey(r, k)]) { wUndo(k, r); wRecord(); save(); renderWeights(); paint(); return; }
+      var en = {};
+      if (secIn) en.sec = Math.max(1, Math.round(Number(secIn.querySelector('input').value)) || wSetSec(k, r));
+      if (repIn) { en.reps = Math.max(1, Math.round(Number(repIn.querySelector('input').value)) || wSetReps(k, r)); liftVal(k).reps = en.reps; }
+      if (kgIn) { var kv = Number(kgIn.querySelector('input').value); if (isFinite(kv) && kv >= 0) { en.kg = Math.round(kv * 2) / 2; liftVal(k).kg = en.kg; wRemember('setKg', k, r, en.kg); } }
+      wMark(k, r, en);
+    };
+    if (WARM[k] && !e) {
+      /* Timed sets: start counts up inside the pill, tap again to stop and log */
+      var on = wRun && wRun.k === k && wRun.r === r;
+      ck = wNode('button', 'wsck wsplay' + (on ? ' run' : '')); ck.type = 'button';
+      ck.innerHTML = on ? '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2" fill="currentColor"/></svg>'
+        : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"/></svg>';
+      ck.setAttribute('aria-label', on ? 'Stop and log set ' + r : 'Start set ' + r);
+      ck.onclick = function () { if (wRun && wRun.k === k && wRun.r === r) wRunStop(); else wRunStart(k, r); };
+      if (on) { c.classList.add('run'); c.dataset.run = '1'; var si = secIn.querySelector('input'); si.readOnly = true; si.value = String(wRunSec()); }
+    }
+    c.append(ck);
+    return c;
+  }
+  var wRun = null, wRunTimer = null;
+  function wRunSec() { return wRun ? Math.max(0, Math.floor((Date.now() - wRun.start) / 1000)) : 0; }
+  function wRunStart(k, r) {
+    if (wRun) wRunStop();
+    openAudio(); beep(880, .15); holdWake();
+    wRun = { k: k, r: r, start: Date.now() };
+    renderWeights();
+    clearInterval(wRunTimer);
+    wRunTimer = setInterval(function () {
+      var el = $('wList').querySelector('.wset[data-run] input');
+      if (el) el.value = String(wRunSec());
+    }, 250);
+  }
+  function wRunStop() {
+    if (!wRun) return;
+    var k = wRun.k, r = wRun.r, sec = Math.max(1, wRunSec());
+    clearInterval(wRunTimer); wRun = null; releaseWake();
+    beep(523, .12); setTimeout(function () { beep(784, .2); }, 140);
+    wRemember('setReps', k, r, sec);
+    if (!wLog().done[wKey(r, k)]) wMark(k, r, { sec: sec }); else renderWeights();
+  }
+  /* YouTube button: opens the video, or asks for a link when there isn't one */
+  var YT_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5.5" width="19" height="13" rx="4" fill="#FF0033"/><path d="M10 9.2v5.6l5-2.8z" fill="#fff"/></svg>';
+  function ytUrl(k) { return (cfg.yt && cfg.yt[k]) || YT[k] || ''; }
+  function ytBtn(k) {
+    var u = ytUrl(k), el;
+    if (u) { el = document.createElement('a'); el.href = u; el.target = '_blank'; el.rel = 'noopener'; el.setAttribute('aria-label', 'Watch ' + wName(k) + ' on YouTube'); }
+    else { el = document.createElement('button'); el.type = 'button'; el.setAttribute('aria-label', 'Add a YouTube link for ' + wName(k)); el.classList.add('add'); el.onclick = function (ev) { ev.preventDefault(); ev.stopPropagation(); wyOpen(k); }; }
+    el.classList.add('wyt'); el.innerHTML = YT_SVG + (u ? '' : '<span>+</span>');
+    if (u) el.onclick = function (ev) { ev.stopPropagation(); };
+    return el;
+  }
+  var wyKey = null;
+  function wyOpen(k) {
+    wyKey = k;
+    set('wyTitle', ytUrl(k) ? 'Change video link' : 'Add video link'); set('wyFor', wName(k));
+    $('wyUrl').value = (cfg.yt && cfg.yt[k]) || YT[k] || ''; $('wyErr').hidden = true; $('wyDel').hidden = !(cfg.yt && cfg.yt[k]);
+    $('wy').hidden = false; $('wyVeil').hidden = false; document.body.style.overflow = 'hidden';
+    $('wyUrl').focus({ preventScroll: true });
+  }
+  function wyClose() { $('wy').hidden = true; $('wyVeil').hidden = true; if ($('wt').hidden) document.body.style.overflow = ''; }
+  $('wyClose').onclick = wyClose; $('wyVeil').onclick = wyClose;
+  $('wyForm').onsubmit = function (ev) {
+    ev.preventDefault();
+    var u = $('wyUrl').value.trim();
+    if (!/^https:\/\/\S+$/.test(u)) { $('wyErr').hidden = false; $('wyUrl').focus(); return; }
+    u = u.replace(/[?&]si=[^&]*/, '').replace(/\?$/, '');
+    cfg.yt[wyKey] = u; save(); renderWeights(); wyClose();
+    if (window.nealToast) window.nealToast('Video link saved');
+  };
+  $('wyDel').onclick = function () { delete cfg.yt[wyKey]; save(); renderWeights(); wyClose(); };
   /* Exercise timer: counts down for timed moves, counts up for reps */
   var wt = null;
   function wtNeedsReps(k) { return !WARM[k] && k !== 'plank'; }
@@ -1740,7 +2022,7 @@ ol.steps li::before { font-size: 13px; }
     $('wtRepsF').hidden = !wtNeedsReps(k); $('wtKgF').hidden = !wtNeedsKg(k); $('wtLog').hidden = !wtNeedsReps(k);
     var last = r > 1 ? wLog().done[wKey(r - 1, k)] : null;
     $('wtReps').value = prev && prev.reps ? prev.reps : last && last.reps ? last.reps : liftVal(k) ? liftVal(k).reps : '';
-    $('wtKgIn').value = prev && prev.kg != null && typeof prev === 'object' ? prev.kg : last && last.kg != null ? last.kg : liftVal(k) ? liftVal(k).kg : '';
+    $('wtKgIn').value = prev && prev.kg != null && typeof prev === 'object' ? prev.kg : wSetKg(k, r);
     var rs = $('wtReset'); rs.hidden = wCount(k) === 0; rs.textContent = 'Reset exercise'; rs.classList.remove('armed');
     var repMode = wtNeedsReps(k);
     $('wt').classList.toggle('reps', repMode); $('wt').classList.remove('ask', 'ok');
@@ -1781,7 +2063,7 @@ ol.steps li::before { font-size: 13px; }
     }
     if (wtNeedsKg(k)) {
       var kg = Number($('wtKgIn').value);
-      if (isFinite(kg) && kg >= 0) { entry.kg = Math.min(100, Math.round(kg * 2) / 2); liftVal(k).kg = entry.kg; }
+      if (isFinite(kg) && kg >= 0) { entry.kg = Math.min(100, Math.round(kg * 2) / 2); liftVal(k).kg = entry.kg; wRemember('setKg', k, r, entry.kg); }
     }
     beep(523, .12); setTimeout(function () { beep(784, .2); }, 140);
     if (wLog().done[wKey(r, k)]) wUndo(k, r);
@@ -1884,6 +2166,7 @@ ol.steps li::before { font-size: 13px; }
     paintTools(); save();
   };
   document.addEventListener('keydown', function (e) {
+    if (!$('wy').hidden) { if (e.key === 'Escape') wyClose(); return; }
     if (!$('wb').hidden) { if (e.key === 'Escape') wbClose(); return; }
     if (!$('wh').hidden) { if (e.key === 'Escape') wHistClose(); return; }
     if (wt) { if (e.key === 'Escape') wtClose(); else if (e.key === ' ' && e.target.tagName !== 'BUTTON') { e.preventDefault(); $('wtPause').click(); } return; }
@@ -1903,6 +2186,13 @@ ol.steps li::before { font-size: 13px; }
 
   /* Boot: an unfinished session from today comes back paused */
   var saved = load();
+  if (!TYPES[cfg.wtype]) cfg.wtype = 'd1';
+  if (cfg.planV !== 3) {
+    Object.keys(PLAN_KG).forEach(function (k) { liftVal(k).kg = PLAN_KG[k]; });
+    var PR = { fbChest: 10, oneRow: 10, fbCurl: 12, squat: 12, fbSkull: 10, shPress: 10, latRev: 12, lunge: 10 };
+    Object.keys(PR).forEach(function (k) { liftVal(k).reps = PR[k]; });
+    cfg.setKg = {}; cfg.planV = 3; save();
+  }
   FULL = TYPES[cfg.wtype].items;
   if (cfg.theme) document.documentElement.setAttribute('data-theme', cfg.theme);
   build();
@@ -1918,6 +2208,7 @@ ol.steps li::before { font-size: 13px; }
   if (nativeApp) nativeApp.addListener('backButton', function () {
     var d = document.querySelector('dialog[open]');
     if (d) d.close();
+    else if (!$('wy').hidden) wyClose();
     else if (!$('wb').hidden) wbClose();
     else if (!$('wh').hidden) wHistClose();
     else if (wt) wtClose();
@@ -2320,6 +2611,81 @@ const RECIPES = [
     serve: "Tip: soak the paneer in warm salted water while you chop, so it stays soft. Serve with roti, naan or jeera rice."
   },
   {
+    name: "Rice Cooker Veg Pulao",
+    type: "veg",
+    meta: "Basmati, whole spices and mixed veg · rice cooker · serves 3 · about 45 min (mostly soaking and resting)",
+    ingredients: [
+      ["Basmati Rice", "1 cup"],
+      ["Water", "1½ cups (for cooking)"],
+      ["Ghee or Oil", "2 tbsp"],
+      ["Cumin Seeds (Jeera)", "1 tsp"],
+      ["Bay Leaf", "1"],
+      ["Cinnamon Stick", "1 inch"],
+      ["Cloves", "4"],
+      ["Green Cardamom", "3 pods"],
+      ["Onion", "1 medium, thinly sliced"],
+      ["Ginger-Garlic Paste", "1 tsp"],
+      ["Green Chillies", "2, slit"],
+      ["Mixed Vegetables", "1½ cups, chopped (carrot, beans, peas, potato)"],
+      ["Salt", "1 tsp"],
+      ["Garam Masala", "½ tsp"],
+      ["Mint and Coriander", "2 tbsp, chopped"]
+    ],
+    steps: [
+      ["Rinse and Soak", "Rinse {1 cup|Basmati rice} 3–4 times until the water runs mostly clear. Soak in fresh water for 20 minutes, then drain well."],
+      ["Temper the Spices", "Heat {2 tbsp|Ghee or oil} in a pan, or use your cooker's sauté mode. Add {1 tsp|Cumin seeds}, {1|Bay leaf}, {1 inch|Cinnamon}, {4|Cloves} and {3|Green cardamom}. Let them sizzle for about 30 seconds until fragrant."],
+      ["Fry the Onion", "Add {1 medium|Onion} and fry for about 5 minutes until light golden."],
+      ["Add the Vegetables", "Stir in {1 tsp|Ginger-garlic paste} and {2|Green chillies} until the raw smell goes. Add {1½ cups|Mixed vegetables} and sauté for about 2 minutes."],
+      ["Coat the Rice", "Add the drained rice and {½ tsp|Garam masala}. Toss gently for 1 minute so every grain is coated in ghee. Don't stir hard or the grains will break."],
+      ["Cook", "Move everything into the rice cooker. Add {1½ cups|Water} and {1 tsp|Salt}, stir once, close the lid and press Cook."],
+      ["Rest and Finish", "When it switches to Warm, keep the lid closed for 10 minutes so the grains firm up. Fluff gently with a fork and fold in {2 tbsp|Mint and coriander}."]
+    ],
+    serve: "Tip: soaked basmati needs about 1 : 1.5 rice to water in most rice cookers. If yours runs dry, go up to 1 : 1.75. For a one-pot meal, add paneer cubes or a handful of cashews when you sauté the veg. Serve with raita."
+  },
+  {
+    name: "Paneer Tikka Masala",
+    type: "veg",
+    meta: "Restaurant style · one kadhai · 200 g paneer · serves 2 · about 30 min",
+    ingredients: [
+      ["#", "For the marinade"],
+      ["Curd", "3 tbsp, thick"],
+      ["Besan", "1 tbsp"],
+      ["Kashmiri Red Chilli Powder", "1 tsp"],
+      ["Kitchen King Masala", "1 tsp"],
+      ["Salt", "¾ tsp"],
+      ["Ajwain", "¼ tsp"],
+      ["Cumin Powder", "½ tsp"],
+      ["Black Pepper Powder", "¼ tsp"],
+      ["Garam Masala", "½ tsp"],
+      ["Turmeric", "A pinch"],
+      ["Kasoori Methi", "1 tsp, crushed"],
+      ["Ginger-Garlic Paste", "1 tsp"],
+      ["Mustard Oil", "1 tbsp"],
+      ["#", "Paneer and vegetables"],
+      ["Paneer", "200 g, cubed"],
+      ["Capsicum", "1, diced"],
+      ["Tomato", "1, diced (seeds removed)"],
+      ["Onion", "1, diced into petals"],
+      ["Green Chillies", "2, slit lengthwise"],
+      ["#", "For the gravy"],
+      ["Oil", "1 tbsp"],
+      ["Cumin Seeds", "½ tsp"],
+      ["Tomato Purée", "¾ cup"],
+      ["Water", "¼ cup"],
+      ["Fresh Cream", "1 tbsp"],
+      ["Fresh Coriander", "2 tbsp, chopped"]
+    ],
+    steps: [
+      ["Make the Marinade", "Add {3 tbsp|Curd}, {1 tbsp|Besan}, {1 tsp|Kashmiri chilli powder}, {1 tsp|Kitchen king masala}, {¾ tsp|Salt}, {¼ tsp|Ajwain}, {½ tsp|Cumin powder}, {¼ tsp|Black pepper}, {½ tsp|Garam masala}, {a pinch|Turmeric}, {1 tsp|Kasoori methi}, {1 tsp|Ginger-garlic paste} and {1 tbsp|Mustard oil} to a large bowl. Whisk into a smooth, thick paste."],
+      ["Marinate", "Add {200 g|Paneer}, {1|Capsicum}, {1|Tomato}, {1|Onion} and {2|Green chillies} to the bowl. Mix gently so everything is coated. Rest for 10 minutes. Don't wash the bowl."],
+      ["Make the Base", "Heat {1 tbsp|Oil} in a kadhai on medium. Add {½ tsp|Cumin seeds} and let them sizzle. Add {¾ cup|Tomato purée} and cook for 3–4 minutes until it thickens slightly."],
+      ["Add the Paneer", "Add the marinated paneer and vegetables to the kadhai. Pour {¼ cup|Water} into the marinade bowl, swirl to pick up what's left and add it to the kadhai. Stir gently."],
+      ["Simmer", "Cover and cook on a low flame for 10 minutes, stirring once halfway, until the oil separates and floats on top."],
+      ["Finish", "Add {1 tbsp|Fresh cream} and {2 tbsp|Fresh coriander} on top. Serve hot with roti, naan or jeera rice."]
+    ],
+    serve: "Tip: soak the paneer in warm salted water for 10 minutes before marinating, so it stays soft. Stir gently once it's in the kadhai, or the paneer breaks."
+  },
+  {
     name: "Easy Garlic Chicken Rice",
     type: "nonveg",
     meta: "One pot · lots of garlic · 150 g chicken · serves 1 · about 30 min",
@@ -2347,6 +2713,70 @@ const RECIPES = [
       ["Rest and Finish", "Switch off and let it rest, covered, for 5 minutes. Fluff with a fork, squeeze over the {½|Lemon}, and top with the crisp garlic and {2 tbsp|Coriander or spring onion}."]
     ],
     serve: "Tip: thigh stays juicier than breast. Serve with plain curd or a cucumber-onion salad. In a pressure cooker, use ¾ cup water and cook for 1 whistle on medium, then let the pressure drop on its own."
+  },
+  {
+    name: "Light Dahi Chicken",
+    type: "nonveg",
+    meta: "Curd-based gravy · 1 tbsp oil · serves 3 · about 35 min · goes with Veg Pulao",
+    ingredients: [
+      ["Boneless Chicken", "450 g breast or thigh, bite-size pieces"],
+      ["Thick Curd (Dahi)", "1 cup, whisked smooth (split in two)"],
+      ["Oil", "1 tbsp"],
+      ["Onion", "1 medium, finely chopped"],
+      ["Ginger-Garlic Paste", "1 tsp"],
+      ["Green Chilli", "1, slit"],
+      ["Turmeric", "¼ tsp"],
+      ["Kashmiri Chilli Powder", "1 tsp"],
+      ["Coriander Powder", "1 tsp"],
+      ["Black Pepper", "½ tsp, crushed"],
+      ["Garam Masala", "½ tsp"],
+      ["Salt", "1 tsp"],
+      ["Besan (Gram Flour)", "1 tsp (stops the curd splitting)"],
+      ["Kasuri Methi", "1 tsp, crushed"],
+      ["Fresh Coriander", "2 tbsp, chopped"]
+    ],
+    steps: [
+      ["Marinate", "Mix the {450 g|Chicken} with half the {Curd}, {¼ tsp|Turmeric}, {1 tsp|Kashmiri chilli}, {1 tsp|Coriander powder}, {½ tsp|Black pepper} and {1 tsp|Salt}. Leave for 15 minutes, while the pulao rice soaks."],
+      ["Fry the Onion", "Heat {1 tbsp|Oil} in a kadhai on medium. Fry {1 medium|Onion} for 5 minutes until soft and light golden. Add {1 tsp|Ginger-garlic paste} and {1|Green chilli} and cook for 1 minute."],
+      ["Sear the Chicken", "Add the chicken with all its marinade. Cook on high for 4–5 minutes, stirring, until it turns white outside."],
+      ["Add the Curd", "Turn the flame to low. Whisk {1 tsp|Besan} into the rest of the {Curd} with 2–3 tbsp water and stir it in slowly. Keep the flame low so the curd doesn't split."],
+      ["Simmer", "Cover and simmer on low for 10–12 minutes, stirring once or twice, until the chicken is cooked and the gravy is thick. Add a splash of water if it gets too dry."],
+      ["Finish", "Stir in {½ tsp|Garam masala} and {1 tsp|Kasuri methi}, rubbed between your palms. Top with {2 tbsp|Fresh coriander}."]
+    ],
+    serve: "Tip: start this while the pulao is in the rice cooker, and both will be ready together. Keep the gravy medium-thick so it soaks into the rice. With breast, about 280 kcal and 35 g protein per serving."
+  },
+  {
+    name: "Restaurant-Style Chicken Soup",
+    type: "nonveg",
+    meta: "Instant Pot · homemade stock · veg and egg ribbons · makes about 1 litre (serves 3) · about 45 min",
+    ingredients: [
+      ["Refined Oil", "2 tsp (for the stock)"],
+      ["Whole Black Pepper", "1 tsp (for the stock)"],
+      ["Bay Leaves", "2 (for the stock)"],
+      ["Chicken with Bones", "300 g, bones and flesh"],
+      ["Water", "1.25 litres"],
+      ["Carrot", "1, chopped"],
+      ["Sweet Corn", "50 g"],
+      ["Beans", "50 g, chopped"],
+      ["Black Pepper Powder", "1 tsp"],
+      ["Cornstarch", "3 tsp, mixed with 3 tbsp cold water"],
+      ["Eggs", "2, beaten"],
+      ["Soy Sauce", "1 tbsp"],
+      ["Red Chilli Sauce", "1 tsp"],
+      ["Vinegar", "1 tsp"],
+      ["Salt", "A pinch, to taste"],
+      ["Spring Onion Greens", "2 tbsp, chopped"]
+    ],
+    steps: [
+      ["Sear on Sauté", "Set the Instant Pot to Sauté. Heat {2 tsp|Refined oil}, add {1 tsp|Whole black pepper} and {2|Bay leaves} for a few seconds. Add the {300 g|Chicken} and sear until both sides lightly brown, about 4 minutes. Press Cancel."],
+      ["Pressure Cook the Stock", "Pour in {1.25 litres|Water} and scrape up any brown bits from the bottom. Close the lid, set the valve to Sealing and pressure cook on High for 15 minutes. Let the pressure release naturally for 10 minutes, then release the rest."],
+      ["Shred and Strain", "Lift out the chicken and shred the meat, throwing away the bones. Strain the stock, wipe out the pot and pour the stock back in. Skim off any foam or fat on top."],
+      ["Cook the Vegetables", "Set to Sauté and bring the stock to a boil. Add {1|Carrot}, {50 g|Sweet corn} and {50 g|Beans} and cook for 3–4 minutes. Add {1 tsp|Black pepper powder} and the shredded chicken."],
+      ["Thicken", "Stir the {3 tsp|Cornstarch} slurry, then pour it in while stirring. Simmer for 1 minute until the soup thickens slightly."],
+      ["Egg Ribbons", "Slowly pour in the {2|Eggs} in a thin stream while stirring gently, so they form ribbons. Press Cancel."],
+      ["Season and Serve", "Stir in {1 tbsp|Soy sauce}, {1 tsp|Red chilli sauce} and {1 tsp|Vinegar}. Taste, then add a {pinch|Salt} only if it needs it, since the soy sauce is already salty. Top with {2 tbsp|Spring onion greens} and serve hot."]
+    ],
+    serve: "Tip: always mix cornstarch with cold water first, or it turns lumpy. Add the soy sauce, chilli and vinegar at the end so they stay sharp. For a stronger stock, pressure cook for 25 minutes instead of 15."
   }
 ];
 
@@ -2381,77 +2811,80 @@ function renderIndex(q = "") {
 
 function openRecipe(i) {
   const r = RECIPES[i];
-  $("m-num").textContent = (r.type === "veg" ? "Veg " : "Non-Veg ") + "recipe " + pad(serial(i));
+  $("m-num").textContent = (r.type === "veg" ? "Veg " : "Non-Veg ") + pad(serial(i));
   $("m-title").textContent = r.name;
+  $("m-meta").textContent = r.meta || "";
   CUR = i; TICKS = new Set();
-  showTab("ing");
+  drawRecipe();
   const m = $("modal");
   m.showModal();
-  m.querySelector(".card-head").parentElement.parentElement.scrollTop = 0;
+  m.scrollTop = 0;
 }
 
-/* Two-way recipes: all ingredients share one tab. Steps prefixed "Dish name: " live on that dish's tab; the rest are the searing method. */
-let CUR = 0, PART = "", TICKS = new Set();
+/* One view: ingredients, then the method. Two-way recipes show the shared steps, then each dish's steps under its own heading. */
+let CUR = 0, TICKS = new Set();
+const ADD_RE = /^(Add|Mix in|Stir in|Pour in|Toss in|Season with|Put in)( the| in)?\s+(\{[^}]+\}(?:(?:,\s*|\s+and\s+|,\s+and\s+)(?:the\s+)?\{[^}]+\})+)(.*)$/;
 function drawRecipe() {
   const i = CUR, r = RECIPES[i], parts = r.parts || [];
   const partOf = t => parts.find(p => t.startsWith(p + ": ")) || "";
-  const shown = t => PART ? t.slice(PART.length + 2) : t;
   const on = id => TICKS.has(id) ? " checked" : "";
-  $("m-tabs").classList.toggle("four", !!parts.length);
-  $("l-steps").textContent = parts.length ? "Searing" : "Method";
-  ["p1", "p2"].forEach((t, n) => { $("tab-" + t).hidden = !parts[n]; $("tab-" + t).textContent = parts[n] || ""; });
-  const ing = r.ingredients.map((x, k) => [x, k]);
-  const stp = r.steps.map((x, k) => [x, k]).filter(([x]) => partOf(x[0]) === PART);
-  $("m-ing").innerHTML = ing.map(([[n, q], k]) => `
-    <li><label for="ing-${i}-${k}"><input type="checkbox" id="ing-${i}-${k}"${on(`ing-${i}-${k}`)}>
-      <span><span class="ing-name">${esc(n)}</span> — <span class="ing-qty">${esc(q)}</span></span></label></li>`).join("");
-  const badge = s => { const [a, n] = s.includes("|") ? s.split("|") : ["", s];
-    return `<span class="badge">${a ? `<b>${esc(a)}</b>` : ""}${esc(n)}</span>`; };
-  const points = d => {
-    const parts = d.split(/(?<=[.!?])\s+(?=[A-Z{])/).filter(x => x.trim());
-    return parts.length > 1 ? `<ul class="step-pts">${parts.map(x => `<li>${rich(x)}</li>`).join('')}</ul>` : `<p class="step-text">${rich(d)}</p>`;
-  };
+  const qtyName = s => { const [a, n] = s.includes("|") ? s.split("|") : ["", s]; return [a, n]; };
+  const badge = s => { const [a, n] = qtyName(s); return `<span class="badge">${a ? `<b>${esc(a)}</b>` : ""}${esc(n)}</span>`; };
   const rich = d => esc(d).replace(/\{([^}]+)\}/g, (_, x) => badge(x.replace(/&amp;/g, "&")));
-  $("m-steps").innerHTML = stp.map(([[t, d], k], n) => `
-    <li><label for="step-${i}-${k}"><div><span class="step-title">${esc(shown(t))}</span>${points(d)}
-      </div>
-      <input type="checkbox" id="step-${i}-${k}"${on(`step-${i}-${k}`)} aria-label="Mark step ${n + 1} done"></label></li>`).join("");
-  const serve = parts.length && !PART ? `Next: cook the ${parts[0]}, then the ${parts[1]}.` : r.serve;
-  $("m-serve").hidden = !serve;
-  $("m-serve").textContent = serve || "";
-  $("c-ing").textContent = ing.length;
-  $("c-steps").textContent = stp.length;
+  const cap = t => t.charAt(0).toUpperCase() + t.slice(1);
+  const addGroup = sen => {
+    const m = ADD_RE.exec(sen); if (!m) return "";
+    const items = m[3].match(/\{[^}]+\}/g).map(x => qtyName(x.slice(1, -1)));
+    let rest = m[4].replace(/^[\s,;]+/, "").trim();
+    if (rest === "." || rest === "") rest = "";
+    return `<div class="addg"><span class="addv">${esc(m[1])}${m[2] && m[2].trim() === "in" ? " in" : ""}</span>
+      <ol class="addl">${items.map(([a, n]) => `<li><span class="an">${esc(n)}</span>${a ? `<span class="aq">${esc(a)}</span>` : ""}</li>`).join("")}</ol>
+      ${rest ? `<p class="addr">${rich(cap(rest))}</p>` : ""}</div>`;
+  };
+  const body = d => {
+    const sens = d.split(/(?<=[.!?])\s+(?=[A-Z{])/).filter(x => x.trim());
+    return sens.map(x => addGroup(x) || `<p class="sline">${rich(x)}</p>`).join("");
+  };
+  let html = "", gi = 0;
+  r.ingredients.forEach(([n, q], k) => {
+    if (n === "#") { html += `<li class="ing-grp">${esc(q)}</li>`; return; }
+    html += `<li><label for="ing-${i}-${k}"><input type="checkbox" id="ing-${i}-${k}"${on(`ing-${i}-${k}`)}>
+      <span class="ing-name">${esc(n)}</span><span class="ing-qty">${esc(q)}</span></label></li>`; gi++;
+  });
+  $("m-ing").innerHTML = html;
+  const groups = parts.length ? [["", parts.length ? "Searing" : ""]].concat(parts.map(p => [p, p])) : [["", ""]];
+  let n = 0, sh = "";
+  groups.forEach(([key, label]) => {
+    const list = r.steps.map((x, k) => [x, k]).filter(([x]) => partOf(x[0]) === key);
+    if (!list.length) return;
+    if (label) sh += `<h4 class="part">${esc(label)}</h4>`;
+    sh += `<ol class="steps" start="${n + 1}" style="counter-reset:s ${n}">` + list.map(([[t, d], k]) => { n++;
+      const title = key ? t.slice(key.length + 2) : t;
+      return `<li><label for="step-${i}-${k}"><div><span class="step-title">${esc(title)}</span>${body(d)}</div>
+        <input type="checkbox" id="step-${i}-${k}"${on(`step-${i}-${k}`)} aria-label="Mark step ${n} done"></label></li>`; }).join("") + `</ol>`;
+  });
+  $("m-steps").innerHTML = sh;
+  $("m-serve").hidden = !r.serve;
+  $("m-serve").textContent = r.serve || "";
+  $("c-ing").textContent = gi;
+  $("c-steps").textContent = n;
 }
 ["m-ing", "m-steps"].forEach(id => $(id).addEventListener("change", e => {
   if (e.target.checked) TICKS.add(e.target.id); else TICKS.delete(e.target.id);
 }));
-
-function showTab(which) {
-  const parts = RECIPES[CUR].parts || [];
-  PART = which === "p1" ? parts[0] : which === "p2" ? parts[1] : "";
-  drawRecipe();
-  ["ing", "steps", "p1", "p2"].forEach(t => $("tab-" + t).setAttribute("aria-selected", t === which));
-  $("panel-ing").hidden = which !== "ing";
-  $("panel-steps").hidden = which === "ing";
-  const sc = $("modal"); if (sc) sc.scrollTop = 0;
-}
-$("tab-ing").addEventListener("click", () => showTab("ing"));
-$("tab-steps").addEventListener("click", () => showTab("steps"));
-$("tab-p1").addEventListener("click", () => showTab("p1"));
-$("tab-p2").addEventListener("click", () => showTab("p2"));
 
 $("index").addEventListener("click", e => {
   const b = e.target.closest(".entry");
   if (b) openRecipe(+b.dataset.i);
 });
 $("m-close").addEventListener("click", () => $("modal").close());
-$("modal").addEventListener("click", e => { if (e.target === $("modal")) $("modal").close(); });
+
 $("search").addEventListener("input", e => renderIndex(e.target.value));
 
 $("g-list").innerHTML = GUIDE.map(([c, a, f]) => `
   <li class="g-item"><div class="g-top"><span class="g-cat">${esc(c)}</span><span class="g-amt">${esc(a)}</span></div>
   <ul class="g-foods">${f.map(x => `<li>${esc(x)}</li>`).join("")}</ul></li>`).join("");
-$("guide-open").addEventListener("click", () => $("guide").showModal());
+if ($("guide-open")) $("guide-open").addEventListener("click", () => $("guide").showModal());
 
 /* Plate: a common balanced-plate split. Tap a part to list matching food groups from GUIDE. */
 const PLATE = [
