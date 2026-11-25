@@ -69,9 +69,9 @@ body { padding-bottom: calc(86px + var(--sab, env(safe-area-inset-bottom, 0px)))
 .bnav { position: fixed; z-index: 12; left: 0; right: 0; bottom: 0; pointer-events: none;
   padding-bottom: calc(10px + var(--sab, env(safe-area-inset-bottom, 0px))); padding-left: max(14px, var(--sal, env(safe-area-inset-left, 0px))); padding-right: max(14px, var(--sar, env(safe-area-inset-right, 0px))); }
 .bnav::before { content: ""; position: absolute; z-index: -1; inset: -18px 0 0; pointer-events: none; background: linear-gradient(transparent, var(--bg) 70%); opacity: .9; }
-.bnavin { pointer-events: auto; max-width: 480px; margin-inline: auto; display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 6px; border: 1px solid var(--glass-line); border-radius: 30px; background: var(--menu, var(--glass)); box-shadow: 0 14px 36px rgba(0,0,0,.14), var(--glass-shadow); -webkit-backdrop-filter: blur(22px) saturate(170%); backdrop-filter: blur(22px) saturate(170%); }
+.bnavin { pointer-events: auto; max-width: 480px; margin-inline: auto; display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; padding: 6px; border: 1px solid var(--glass-line); border-radius: 30px; background: var(--menu, var(--glass)); box-shadow: 0 14px 36px rgba(0,0,0,.14), var(--glass-shadow); -webkit-backdrop-filter: blur(22px) saturate(170%); backdrop-filter: blur(22px) saturate(170%); }
 .bnav button { min-width: 0; display: grid; justify-items: center; gap: 3px; padding: 6px 2px 5px; border: 0; border-radius: 22px; background: transparent; color: var(--muted); font: inherit; -webkit-tap-highlight-color: transparent; touch-action: manipulation; }
-.bnav .bi { display: grid; place-items: center; width: 58px; height: 32px; border-radius: 99px; transition: background-color .25s ease, transform .25s cubic-bezier(.3,1.5,.5,1); }
+.bnav .bi { display: grid; place-items: center; width: 50px; height: 32px; border-radius: 99px; transition: background-color .25s ease, transform .25s cubic-bezier(.3,1.5,.5,1); }
 .bnav svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .bnav .bl { font-size: .74rem; font-weight: 600; line-height: 1.1; white-space: nowrap; }
 .bnav button[aria-current="true"] { color: var(--fg); }
@@ -432,12 +432,20 @@ ol.steps label:has(input:checked) .step-title{text-decoration:line-through}
 .tabs.four .count{display:none}
 .tab .count{font-weight:500;opacity:.7;margin-left:4px;font-variant-numeric:tabular-nums}
 .card-head{flex-wrap:wrap}
-.cat-tabs{margin:0;max-width:340px}
-.cat-tabs .tab{display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.cat-tabs{margin:0;max-width:520px;display:flex!important;overflow-x:auto;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar{display:none}
+.cat-tabs .tab{flex:1 1 auto;padding-inline:8px}
+.cat-tabs .tab .count{display:none}
+.cat-tabs .afico{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round;flex:none}
+.cat-tabs .tab{display:inline-flex;align-items:center;justify-content:center;gap:6px;white-space:nowrap;padding-inline:6px;min-width:0}
+@media (max-width:380px){.cat-tabs .tab{font-size:13.5px;gap:5px;padding-inline:6px!important}.cat-tabs .tab .count{margin-left:0}}
 .mark{width:14px;height:14px;border:1.5px solid;border-radius:2px;display:inline-grid;place-items:center;background:#fff;flex:none}
 .mark::after{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
 .mark.veg{color:#2e8b3d;border-color:#2e8b3d}
 .mark.nonveg{color:#9b3b1f;border-color:#9b3b1f}
+.mark.combo{color:#9b3b1f;border-color:#2e8b3d;border-right-color:#9b3b1f;border-bottom-color:#9b3b1f}
+.mark.combo::after{background:linear-gradient(135deg,#2e8b3d 50%,#9b3b1f 50%)}
+.entry .cmark{display:inline-grid;vertical-align:-1px;margin-right:8px}
 .mark.nonveg::after{border-radius:0;width:0;height:0;background:none;border-left:4px solid transparent;border-right:4px solid transparent;border-bottom:7px solid currentColor}
 .card-head .tabs{flex-basis:100%}
 .step-text{color:var(--ink);margin:0;max-width:62ch;line-height:1.85}
@@ -512,6 +520,8 @@ ol.steps li::before { font-size: 13px; }
 .wtop { display: flex; align-items: flex-start; gap: 2px; min-width: 0; max-width: 100%; }
 .wnm { font-weight: 600; font-size: .95rem; line-height: 1.25; min-width: 0; padding-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: clamp(.8rem, 3.6vw, .95rem) !important; letter-spacing: -.01em; }
 .wex.done .wnm { color: var(--muted); }
+.wsstag { font-size: .68rem; font-weight: 600; letter-spacing: .02em; color: var(--num-b); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; }
+.wex.wss { box-shadow: inset 3px 0 0 var(--lit); }
 .wex .wtarget { font-size: .78rem; }
 .wyt { flex: none; position: relative; display: inline-grid; place-items: center; width: 32px; height: 28px; margin: -2px -4px -2px 0; padding: 0; border: 0; border-radius: 8px; background: none; color: var(--muted); font-weight: 800; font-size: .7rem; text-decoration: none; }
 .wyt svg { width: 22px; height: 22px; }
@@ -547,11 +557,42 @@ ol.steps li::before { font-size: 13px; }
 .wsadd { flex: none; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1.5px dashed var(--line); border-radius: 50%; background: none; color: var(--muted); font-size: 1.1rem; font-weight: 700; }
 .wyfor { margin: 0; font-weight: 600; }
 
+/* Home: four cards in a circle around today's date */
+.home { padding: 8px max(16px, var(--sal, env(safe-area-inset-left, 0px))) 24px max(16px, var(--sar, env(safe-area-inset-right, 0px))); }
+.orbit { position: relative; width: min(100%, 440px); aspect-ratio: 1; margin: 12px auto 0; }
+.oring { position: absolute; inset: 18%; border-radius: 50%; border: 2px dashed var(--line); }
+.oring::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(circle, rgba(255,138,115,.16), transparent 70%); }
+.ocard { position: absolute; width: 34%; aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 4px; padding: 10px; border: 1px solid var(--glass-line); border-radius: 50%; background: var(--glass); box-shadow: var(--glass-shadow), 0 10px 26px rgba(0,0,0,.08); -webkit-backdrop-filter: blur(18px) saturate(165%); backdrop-filter: blur(18px) saturate(165%); color: var(--fg); font: inherit; text-align: center; transition: transform .2s cubic-bezier(.3,1.5,.5,1); -webkit-tap-highlight-color: transparent; }
+.ocard:active { transform: scale(.94); }
+.ocard:focus-visible { outline: 3px solid var(--cta); outline-offset: 3px; }
+.o-top { top: 1%; left: 33%; }
+.o-left { top: 33%; left: 1%; }
+.o-right { top: 33%; right: 1%; }
+.o-bottom { bottom: 1%; left: 33%; }
+.oi { width: clamp(36px, 10vw, 44px); height: clamp(36px, 10vw, 44px); display: grid; place-items: center; border-radius: 50%; background: var(--cta); color: var(--on-cta); }
+.oi svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.o-left .oi { background: #9CC59A; color: #10230F; }
+.o-right .oi { background: #F2C46D; color: #2A1D03; }
+.o-bottom .oi { background: var(--fg); color: var(--bg); }
+.ocard b { font-family: var(--display); font-weight: 500; font-size: clamp(14px, 4vw, 17px); letter-spacing: -.01em; }
+.os { max-width: 100%; font-size: clamp(10.5px, 2.9vw, 12px); line-height: 1.25; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.ocenter { position: absolute; left: 36%; top: 36%; width: 28%; aspect-ratio: 1; display: grid; place-content: center; text-align: center; border-radius: 50%; }
+.oday { font-size: clamp(11px, 3vw, 13px); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.odate { font-family: var(--display); font-weight: 500; font-size: clamp(18px, 5.6vw, 26px); letter-spacing: -.02em; }
+/* Pin */
+.pinbtn { flex: none; display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 6px 12px; border: 1.5px solid #E1E3DD; border-radius: 99px; background: #FFFFFF; color: #3A403B; font: inherit; font-size: 13px; font-weight: 700; }
+.pinbtn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }
+.pinbtn[aria-pressed="true"] { border-color: #141614; background: #141614; color: #FFFFFF; }
+.pinbtn[aria-pressed="true"] svg { fill: currentColor; }
+#modal .pinbtn { margin-top: 2px; }
+#comboView .crow { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pinmark { display: block; width: fit-content; margin-bottom: 4px; padding: 2px 8px; border-radius: 99px; background: #141614; color: #FFFFFF; font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+
 /* Recipes: clean light look, in both themes */
 body.rl { color-scheme: light; --bg: #F6F6F3; --fg: #141614; --muted: #646B66; --line: #E7E8E4; --glass: #FFFFFF; --glass-line: #E7E8E4;
   --glass-shadow: 0 1px 2px rgba(20,24,20,.04), 0 6px 18px rgba(20,24,20,.05); --menu: #FFFFFF; --track: #F0F1ED; --seg: #EEF0EB; --leaf: #3E5A3A;
   --cta: #FF8A73; --on-cta: #000000; --dot: #D9482E; --lit: #FF8A73; --num-a: #F0694F; --num-b: #D9482E; --veil: rgba(246,246,243,.86); }
-dialog#modal, dialog#guide { color-scheme: light; --fg: #141614; --ink: #141614; --muted: #646B66; --line: #ECEDE9; --surface: #FFFFFF; --glass: #FAFAF8;
+dialog#modal, dialog#guide, #comboView { color-scheme: light; --fg: #141614; --ink: #141614; --muted: #646B66; --line: #ECEDE9; --surface: #FFFFFF; --glass: #FAFAF8;
   --leaf: #3E5A3A; --leaf-soft: #F3F4F0; --track: #F0F1ED; --btn: #FF8A73; --btn-fg: #000; --lit: #FF8A73; --haldi: #D9482E; --mirch: #3E5A3A; }
 body.rl .recipes .search { background: #FFFFFF; border-color: var(--line); border-radius: 14px; padding: 13px 16px; }
 body.rl #index { border-radius: 18px; }
@@ -564,7 +605,16 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 #modal .card { max-width: 680px; margin-inline: auto; min-height: 100%; }
 #modal .card-head { padding-top: calc(12px + var(--sat, env(safe-area-inset-top, 0px))) !important; padding-left: max(16px, var(--sal, env(safe-area-inset-left, 0px))) !important; padding-right: max(16px, var(--sar, env(safe-area-inset-right, 0px))) !important; align-items: flex-start; gap: 12px; background: rgba(255,255,255,.94); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
 #modal .card-body { padding-bottom: calc(32px + var(--sab, env(safe-area-inset-bottom, 0px))) !important; padding-left: max(16px, var(--sal, env(safe-area-inset-left, 0px))) !important; padding-right: max(16px, var(--sar, env(safe-area-inset-right, 0px))) !important; }
-#modal .card-head .t { padding-top: 2px; }
+#modal .card-head .t { padding-top: 2px; min-width: 0; flex: 1 1 0; }
+#modal .card-head { flex-wrap: wrap !important; }
+:is(#modal, #comboView) .rtabs { flex: 1 0 100%; display: flex; gap: 2px; margin-top: 2px; padding: 3px; border-radius: 12px; background: #EEF0EB; }
+:is(#modal, #comboView) .rtabs[hidden] { display: none; }
+:is(#modal, #comboView) .rtabs button { flex: 1 1 auto; min-width: 0; min-height: 36px; padding: 6px 4px; border: 0; border-radius: 9px; background: none; color: #646B66; font: inherit; font-size: 13.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+:is(#modal, #comboView) .rtabs button[aria-selected="true"] { background: #FFFFFF; color: #141614; box-shadow: 0 1px 3px rgba(0,0,0,.1); }
+:is(#modal, #comboView) .rtabs button.tcol::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 6px; border-radius: 50%; background: var(--tc); vertical-align: 1px; }
+:is(#modal, #comboView) .rtabs button.tcol[aria-selected="true"] { background: var(--tc); color: #FFFFFF; }
+:is(#modal, #comboView) .rtabs button.tcol[aria-selected="true"]::before { background: #FFFFFF; }
+:is(#modal, #comboView) .rtabs button:focus-visible { outline: 2px solid #FF8A73; outline-offset: 1px; }
 #modal::backdrop { background: #FFFFFF; }
 #modal .card-head { padding: 20px 20px 14px; border-bottom: 1px solid var(--line); flex-wrap: nowrap; }
 #modal .eyebrow { color: var(--haldi); font-size: 11.5px; }
@@ -572,26 +622,61 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 #modal .close { width: 40px; height: 40px; background: #F1F2EE; color: #141614; }
 #modal .close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; }
 #modal .card-body { padding: 18px 20px 26px; gap: 28px; }
-#modal h3 { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: -.01em; text-transform: none; color: var(--fg); margin: 0 0 8px; }
-#modal h3 .count { font-family: var(--body); font-size: 12px; font-weight: 700; color: var(--muted); background: #F1F2EE; border-radius: 99px; padding: 2px 8px; }
-#modal h4.part { margin: 18px 0 10px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--haldi); font-weight: 700; }
-#modal h4.part:first-child { margin-top: 4px; }
-#modal ul.ing li { border-bottom: 1px solid var(--line); }
-#modal ul.ing li:last-child { border-bottom: 0; }
-#modal ul.ing label { grid-template-columns: 20px minmax(0, 1.25fr) minmax(0, 1fr); gap: 12px; padding: 11px 0; align-items: baseline; }
-#modal ul.ing input { align-self: center; margin: 0; accent-color: #3E5A3A; }
-#modal .ing-name { font-weight: 600; min-width: 0; }
-#modal .ing-qty { color: var(--muted); text-align: right; font-size: 14px; line-height: 1.4; }
-#modal ul.ing input:checked ~ span { opacity: .4; text-decoration: line-through; }
-#modal .ing-grp { border: 0 !important; padding: 14px 0 2px; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--haldi); }
-#modal .ing-grp:first-child { padding-top: 0; }
-#modal ol.steps { gap: 0; }
-#modal ol.steps > li { padding: 14px 0; border-top: 1px solid var(--line); grid-template-columns: 30px minmax(0, 1fr); }
-#modal ol.steps > li:first-child { border-top: 0; padding-top: 4px; }
-#modal ol.steps > li::before { width: 26px; height: 26px; font-size: 12.5px; font-weight: 600; background: #141614; color: #FFFFFF; }
-#modal .step-title { font-size: 16px; margin-bottom: 6px; }
-#modal .sline { margin: 0 0 6px; line-height: 1.65; color: #2B302C; max-width: 62ch; }
-#modal .badge { background: #F3F4F0; border: 0; font-size: 13.5px; padding: 1px 8px; border-radius: 8px; }
+:is(#modal, #comboView) h3 { display: flex; align-items: center; gap: 8px; font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: -.01em; text-transform: none; color: var(--fg); margin: 0 0 8px; }
+:is(#modal, #comboView) h3 .count { font-family: var(--body); font-size: 12px; font-weight: 700; color: var(--muted); background: #F1F2EE; border-radius: 99px; padding: 2px 8px; }
+:is(#modal, #comboView) h4.part { margin: 18px 0 10px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--haldi); font-weight: 700; }
+:is(#modal, #comboView) h4.part:first-child { margin-top: 4px; }
+:is(#modal, #comboView) ul.ing li { border-bottom: 1px solid var(--line); }
+:is(#modal, #comboView) ul.ing li:last-child { border-bottom: 0; }
+:is(#modal, #comboView) ul.ing label { grid-template-columns: 20px minmax(0, 1.25fr) minmax(0, 1fr); gap: 12px; padding: 11px 0; align-items: baseline; }
+:is(#modal, #comboView) ul.ing input { align-self: center; margin: 0; accent-color: #3E5A3A; }
+:is(#modal, #comboView) .ing-name { font-weight: 600; min-width: 0; }
+:is(#modal, #comboView) .ing-qty { color: var(--muted); text-align: right; font-size: 14px; line-height: 1.4; }
+:is(#modal, #comboView) ul.ing input:checked ~ span { opacity: .4; text-decoration: line-through; }
+:is(#modal, #comboView) .ing-grp { border: 0 !important; padding: 14px 0 2px; font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--haldi); }
+:is(#modal, #comboView) .ing-grp:first-child { padding-top: 0; }
+:is(#modal, #comboView) ol.steps { gap: 0; }
+:is(#modal, #comboView) ol.steps > li { padding: 14px 0; border-top: 1px solid var(--line); grid-template-columns: 30px minmax(0, 1fr); }
+:is(#modal, #comboView) ol.steps > li:first-child { border-top: 0; padding-top: 4px; }
+:is(#modal, #comboView) ol.steps > li::before { width: 26px; height: 26px; font-size: 12.5px; font-weight: 600; background: #141614; color: #FFFFFF; }
+:is(#modal, #comboView) .step-title { font-size: 16px; margin-bottom: 6px; }
+:is(#modal, #comboView) .sline { margin: 0 0 6px; line-height: 1.65; color: #2B302C; max-width: 62ch; }
+:is(#modal, #comboView) .badge { background: #F3F4F0; border: 0; font-size: 13.5px; padding: 1px 8px; border-radius: 8px; }
+#comboView { padding: 4px 0 16px; gap: 22px; background: #FFFFFF; border: 1px solid #E7E8E4; border-radius: 20px; padding: 14px 16px 22px; color: #141614; }
+#comboView .chead { display: grid; gap: 6px; padding: 4px 2px 2px; }
+#comboView .clabel { margin: 0; font-size: 11.5px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #D9482E; }
+#comboView .chead h2 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 24px; line-height: 1.15; letter-spacing: -.02em; color: #141614; text-wrap: balance; }
+#comboView .cmeta { margin: 0; color: #646B66; font-size: 14px; line-height: 1.5; }
+#comboView .cstats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; margin-top: 8px; }
+#comboView .cstats div { display: grid; gap: 2px; padding: 10px 6px; border-radius: 14px; background: #F6F7F3; text-align: center; min-width: 0; }
+#comboView .cstats b { font-family: var(--display); font-weight: 500; font-size: 17px; letter-spacing: -.02em; color: #141614; white-space: nowrap; }
+#comboView .cstats span { font-size: 11px; line-height: 1.25; color: #646B66; }
+:is(#modal, #comboView) .tchip { display: inline-block; vertical-align: 1px; margin-right: 8px; padding: 2px 8px; border-radius: 99px; background: #141614; color: #FFFFFF; font-family: var(--body); font-size: 12px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+:is(#modal, #comboView) .scall { margin: 4px 0 8px; padding: 9px 12px; border-radius: 12px; font-size: 14.5px; line-height: 1.55; max-width: 62ch; }
+:is(#modal, #comboView) .scall b { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 2px; }
+:is(#modal, #comboView) .scall.mw { background: #EEF3EC; color: #2E4A2B; }
+:is(#modal, #comboView) .scall.mw b { color: #3E5A3A; }
+:is(#modal, #comboView) .scall.km { background: #FFF1E8; color: #5A2E12; border: 1px dashed #E8A27C; }
+:is(#modal, #comboView) .scall.km b { color: #C2501F; }
+:is(#modal, #comboView) ul.tips { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+:is(#modal, #comboView) ul.tips li { display: grid; gap: 3px; padding: 12px 14px; border-radius: 14px; background: #F6F7F3; }
+:is(#modal, #comboView) ul.tips b { font-size: 15px; color: #141614; }
+:is(#modal, #comboView) ul.tips span { font-size: 14.5px; line-height: 1.55; color: #3A403B; }
+@media (max-width: 380px) { #comboView .cstats b { font-size: 15px; } #comboView .cstats span { font-size: 10.5px; } }
+#comboView .cpick { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; margin: -2px 0 0; }
+#comboView .cpick::-webkit-scrollbar { display: none; }
+#comboView .cpick button { flex: 1 1 0; min-width: 0; overflow: hidden; text-overflow: ellipsis; min-height: 40px; padding: 8px 8px; font-size: 13.5px !important; border: 1.5px solid #E7E8E4; border-radius: 99px; background: #FFFFFF; color: #3A403B; font: inherit; font-size: 14px; font-weight: 700; white-space: nowrap; }
+#comboView .cpick button[aria-selected="true"] { border-color: #141614; background: #141614; color: #FFFFFF; }
+#comboView .cpick button:focus-visible { outline: 2px solid #FF8A73; outline-offset: 2px; }
+#comboView .rtabs { margin: 0; position: sticky; top: calc(64px + var(--sat, env(safe-area-inset-top, 0px))); z-index: 2; box-shadow: 0 0 0 6px #FFFFFF; }
+#index li.hl .entry { background: linear-gradient(135deg, #FFF4EF, #FFFBEA 55%, #F1F8EE); border: 1.5px solid #F0B9A6; }
+#index li.hl .num { color: #C2501F; }
+.hlbadge { display: block; width: fit-content; margin-bottom: 4px; padding: 2px 8px; border-radius: 99px; background: linear-gradient(90deg, #D9482E, #C98A0B 55%, #2E8B3D); color: #FFFFFF; font-size: 10.5px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+:is(#modal, #comboView) h4.part.pcol { color: var(--pc); display: flex; align-items: center; gap: 8px; }
+:is(#modal, #comboView) h4.part.pcol::before { content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--pc); flex: none; }
+:is(#modal, #comboView) ol.steps.pcol > li { border-left: 3px solid var(--pc); padding-left: 10px !important; margin-left: -2px; }
+:is(#modal, #comboView) ol.steps.pcol > li::before { background: var(--pc) !important; }
+:is(#modal, #comboView) ol.steps.pcol .tchip { background: var(--pc); }
 .addg { margin: 2px 0 10px; padding: 10px 12px; border-radius: 14px; background: #F6F7F3; display: grid; gap: 6px; max-width: 62ch; }
 .addv { font-weight: 700; font-size: 14px; }
 .addl { margin: 0; padding: 0 0 0 22px; display: grid; gap: 3px; }
@@ -602,7 +687,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 .addl .an { font-weight: 600; }
 .addl .aq { color: var(--muted); margin-left: 8px; font-size: 14px; white-space: nowrap; }
 .addr { margin: 2px 0 0; font-weight: 600; color: #141614; line-height: 1.55; }
-#modal .serve { margin-top: 16px; background: #FFF4F1; border-radius: 14px; padding: 12px 14px; font-size: 14.5px; line-height: 1.55; color: #3A2A26; }
+:is(#modal, #comboView) .serve { margin-top: 16px; background: #FFF4F1; border-radius: 14px; padding: 12px 14px; font-size: 14.5px; line-height: 1.55; color: #3A2A26; }
 
 /* Habits: carried over from Tending */
 #v-habits, #v-todo { flex: 1 0 auto; width: 100%; }
@@ -723,12 +808,24 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 
 <nav class="bnav" aria-label="Sections">
   <div class="bnavin">
+    <button type="button" id="nav-home"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/></svg></span><span class="bl">Home</span></button>
     <button type="button" id="nav-habits" aria-current="true"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><span class="bl">Habits</span></button>
     <button type="button" id="nav-todo"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><span class="bl">To do</span></button>
     <button type="button" id="nav-workout"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><span class="bl">Workout</span></button>
     <button type="button" id="nav-recipes"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><span class="bl">Recipes</span></button>
   </div>
 </nav>
+
+<section id="v-home" class="home" hidden aria-label="Home">
+  <div class="orbit">
+    <div class="oring" aria-hidden="true"></div>
+    <button type="button" class="ocard o-top" data-go="recipes"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><b>Recipes</b><span class="os" id="hs-recipes"></span></button>
+    <button type="button" class="ocard o-left" data-go="habits"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><b>Habits</b><span class="os" id="hs-habits"></span></button>
+    <div class="ocenter"><span class="oday" id="hc-day"></span><span class="odate" id="hc-date"></span></div>
+    <button type="button" class="ocard o-right" data-go="todo"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b><span class="os" id="hs-todo"></span></button>
+    <button type="button" class="ocard o-bottom" data-go="workout"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b><span class="os" id="hs-workout"></span></button>
+  </div>
+</section>
 
 <section id="v-habits">
 <main class="h-main" id="h-main">
@@ -877,11 +974,33 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   <div class="tabs cat-tabs" role="tablist" aria-label="Recipe type">
     <button class="tab" role="tab" id="cat-veg" aria-selected="true"><span class="mark veg" aria-hidden="true"></span>Veg<span class="count" id="n-veg"></span></button>
     <button class="tab" role="tab" id="cat-nonveg" aria-selected="false"><span class="mark nonveg" aria-hidden="true"></span>Non-Veg<span class="count" id="n-nonveg"></span></button>
+    <button class="tab" role="tab" id="cat-combo" aria-selected="false"><span class="mark combo" aria-hidden="true"></span>Combo<span class="count" id="n-combo"></span></button>
+    <button class="tab" role="tab" id="cat-airfryer" aria-selected="false"><svg class="afico" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="4"/><path d="M8 8h8M9 13.5h6v3H9z"/></svg>Airfryer<span class="count" id="n-airfryer"></span></button>
   </div>
 
   <input class="search" id="search" type="search" placeholder="Search recipes or ingredients" aria-label="Search recipes">
 
   <ol class="index" id="index"></ol>
+
+  <div class="card-body" id="comboView" hidden>
+    <div class="cpick" id="xcombos" role="tablist" aria-label="Choose combo" hidden></div>
+    <div class="chead">
+      <div class="crow"><p class="clabel">Cook-along combo</p><button type="button" class="pinbtn" id="x-pin" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg><span>Pin</span></button></div>
+      <h2 id="xm-title"></h2>
+      <p class="cmeta" id="xm-meta"></p>
+      <div class="cstats" id="xm-stats"></div>
+    </div>
+    <div class="rtabs" id="xm-tabs" role="tablist" aria-label="Combo sections" hidden></div>
+    <section class="rsec" id="xsec-ing" aria-labelledby="xh-ing">
+      <h3 id="xh-ing">Ingredients <span class="count" id="xc-ing"></span></h3>
+      <ul class="ing" id="xm-ing"></ul>
+    </section>
+    <section class="rsec" id="xsec-steps" aria-labelledby="xh-steps">
+      <h3 id="xh-steps"><span id="xh-steps-t">Method</span> <span class="count" id="xc-steps"></span></h3>
+      <div id="xm-steps"></div>
+      <p class="serve" id="xm-serve" hidden></p>
+    </section>
+  </div>
 </section>
 <div class="h-sheet" id="h-alarm" role="alertdialog" aria-labelledby="h-alarmT" hidden>
   <div class="h-grab" aria-hidden="true"></div>
@@ -1073,14 +1192,16 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
         <h2 id="m-title"></h2>
         <p class="m-meta" id="m-meta"></p>
       </div>
+      <button type="button" class="pinbtn" id="m-pin" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16l-5-3.5L7 20z"/></svg><span>Pin</span></button>
+      <div class="rtabs" id="m-tabs" role="tablist" aria-label="Recipe sections" hidden></div>
     </div>
     <div class="card-body">
-      <section class="rsec" aria-labelledby="h-ing">
+      <section class="rsec" id="sec-ing" aria-labelledby="h-ing">
         <h3 id="h-ing">Ingredients <span class="count" id="c-ing"></span></h3>
         <ul class="ing" id="m-ing"></ul>
       </section>
-      <section class="rsec" aria-labelledby="h-steps">
-        <h3 id="h-steps">Method <span class="count" id="c-steps"></span></h3>
+      <section class="rsec" id="sec-steps" aria-labelledby="h-steps">
+        <h3 id="h-steps"><span id="h-steps-t">Method</span> <span class="count" id="c-steps"></span></h3>
         <div id="m-steps"></div>
         <p class="serve" id="m-serve" hidden></p>
       </section>
@@ -1150,8 +1271,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     squat: { key: 'squat', name: 'Free Squats', sec: 45, cal: 6, reps: 12, kg: 0, noKg: true, cue: '' },
     rdl: { key: 'rdl', name: 'Romanian Deadlifts', sec: 45, cal: 6, reps: 10, kg: 5, cue: '' },
     shPress: { key: 'shPress', name: 'Shoulder Press', sec: 45, cal: 5, reps: 10, kg: 5, cue: '' },
-    shrug: { key: 'shrug', name: 'Shrugs', sec: 40, cal: 4, reps: 12, kg: 7.5, cue: '' },
-    latRaise: { key: 'latRaise', name: 'Lateral Raises', sec: 45, cal: 5, reps: 12, kg: 2.5, cue: '' },
+    shrug: { key: 'shrug', name: 'Shrugs', sec: 40, cal: 4, reps: 12, kg: 10, cue: '' },
+    latRaise: { key: 'latRaise', name: 'Lateral Raises', sec: 45, cal: 5, reps: 12, kg: 6.5, cue: '' },
     lunge: { key: 'lunge', name: 'Lunges', sec: 60, cal: 7, reps: 10, kg: 0, noKg: true, cue: '' },
     bridge: { key: 'bridge', name: 'Glute Bridges', sec: 40, cal: 4, reps: 12, kg: 0, noKg: true, cue: '' },
     oneRow: { key: 'oneRow', name: 'One-Arm DB Row', sec: 60, cal: 6, reps: 10, kg: 7.5, cue: '' },
@@ -1159,7 +1280,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     hammer: { key: 'hammer', name: 'Hammer Curls', sec: 45, cal: 5, reps: 10, kg: 5, cue: '' },
     deadBug: { key: 'deadBug', name: 'Dead Bugs', sec: 45, cal: 4, reps: 10, kg: 0, noKg: true, cue: '' },
     fbSkull: { key: 'fbSkull', name: 'Skull Crushers', sec: 45, cal: 5, reps: 12, kg: 5, cue: 'Bend only at the elbows.' },
-    latRev: { key: 'latRev', name: 'Lat Raise + Rev Fly', sec: 60, cal: 6, reps: 12, kg: 6.5, cue: '' }
+    latRev: { key: 'latRev', name: 'Lat Raise + Rev Fly', sec: 60, cal: 6, reps: 12, kg: 6.5, cue: '' },
+    altHammer: { key: 'altHammer', name: 'Alt DB Hammer Curls', sec: 60, cal: 6, reps: 10, kg: 8, cue: '' }
   };
   /* Full body: 3 rounds of these, in order. The plank is timed. */
   var ROUNDS = 3, ROUND_REST = 60;
@@ -1172,7 +1294,12 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   };
   var TYPES = {
     d1: { name: 'Day 1', items: ['fbChest', 'oneRow', 'fbCurl', 'squat', 'wSpotKnees'] },
-    d2: { name: 'Day 2', items: ['fbSkull', 'shPress', 'latRev', 'lunge', 'wKnees'] }
+    d2: { name: 'Day 2', items: ['fbSkull', 'shPress', 'latRev', 'lunge', 'wKnees'] },
+    /* sets: this day's set count where it differs; ss: exercises done back to back as a superset */
+    d3: { name: 'Day 3', items: ['oneRow', 'squat', 'fbChest', 'shrug', 'latRaise', 'fbSkull', 'altHammer'],
+      sets: { oneRow: 4, squat: 2, fbChest: 4, shrug: 4, latRaise: 3, fbSkull: 3, altHammer: 3 },
+      names: { fbChest: 'Chest DB Press', oneRow: 'One Arm DB Row' },
+      ss: { fbChest: 'shrug', shrug: 'fbChest' } }
   };
   /* Sets and the target shown under each name */
   var PLAN = {
@@ -1544,25 +1671,46 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   });
 
   /* Workout and Recipes views */
-  var VIEWS = { habits: 'v-habits', todo: 'v-todo', workout: 'app', recipes: 'v-recipes' };
+  var VIEWS = { home: 'v-home', habits: 'v-habits', todo: 'v-todo', workout: 'app', recipes: 'v-recipes' };
   function showView(v) {
-    if (!VIEWS[v]) v = 'habits';
+    if (!VIEWS[v]) v = 'home';
     Object.keys(VIEWS).forEach(function (k) {
       $(VIEWS[k]).hidden = k !== v;
       if (k === v) $('nav-' + k).setAttribute('aria-current', 'true');
       else $('nav-' + k).removeAttribute('aria-current');
     });
-    set('pageTitle', { habits: 'Habits', todo: 'To do', workout: 'Workout', recipes: 'Recipes' }[v]);
+    set('pageTitle', { home: 'Home', habits: 'Habits', todo: 'To do', workout: 'Workout', recipes: 'Recipes' }[v]);
+    if (v === 'home') renderHome();
     document.body.classList.toggle('rl', v === 'recipes');
     window.scrollTo(0, 0);
     if (v === 'workout' && steps.length) paint();
     if (v === 'workout' && window.nealFitNames) window.nealFitNames();
   }
-  Object.keys(VIEWS).forEach(function (v) {
-    $('nav-' + v).onclick = function () { try { location.hash = v; } catch (e) {} showView(v); };
-  });
+  function go(v) {
+    try { location.hash = v; } catch (e) {}
+    showView(v);
+    if (v === 'recipes' && window.nealOpenPinned) window.nealOpenPinned();
+  }
+  Object.keys(VIEWS).forEach(function (v) { $('nav-' + v).onclick = function () { go(v); }; });
+  Array.prototype.forEach.call(document.querySelectorAll('#v-home [data-go]'), function (b) { b.onclick = function () { go(b.dataset.go); }; });
+  /* Home: four cards around today's date, each with a one-line status */
+  function renderHome() {
+    var d = new Date();
+    set('hc-day', d.toLocaleDateString('en-IN', { weekday: 'long' }));
+    set('hc-date', d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
+    function txt(id) { var e = $(id); return e ? e.textContent.trim() : ''; }
+    set('hs-habits', txt('h-sum') || 'Tap to open');
+    set('hs-todo', txt('h-tSum') || 'Tap to open');
+    var w = '';
+    try { w = TYPES[cfg.wtype].name + ' \u00b7 ' + FULL.filter(wDone).length + '/' + FULL.length + ' done'; } catch (e) { w = 'Tap to open'; }
+    set('hs-workout', w);
+    set('hs-recipes', window.nealPinnedName && window.nealPinnedName() ? '\ud83d\udccc ' + window.nealPinnedName() : 'All recipes');
+  }
+  window.nealRenderHome = renderHome;
   window.addEventListener('hashchange', function () { showView(location.hash.slice(1)); });
   showView(location.hash.slice(1));
+  window.addEventListener('load', function () { if (!$('v-home').hidden) renderHome(); });
+  setTimeout(function () { if (!$('v-home').hidden) renderHome(); }, 300);
 
   /* Menu */
   function menuOpen() { return $('menu').classList.contains('open'); }
@@ -1628,14 +1776,14 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     if (!cfg.wkHist) cfg.wkHist = {};
     var d = wLog().done, best = { d: 0, n: 0 };
     Object.keys(TYPES).forEach(function (t) {
-      var n = Object.keys(d).filter(function (x) { return x.indexOf(t + ':') === 0; }).length, tot = TYPES[t].items.reduce(function (a, k) { return a + wBase(k); }, 0);
+      var n = Object.keys(d).filter(function (x) { return x.indexOf(t + ':') === 0; }).length, tot = TYPES[t].items.reduce(function (a, k) { return a + wBase(k, t); }, 0);
       n = Math.min(n, tot);
       if ((wLog().manual || {})[t]) n = tot;
       if (!best.n || n / tot > best.d / best.n) best = { d: n, n: tot };
     });
     var per = {};
     Object.keys(TYPES).forEach(function (t) {
-      var n = Object.keys(d).filter(function (x) { return x.indexOf(t + ':') === 0; }).length, tot = TYPES[t].items.reduce(function (a, k) { return a + wBase(k); }, 0);
+      var n = Object.keys(d).filter(function (x) { return x.indexOf(t + ':') === 0; }).length, tot = TYPES[t].items.reduce(function (a, k) { return a + wBase(k, t); }, 0);
       if ((wLog().manual || {})[t]) per[t] = 2;
       else if (n) per[t] = n >= tot ? 2 : 1;
     });
@@ -1676,7 +1824,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     if (!TYPES[t]) t = 'd1';
     cfg.wtype = t; FULL = TYPES[t].items;
   }
-  function wBase(k) { return PLAN[k] ? PLAN[k][0] : 3; }
+  function wBase(k, t) { var T = TYPES[t || cfg.wtype]; if (T && T.sets && T.sets[k]) return T.sets[k]; return PLAN[k] ? PLAN[k][0] : 3; }
   function wExtraKey(k) { return cfg.wtype + ':' + k; }
   function wExtra(k) { var x = wLog().extra; return x && x[wExtraKey(k)] || 0; }
   function wSetExtra(k, n) { var log = wLog(); log.extra = log.extra || {}; if (n > 0) log.extra[wExtraKey(k)] = n; else delete log.extra[wExtraKey(k)]; }
@@ -1741,7 +1889,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     $('whClose').focus({ preventScroll: true });
   }
   function wHistClose() { $('wh').hidden = true; $('whVeil').hidden = true; document.body.style.overflow = ''; }
-  function wName(k) { return WARM[k] ? WARM[k].name : k === 'plank' ? PLANK.name : LIFT[k].name; }
+  function wName(k) { var T = TYPES[cfg.wtype]; if (T && T.names && T.names[k]) return T.names[k]; return WARM[k] ? WARM[k].name : k === 'plank' ? PLANK.name : LIFT[k].name; }
   /* Calories burned in other activities, per day */
   function burnToday() { var k = wDayKey(new Date()); cfg.burn = cfg.burn || {}; return cfg.burn[k] || []; }
   function burnSet(arr) {
@@ -1827,6 +1975,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       top.append(nm);
       var info = wNode('div', 'winfo');
       info.append(top);
+      var ssWith = (TYPES[cfg.wtype].ss || {})[k];
+      if (ssWith) { row.classList.add('wss'); if (FULL.indexOf(ssWith) > FULL.indexOf(k)) row.classList.add('wss1'); info.append(wNode('span', 'wsstag', 'Superset')); }
       left.append(mark, info);
       var chips = wNode('div', 'wsets'), s;
       for (s = 1; s <= sets; s++) chips.append(setChip(k, s));
@@ -2187,12 +2337,13 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   /* Boot: an unfinished session from today comes back paused */
   var saved = load();
   if (!TYPES[cfg.wtype]) cfg.wtype = 'd1';
-  if (cfg.planV !== 3) {
+  if (!cfg.planV || cfg.planV < 3) {
     Object.keys(PLAN_KG).forEach(function (k) { liftVal(k).kg = PLAN_KG[k]; });
     var PR = { fbChest: 10, oneRow: 10, fbCurl: 12, squat: 12, fbSkull: 10, shPress: 10, latRev: 12, lunge: 10 };
     Object.keys(PR).forEach(function (k) { liftVal(k).reps = PR[k]; });
     cfg.setKg = {}; cfg.planV = 3; save();
   }
+  if (cfg.planV < 4) { cfg.wtype = 'd3'; cfg.planV = 4; save(); }
   FULL = TYPES[cfg.wtype].items;
   if (cfg.theme) document.documentElement.setAttribute('data-theme', cfg.theme);
   build();
@@ -2777,6 +2928,244 @@ const RECIPES = [
       ["Season and Serve", "Stir in {1 tbsp|Soy sauce}, {1 tsp|Red chilli sauce} and {1 tsp|Vinegar}. Taste, then add a {pinch|Salt} only if it needs it, since the soy sauce is already salty. Top with {2 tbsp|Spring onion greens} and serve hot."]
     ],
     serve: "Tip: always mix cornstarch with cold water first, or it turns lumpy. Add the soy sauce, chilli and vinegar at the end so they stay sharp. For a stronger stock, pressure cook for 25 minutes instead of 15."
+  },
+  {
+    name: "Kadhai + White (Korma)",
+    cat: "combo",
+    type: "combo",
+    meta: "Kadhai Chicken, Kadhai Paneer, White Chicken and White Paneer, cooked one after another on 1 induction with 1 kadhai. 2 × 450 g chicken, 2 × 100 g paneer.",
+    stats: [["1h 27m", "start to finish"], ["2", "gravies"], ["4", "dishes"], ["1 + 1", "induction + kadhai"]],
+    parts: ["Before you start", "White side", "Kadhai side"],
+    tabs: [["Cook order", ["Before you start", "White side", "Kadhai side"]], ["Ingredients", null, "ing"], ["Tips", null, "tips"]],
+    ingredients: [
+      ["#", "Shopping list (everything)"],
+      ["Boneless Chicken", "900 g"],
+      ["Paneer", "200 g"],
+      ["Onions", "5 medium"],
+      ["Capsicum", "1½"],
+      ["Green Peas", "½ cup"],
+      ["Carrot", "1 small"],
+      ["Tomato Purée (store-bought)", "¾ cup"],
+      ["Curd", "1 cup"],
+      ["Milk", "¼ cup"],
+      ["Ginger-Garlic Paste", "2 tbsp + 2 tsp"],
+      ["Besan", "1 tsp"],
+      ["Ghee or Oil", "1 tbsp"],
+      ["Oil", "1 tbsp + 2 tsp"],
+      ["Coriander Seeds", "1½ tbsp"],
+      ["Dried Red Chillies", "4"],
+      ["Jeera", "1 tsp"],
+      ["Bay Leaf, Cardamom, Cloves", "1, 3, 3"],
+      ["Turmeric", "¾ tsp"],
+      ["Kashmiri Chilli Powder", "1½ tsp"],
+      ["Black Pepper", "1 tsp"],
+      ["Cardamom Powder", "A pinch"],
+      ["Kasuri Methi", "1 tsp"],
+      ["Shan Korma Masala", "2 tbsp + 1 tsp (when you add it)"],
+      ["Salt", "About 2 tsp + ½ tsp for soaking paneer"],
+      ["Fresh Coriander", "1 small bunch"],
+      ["#", "Vegetables, split between chicken and paneer"],
+      ["Kadhai: Capsicum", "1½, in squares (1 chicken, ½ paneer)"],
+      ["Kadhai: Onion", "1, in petals (¾ chicken, ¼ paneer)"],
+      ["White: Peas and Carrot", "1 cup, carrot in small dice (¾ chicken, ¼ paneer)"],
+      ["#", "Marinade (all 900 g chicken in one bowl)"],
+      ["Curd", "4 tbsp"],
+      ["Ginger-Garlic Paste", "2 tsp"],
+      ["Salt", "1 tsp"],
+      ["Kadhai bowl only", "¼ tsp turmeric + ½ tsp Kashmiri chilli"],
+      ["White bowl only", "½ tsp black pepper"],
+      ["#", "White gravy"],
+      ["Ghee or Oil", "1 tbsp"],
+      ["Bay Leaf, Cardamom, Cloves", "1, 3, 3"],
+      ["Onions", "2 medium, grated"],
+      ["Ginger-Garlic Paste", "1 tbsp"],
+      ["Curd", "¾ cup, whisked with 1 tsp besan"],
+      ["Water and Milk", "½ cup + ¼ cup"],
+      ["Black Pepper", "½ tsp"],
+      ["Salt", "¼ tsp (korma masala adds more)"],
+      ["Cardamom Powder", "A pinch"],
+      ["#", "Kadhai gravy"],
+      ["Coriander Seeds, Red Chillies, Jeera", "1½ tbsp, 4, 1 tsp (roasted and crushed)"],
+      ["Oil", "1 tbsp"],
+      ["Onions", "2 medium, finely chopped"],
+      ["Ginger-Garlic Paste", "1 tbsp"],
+      ["Tomato Purée", "¾ cup"],
+      ["Turmeric and Kashmiri Chilli", "½ tsp + 1 tsp"],
+      ["Salt", "¾ tsp"],
+      ["Water", "½ cup"],
+      ["Kasuri Methi", "1 tsp"]
+    ],
+    steps: [
+      ["Before you start: 0:00 · Marinate", "Add {900 g|Chicken}, {4 tbsp|Curd}, {2 tsp|Ginger-garlic paste} and {1 tsp|Salt} to one bowl. Mix and split into two bowls. Add {¼ tsp|Turmeric} and {½ tsp|Kashmiri chilli} to the kadhai bowl. Add {½ tsp|Black pepper} to the white bowl, so it stays pale."],
+      ["Before you start: 0:03 · Soak the Paneer", "Soak {200 g|Paneer} cubes in 2 cups warm water with ½ tsp salt."],
+      ["Before you start: 0:05 · Roast the Kadhai Masala", "Dry-roast {1½ tbsp|Coriander seeds}, {4|Dried red chillies} and {1 tsp|Jeera} in the dry kadhai on low for 2 minutes. Tip onto a plate to cool."],
+      ["White side: 0:07 · Whole Spices and Onions", "Heat {1 tbsp|Ghee or oil} on low. Add {1|Bay leaf}, {3|Cardamom} and {3|Cloves} to the kadhai. After 20 seconds, add {2|Grated onions} and 2 tbsp water. Cover and cook for 8 minutes until soft and pale. Meanwhile: crush the kadhai masala in a zip bag, chop 2 onions, cut the capsicum and onion petals, dice the carrot, and whisk the curd with the besan."],
+      ["White side: 0:15 · Ginger-Garlic", "Add {1 tbsp|Ginger-garlic paste} and stir for 1 minute without letting it brown."],
+      ["White side: 0:16 · Curd", "Turn off the flame and wait 1 minute. Stir in {¾ cup|Curd} whisked with {1 tsp|Besan}, then turn the flame back on low."],
+      ["White side: 0:17 · Finish the White Gravy", "Add {½ cup|Water}, {¼ cup|Milk}, {½ tsp|Black pepper}, {¼ tsp|Salt} and {a pinch|Cardamom powder} to the kadhai. Simmer for 3 minutes. Spoon ⅓ cup into a cup for the paneer and leave the rest in the kadhai."],
+      ["White side: 0:21 · White Chicken", "Add {white bowl|Chicken}, {¾ cup|Peas and carrot} and {¼ cup|Water} to the kadhai. Stir, cover and cook on low for 15 minutes. Korma masala: stir in 2 tbsp Shan Korma Masala here when you use it. Meanwhile: wash the bowls."],
+      ["White side: 0:36 · Plate the Chicken", "Taste, top with coriander and move it to a serving dish."],
+      ["White side: 0:37 · White Paneer", "Add {½ tsp|Oil}, {¼ cup|Peas and carrot} and {1 tbsp|Water} to the kadhai. Cover and cook for 3 minutes. Add {⅓ cup|White gravy}, {2 tbsp|Water} and {100 g|Paneer} to the kadhai. Simmer for 3 minutes. Add {⅛ tsp|Salt}, or skip it if you add korma masala. Korma masala: 1 tsp here."],
+      ["White side: 0:44 · Wipe the Kadhai", "A paper towel is enough. No wash needed, since the red kadhai gravy goes in next."],
+      ["Kadhai side: 0:45 · Onions", "Heat {1 tbsp|Oil} and add {2|Chopped onions}. Fry on medium for 8 minutes."],
+      ["Kadhai side: 0:53 · Masala", "Add {1 tbsp|Ginger-garlic paste} and stir for 1 minute. Add {¾ cup|Tomato purée}, {½ tsp|Turmeric}, {1 tsp|Kashmiri chilli}, {¾ tsp|Salt} and {all|Crushed kadhai masala} to the kadhai. Cook for 6–8 minutes until the oil separates."],
+      ["Kadhai side: 1:01 · Finish the Kadhai Gravy", "Add {½ cup|Water} and {1 tsp|Kasuri methi} to the kadhai. Simmer for 2 minutes. Pour into a bowl and set ⅓ cup aside for the paneer."],
+      ["Kadhai side: 1:03 · Kadhai Chicken", "Heat {1 tsp|Oil} on high and sear the kadhai-bowl chicken for 5 minutes. Add {1|Capsicum} and {¾|Onion petals} to the kadhai. Toss for 2 minutes. Add {1 cup|Kadhai gravy} and {¼ cup|Water} to the kadhai. Cover and cook on low for 10–12 minutes, then top with coriander."],
+      ["Kadhai side: 1:21 · Kadhai Paneer", "Heat {½ tsp|Oil} on high. Add {½|Capsicum} and {¼|Onion petals} to the kadhai. Toss for 2 minutes. Add {⅓ cup|Kadhai gravy}, {2 tbsp|Water}, {100 g|Paneer} and {⅛ tsp|Salt} to the kadhai. Simmer for 3 minutes."],
+      ["Kadhai side: 1:27 · Done", "All four dishes are ready. Warm the white side for 1–2 minutes if it has cooled."]
+    ],
+    tips: [
+      ["White side first", "It's pale, so the red kadhai gravy can follow in the same kadhai after a quick wipe, with no proper wash."],
+      ["No searing for the white chicken", "It goes straight into its gravy. That saves 5 minutes and some oil, and keeps the dish pale."],
+      ["Korma masala and salt", "Shan masala is salted. The white gravy has only ¼ tsp salt plus ½ tsp from the marinade, so taste after adding the masala before adding more."],
+      ["Grated onion, no blender", "Cooking grated onion covered with a splash of water keeps it white and smooth."],
+      ["Curd off the heat", "Always stir curd in off the flame, with the besan, so it doesn't split."],
+      ["Richer white gravy", "Optional: crush 8–10 cashews in a zip bag with a rolling pin and add them with the curd."],
+      ["Soft paneer", "Add it last and simmer only 3 minutes. Longer makes it rubbery."],
+      ["Make ahead", "Both gravies keep 4 days in the fridge and a month in the freezer. On a weekday, reheat 1 cup and cook the chicken in it, about 15 minutes."]
+    ]
+  },
+  {
+    name: "Zero Oil Tandoori Chicken",
+    cat: "airfryer",
+    type: "nonveg",
+    meta: "No oil · 500 g bone-in thighs · serves 2 · about 35 min · ~620 kcal and 55 g protein for the whole dish",
+    ingredients: [
+      ["Bone-in Chicken Thighs", "500 g (3–4 pieces), skin removed"],
+      ["#", "Marinade"],
+      ["Thick Curd", "2½ tbsp"],
+      ["Ginger-Garlic Paste", "2½ tsp"],
+      ["Kashmiri Chilli Powder", "1¼ tsp"],
+      ["Coriander Powder", "1 tsp"],
+      ["Cumin Powder", "½ tsp"],
+      ["Turmeric", "¼ tsp"],
+      ["Black Pepper", "½ tsp"],
+      ["Salt", "½ tsp + a pinch"],
+      ["Lime", "½ (about 1 tbsp juice), plus wedges to serve"]
+    ],
+    steps: [
+      ["Slit the Chicken", "Make 2–3 deep slits in each {500 g|Chicken thighs}, down to the bone, so the marinade gets inside."],
+      ["Make the Marinade", "Add {2½ tbsp|Curd}, {2½ tsp|Ginger-garlic paste}, {1¼ tsp|Kashmiri chilli}, {1 tsp|Coriander powder}, {½ tsp|Cumin powder}, {¼ tsp|Turmeric}, {½ tsp|Black pepper}, {½ tsp + a pinch|Salt} and {1 tbsp|Lime juice} to a bowl. Mix into a thick paste."],
+      ["Coat", "Rub the marinade all over the chicken and into the slits. Cook it straight away, or cover and refrigerate for 1 hour to overnight for more flavour."],
+      ["Air Fry", "Place the thighs in the basket in a single layer, not touching. Air fry at 200°C for 25 minutes."],
+      ["Flip Halfway", "At 12–13 minutes, flip each piece with tongs, then let it finish. The chicken is done when the juices run clear near the bone."],
+      ["Serve", "Rest for 2 minutes. Serve with lime wedges, sliced onion and mint chutney."]
+    ],
+    serve: "Tip: thick (hung) curd sticks better and chars more. Shake off any extra marinade before air frying so the edges go smoky. If your fryer runs hot, check at 20 minutes. Recipe by Ralston D'Souza; quantities set for 500 g chicken."
+  },
+  {
+    name: "Paneer Tikka",
+    cat: "airfryer",
+    type: "veg",
+    meta: "½ tsp butter · 100 g paneer · serves 1 · about 28 min · ~300 kcal and 20 g protein",
+    ingredients: [
+      ["Paneer", "100 g, in 1-inch cubes"],
+      ["Coloured Capsicum", "¾ cup, in 1-inch squares (red, yellow, green)"],
+      ["#", "Marinade"],
+      ["Thick Curd", "2 tbsp"],
+      ["Kashmiri Chilli Powder", "½ tsp"],
+      ["Coriander Powder", "¼ tsp"],
+      ["Cumin Powder", "¼ tsp"],
+      ["Turmeric", "A pinch"],
+      ["Garam Masala", "A pinch"],
+      ["Kasuri Methi", "¼ tsp, crushed"],
+      ["Salt", "¼ tsp"],
+      ["#", "To finish"],
+      ["Butter", "½ tsp, melted"],
+      ["Chaat Masala", "¼ tsp"]
+    ],
+    steps: [
+      ["Make the Marinade", "Add {2 tbsp|Curd}, {½ tsp|Kashmiri chilli}, {¼ tsp|Coriander powder}, {¼ tsp|Cumin powder}, {a pinch|Turmeric}, {a pinch|Garam masala}, {¼ tsp|Kasuri methi} and {¼ tsp|Salt} to a bowl. Stir well into a smooth paste."],
+      ["Coat", "Add {100 g|Paneer} and {¾ cup|Capsicum} to the bowl. Mix gently so every piece is coated. Rest for 10 minutes if you have time."],
+      ["Air Fry, First Side", "Spread the paneer and capsicum in the air fryer basket in a single layer. Cook at 180°C for 10 minutes."],
+      ["Flip and Finish", "Turn each piece with tongs. Cook at 180°C for 8–10 more minutes, until the edges char. A smaller batch cooks a little faster, so check at 8."],
+      ["Butter and Chaat Masala", "Brush with {½ tsp|Melted butter} and sprinkle {¼ tsp|Chaat masala} on top. Serve hot with mint chutney and onion rings."]
+    ],
+    serve: "Tip: use thick (hung) curd so the coating sticks, and soak the paneer in warm water for 10 minutes first so it stays soft. About 300 kcal and 20 g protein. Recipe by Shameem's Kitchen; quantities set for 100 g paneer."
+  },
+  {
+    name: "High Protein Chilli Garlic Soya",
+    cat: "airfryer",
+    type: "veg",
+    meta: "No oil needed · 80 g soya chunks · serves 1 · about 30 min · ~44 g protein",
+    ingredients: [
+      ["Soya Chunks", "80 g dry (about 1¼ cups)"],
+      ["Capsicum", "1 cup, in squares (mixed colours)"],
+      ["Onion", "1, in petals"],
+      ["#", "Coating"],
+      ["Chilli Garlic Paste (ready-made)", "1½ tbsp"],
+      ["Thick Curd", "3 tbsp"],
+      ["Besan", "1 tbsp"],
+      ["Lemon Juice", "1 tbsp"],
+      ["Turmeric", "¼ tsp"],
+      ["Coriander Powder", "½ tsp"],
+      ["Garam Masala", "¼ tsp"],
+      ["Dried Oregano", "½ tsp"],
+      ["Salt", "¼ tsp + a pinch for boiling (the paste is salty)"]
+    ],
+    steps: [
+      ["Boil the Soya", "Boil {80 g|Soya chunks} in water with a pinch of salt for 5 minutes. Rinse under cold water and squeeze out as much water as you can. Dry soya chunks are what make it crisp."],
+      ["Mix", "Put the soya, {1 cup|Capsicum} and {1|Onion petals} in a bowl, or straight into the basket if it has a solid base. Add {1½ tbsp|Chilli garlic paste}, {3 tbsp|Curd}, {1 tbsp|Besan}, {1 tbsp|Lemon juice}, {¼ tsp|Turmeric}, {½ tsp|Coriander powder}, {¼ tsp|Garam masala}, {½ tsp|Oregano} and {¼ tsp|Salt} to the bowl. Mix well so everything is coated. Taste a piece of onion and add more salt only if needed."],
+      ["Air Fry", "Spread it in the basket in a single layer. Cook at 180°C for 14 minutes, shaking the basket at 7 minutes."],
+      ["Serve", "Serve hot as a snack, or with rice or roti. Squeeze over a little more lemon if you like."]
+    ],
+    serve: "Tip: squeeze the soya chunks really well, or they steam instead of crisping. Ready-made chilli garlic paste (like Ching's) is salty and hot, so start with 1½ tbsp and adjust next time. For extra crunch, spray or brush 1 tsp oil before air frying. About 330 kcal and 44 g protein. Quantities added for one serving."
+  },
+  {
+    name: "All 3 Cook-Along: Chicken, Soya, Paneer",
+    cat: "airfryer",
+    type: "nonveg",
+    hl: true,
+    meta: "Marinate all three back to back, then air fry one after another · about 1h 20m · follow the time chips across the tabs",
+    parts: ["Chicken", "Soya", "Paneer"],
+    tabs: [["Ingredients", null, "ing"], ["Chicken", ["Chicken"]], ["Soya", ["Soya"]], ["Paneer", ["Paneer"]]],
+    partColors: { "Chicken": "#D9482E", "Soya": "#2E8B3D", "Paneer": "#C98A0B" },
+    ingredients: [
+      ["#", "Tandoori Chicken (red)"],
+      ["Bone-in Chicken Thighs", "4 (about 600 g), skin removed"],
+      ["Thick Curd", "3 tbsp"],
+      ["Ginger-Garlic Paste", "1 tbsp"],
+      ["Kashmiri Chilli Powder", "1½ tsp"],
+      ["Coriander Powder, Cumin, Turmeric", "1 tsp, ½ tsp, ¼ tsp"],
+      ["Black Pepper", "½ tsp"],
+      ["Salt", "¾ tsp"],
+      ["Lime Juice", "1 tbsp"],
+      ["#", "Chilli Garlic Soya (green)"],
+      ["Soya Chunks", "80 g dry"],
+      ["Capsicum and Onion", "1 cup capsicum squares + 1 onion in petals"],
+      ["Chilli Garlic Paste (ready-made)", "1½ tbsp"],
+      ["Thick Curd", "3 tbsp"],
+      ["Besan", "1 tbsp"],
+      ["Lemon Juice", "1 tbsp"],
+      ["Turmeric, Coriander Powder, Garam Masala", "¼ tsp, ½ tsp, ¼ tsp"],
+      ["Dried Oregano", "½ tsp"],
+      ["Salt", "¼ tsp + a pinch for boiling (the paste is salty)"],
+      ["#", "Paneer Tikka (amber)"],
+      ["Paneer", "200 g, in 1-inch cubes"],
+      ["Coloured Capsicum", "1½ cups, in squares"],
+      ["Thick Curd", "4 tbsp"],
+      ["Kashmiri Chilli Powder", "1 tsp"],
+      ["Coriander Powder, Cumin, Turmeric, Garam Masala", "½ tsp, ½ tsp, ¼ tsp, ¼ tsp"],
+      ["Kasuri Methi", "½ tsp"],
+      ["Salt", "½ tsp"],
+      ["Butter and Chaat Masala", "1 tsp + ½ tsp, to finish"]
+    ],
+    steps: [
+      ["Soya: 0:00 · Boil the Soya", "Put {80 g|Soya chunks} on to boil in water with a pinch of salt for 5 minutes. Meanwhile: slit the chicken (Chicken tab, step 1)."],
+      ["Chicken: 0:03 · Marinate", "Add {3 tbsp|Curd}, {1 tbsp|Ginger-garlic paste}, {1½ tsp|Kashmiri chilli}, {1 tsp|Coriander powder}, {½ tsp|Cumin}, {¼ tsp|Turmeric}, {½ tsp|Black pepper}, {¾ tsp|Salt} and {1 tbsp|Lime juice} to a bowl. Make 2–3 deep slits in each {4|Chicken thighs} (do this while the soya boils). Rub the marinade into the chicken and its slits. Chicken goes first because it gains the most from marinating longest."],
+      ["Soya: 0:08 · Coat", "Drain the soya, rinse it in cold water and squeeze it very dry. Put it in a second bowl with {1 cup|Capsicum} and {1|Onion petals}. Add {1½ tbsp|Chilli garlic paste}, {3 tbsp|Curd}, {1 tbsp|Besan}, {1 tbsp|Lemon juice}, {¼ tsp|Turmeric}, {½ tsp|Coriander powder}, {¼ tsp|Garam masala}, {½ tsp|Oregano} and {¼ tsp|Salt} to the bowl. Mix well."],
+      ["Paneer: 0:14 · Marinate", "Add {4 tbsp|Curd}, {1 tsp|Kashmiri chilli}, {½ tsp|Coriander powder}, {½ tsp|Cumin}, {¼ tsp|Turmeric}, {¼ tsp|Garam masala}, {½ tsp|Kasuri methi} and {½ tsp|Salt} to a third bowl. Add {200 g|Paneer} and {1½ cups|Capsicum} to the bowl and mix gently."],
+      ["Chicken: 0:20 · Air Fry", "Place the thighs in the basket in a single layer. Air fry at 200°C for 25 minutes. Meanwhile: wash up, slice onions and make mint chutney."],
+      ["Chicken: 0:32 · Flip", "Flip each thigh with tongs and let it finish."],
+      ["Chicken: 0:45 · Rest", "Check the juices run clear near the bone. Move the chicken to a plate and cover loosely with foil. Wipe the basket with a paper towel."],
+      ["Soya: 0:46 · Air Fry", "Spread the soya mix in the basket in a single layer. Air fry at 180°C for 14 minutes."],
+      ["Soya: 0:53 · Shake", "Shake the basket so it crisps evenly."],
+      ["Soya: 1:00 · Out", "Tip the soya into a bowl. Squeeze over a little more lemon if you like."],
+      ["Paneer: 1:00 · Air Fry", "Spread the paneer and capsicum in the basket in a single layer. Air fry at 180°C for 10 minutes."],
+      ["Paneer: 1:10 · Flip", "Turn each piece and air fry for 10 more minutes, until the edges char."],
+      ["Paneer: 1:20 · Finish", "Brush with {1 tsp|Melted butter} and sprinkle {½ tsp|Chaat masala}. Warm the chicken in the air fryer at 180°C for 2 minutes if it has cooled, and serve everything together."]
+    ],
+    serve: "Tip: chicken goes in first because it's the longest cook and holds heat best under foil. Soya and paneer are best hot, so they go last. Wipe the basket between batches so nothing burns onto the next one. Altogether: about 1,500 kcal and 148 g protein across the three dishes."
   }
 ];
 
@@ -2785,49 +3174,91 @@ const pad = n => String(n).padStart(2, "0");
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 
 let CAT = "veg";
-const serial = i => RECIPES.slice(0, i + 1).filter(x => x.type === RECIPES[i].type).length;
+const catOf = r => r.cat || r.type;
+const CAT_NAME = { veg: "Veg", nonveg: "Non-Veg", combo: "Combo", airfryer: "Airfryer" };
+const serial = i => RECIPES.slice(0, i + 1).filter(x => catOf(x) === catOf(RECIPES[i])).length;
 function setCat(c) {
   CAT = c;
-  ["veg", "nonveg"].forEach(t => $("cat-" + t).setAttribute("aria-selected", t === c));
-  renderIndex($("search").value);
+  ["veg", "nonveg", "combo", "airfryer"].forEach(t => $("cat-" + t).setAttribute("aria-selected", t === c));
+  const combo = c === "combo", ci = RECIPES.findIndex(r => catOf(r) === "combo");
+  $("search").hidden = combo; $("index").hidden = combo; $("comboView").hidden = !combo;
+  if (combo && ci >= 0) {
+    const all = RECIPES.map((r, k) => [r, k]).filter(([r]) => catOf(r) === "combo");
+    if (!all.some(([, k]) => k === XV.i)) { XV.i = ci; XV.tab = 0; XV.ticks = new Set(); }
+    $("xcombos").hidden = all.length < 2;
+    $("xcombos").innerHTML = all.map(([r, k]) => `<button type="button" role="tab" data-k="${k}" aria-selected="${k === XV.i}">${esc(r.short || r.name)}</button>`).join("");
+    const cr = RECIPES[XV.i];
+    $("xm-title").textContent = cr.name; $("xm-meta").textContent = cr.meta || "";
+    $("xm-stats").innerHTML = (cr.stats || []).map(([v, l]) => `<div><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join("");
+    drawRecipe(XV);
+    paintPin($("x-pin"), XV.i);
+  }
+  else renderIndex($("search").value);
 }
-["veg", "nonveg"].forEach(t => {
-  $("n-" + t).textContent = RECIPES.filter(r => r.type === t).length;
+["veg", "nonveg", "combo", "airfryer"].forEach(t => {
+  $("n-" + t).textContent = t === "combo" ? "" : RECIPES.filter(r => catOf(r) === t).length;
   $("cat-" + t).addEventListener("click", () => setCat(t));
 });
 function renderIndex(q = "") {
   const term = q.trim().toLowerCase();
-  const rows = RECIPES.map((r, i) => ({r, i})).filter(({r}) => r.type === CAT).filter(({r}) =>
+  const rows = RECIPES.map((r, i) => ({r, i})).filter(({r}) => catOf(r) === CAT).filter(({r}) =>
     !term || r.name.toLowerCase().includes(term) ||
     r.ingredients.some(([n]) => n.toLowerCase().includes(term)));
   $("index").innerHTML = rows.length ? rows.map(({r, i}) => `
-    <li><button class="entry" data-i="${i}">
+    <li${r.hl ? ' class="hl"' : ""}><button class="entry" data-i="${i}">
       <span class="num">${pad(serial(i))}</span>
-      <span class="rname">${esc(r.name)}<span class="meta">${esc(r.meta || r.ingredients.length + " ingredients")}</span></span>
+      <span class="rname">${r.hl ? '<span class="hlbadge">Cook-along</span>' : ""}${pinIdx() === i ? '<span class="pinmark">Pinned</span>' : ""}${esc(r.name)}<span class="meta">${esc(r.meta || r.ingredients.length + " ingredients")}</span></span>
       <span class="arrow" aria-hidden="true">→</span>
     </button></li>`).join("")
-    : `<li class="empty">${term ? `No ${CAT === "veg" ? "veg" : "non-veg"} recipe matches “${esc(q)}”.` : "No recipes here yet."}</li>`;
+    : `<li class="empty">${term ? `No ${CAT_NAME[CAT].toLowerCase()} recipe matches “${esc(q)}”.` : "No recipes here yet."}</li>`;
 }
 
+/* Pinned recipe: Recipes opens straight to it until it's unpinned */
+const PIN_KEY = "neal-pin-recipe";
+function getPin() { try { return localStorage.getItem(PIN_KEY) || ""; } catch (e) { return ""; } }
+function setPin(name) { try { if (name) localStorage.setItem(PIN_KEY, name); else localStorage.removeItem(PIN_KEY); } catch (e) {} }
+function pinIdx() { const n = getPin(); return n ? RECIPES.findIndex(r => r.name === n) : -1; }
+function paintPin(btn, i) {
+  const on = pinIdx() === i;
+  btn.setAttribute("aria-pressed", String(on));
+  btn.querySelector("span").textContent = on ? "Pinned" : "Pin";
+  btn.setAttribute("aria-label", on ? "Unpin this recipe" : "Pin this recipe so Recipes opens to it");
+}
+function togglePin(i, btn) {
+  const on = pinIdx() === i;
+  setPin(on ? "" : RECIPES[i].name);
+  paintPin(btn, i);
+  if (window.nealToast) window.nealToast(on ? "Unpinned" : "Recipes will open to " + RECIPES[i].name);
+  if (!$("index").hidden) renderIndex($("search").value);
+}
+window.nealPinnedName = () => { const i = pinIdx(); return i >= 0 ? RECIPES[i].name : ""; };
+window.nealOpenPinned = () => {
+  const i = pinIdx(); if (i < 0) return;
+  const r = RECIPES[i];
+  if (catOf(r) === "combo") { XV.i = i; setCat("combo"); }
+  else { setCat(catOf(r)); openRecipe(i); }
+};
 function openRecipe(i) {
   const r = RECIPES[i];
-  $("m-num").textContent = (r.type === "veg" ? "Veg " : "Non-Veg ") + pad(serial(i));
+  $("m-num").textContent = CAT_NAME[catOf(r)] + " " + pad(serial(i));
   $("m-title").textContent = r.name;
   $("m-meta").textContent = r.meta || "";
-  CUR = i; TICKS = new Set();
-  drawRecipe();
+  MV.i = i; MV.ticks = new Set(); MV.tab = 0;
+  drawRecipe(MV);
+  paintPin($("m-pin"), i);
   const m = $("modal");
   m.showModal();
   m.scrollTop = 0;
 }
 
 /* One view: ingredients, then the method. Two-way recipes show the shared steps, then each dish's steps under its own heading. */
-let CUR = 0, TICKS = new Set();
+const MV = { P: "", i: 0, tab: 0, ticks: new Set() }, XV = { P: "x", i: 0, tab: 0, ticks: new Set() };
 const ADD_RE = /^(Add|Mix in|Stir in|Pour in|Toss in|Season with|Put in)( the| in)?\s+(\{[^}]+\}(?:(?:,\s*|\s+and\s+|,\s+and\s+)(?:the\s+)?\{[^}]+\})+)(.*)$/;
-function drawRecipe() {
-  const i = CUR, r = RECIPES[i], parts = r.parts || [];
+function drawRecipe(V) {
+  V = V || MV;
+  const P = V.P, $p = id => $(P + id), i = V.i, r = RECIPES[i], parts = r.parts || [], RT = V.tab, TK = V.ticks;
   const partOf = t => parts.find(p => t.startsWith(p + ": ")) || "";
-  const on = id => TICKS.has(id) ? " checked" : "";
+  const on = id => TK.has(id) ? " checked" : "";
   const qtyName = s => { const [a, n] = s.includes("|") ? s.split("|") : ["", s]; return [a, n]; };
   const badge = s => { const [a, n] = qtyName(s); return `<span class="badge">${a ? `<b>${esc(a)}</b>` : ""}${esc(n)}</span>`; };
   const rich = d => esc(d).replace(/\{([^}]+)\}/g, (_, x) => badge(x.replace(/&amp;/g, "&")));
@@ -2843,35 +3274,73 @@ function drawRecipe() {
   };
   const body = d => {
     const sens = d.split(/(?<=[.!?])\s+(?=[A-Z{])/).filter(x => x.trim());
-    return sens.map(x => addGroup(x) || `<p class="sline">${rich(x)}</p>`).join("");
+    return sens.map(x => {
+      const call = /^(Meanwhile|Korma masala):\s*(.*)$/.exec(x);
+      if (call) return `<p class="scall ${call[1] === "Meanwhile" ? "mw" : "km"}"><b>${esc(call[1])}</b>${rich(cap(call[2]))}</p>`;
+      return addGroup(x) || `<p class="sline">${rich(x)}</p>`;
+    }).join("");
   };
   let html = "", gi = 0;
   r.ingredients.forEach(([n, q], k) => {
     if (n === "#") { html += `<li class="ing-grp">${esc(q)}</li>`; return; }
-    html += `<li><label for="ing-${i}-${k}"><input type="checkbox" id="ing-${i}-${k}"${on(`ing-${i}-${k}`)}>
+    html += `<li><label for="${P}ing-${i}-${k}"><input type="checkbox" id="${P}ing-${i}-${k}"${on(`${P}ing-${i}-${k}`)}>
       <span class="ing-name">${esc(n)}</span><span class="ing-qty">${esc(q)}</span></label></li>`; gi++;
   });
-  $("m-ing").innerHTML = html;
-  const groups = parts.length ? [["", parts.length ? "Searing" : ""]].concat(parts.map(p => [p, p])) : [["", ""]];
+  $p("m-ing").innerHTML = html;
+  const tabs = r.tabs || null, tab = tabs ? tabs[RT] : null;
+  if (tabs) {
+    $p("m-tabs").innerHTML = tabs.map(([lbl, tp], t) => `<button type="button" role="tab" id="${P}rt-${t}" data-t="${t}"${tp && r.partColors && r.partColors[tp[0]] ? ` class="tcol" style="--tc:${r.partColors[tp[0]]}"` : ""} aria-selected="${t === RT}" aria-controls="${P}${t ? "sec-steps" : "sec-ing"}">${esc(lbl)}</button>`).join("");
+  }
+  $p("m-tabs").hidden = !tabs;
+  const kind = tab ? (tab[2] || (tab[1] ? "steps" : "ing")) : "";
+  $p("sec-ing").hidden = !!tabs && kind !== "ing";
+  $p("sec-steps").hidden = !!tabs && kind === "ing";
+  $p("h-steps-t").textContent = tab && kind !== "ing" ? tab[0] : "Method";
+  let groups = parts.length ? [["", r.base || "Searing"]].concat(parts.map(p => [p, p])) : [["", ""]];
+  if (tab && tab[1]) groups = tab[1].map(p => [p, tab[1].length > 1 ? p : ""]);
   let n = 0, sh = "";
   groups.forEach(([key, label]) => {
     const list = r.steps.map((x, k) => [x, k]).filter(([x]) => partOf(x[0]) === key);
     if (!list.length) return;
-    if (label) sh += `<h4 class="part">${esc(label)}</h4>`;
-    sh += `<ol class="steps" start="${n + 1}" style="counter-reset:s ${n}">` + list.map(([[t, d], k]) => { n++;
-      const title = key ? t.slice(key.length + 2) : t;
-      return `<li><label for="step-${i}-${k}"><div><span class="step-title">${esc(title)}</span>${body(d)}</div>
-        <input type="checkbox" id="step-${i}-${k}"${on(`step-${i}-${k}`)} aria-label="Mark step ${n} done"></label></li>`; }).join("") + `</ol>`;
+    const pc = r.partColors && r.partColors[key] ? `--pc:${r.partColors[key]};` : "";
+    if (label) sh += `<h4 class="part${pc ? " pcol" : ""}" style="${pc}">${esc(label)}</h4>`;
+    sh += `<ol class="steps${pc ? " pcol" : ""}" start="${n + 1}" style="${pc}counter-reset:s ${n}">` + list.map(([[t, d], k]) => { n++;
+      const title = key ? t.slice(key.length + 2) : t, tm = /^(\d+:\d\d) · (.*)$/.exec(title);
+      const head = tm ? `<span class="step-title"><span class="tchip">${esc(tm[1])}</span>${esc(tm[2])}</span>` : `<span class="step-title">${esc(title)}</span>`;
+      return `<li><label for="${P}step-${i}-${k}"><div>${head}${body(d)}</div>
+        <input type="checkbox" id="${P}step-${i}-${k}"${on(`${P}step-${i}-${k}`)} aria-label="Mark step ${n} done"></label></li>`; }).join("") + `</ol>`;
   });
-  $("m-steps").innerHTML = sh;
-  $("m-serve").hidden = !r.serve;
-  $("m-serve").textContent = r.serve || "";
-  $("c-ing").textContent = gi;
-  $("c-steps").textContent = n;
+  if (kind === "tips") { sh = `<ul class="tips">${(r.tips || []).map(([a, b]) => `<li><b>${esc(a)}</b><span>${esc(b)}</span></li>`).join("")}</ul>`; n = (r.tips || []).length; }
+  $p("m-steps").innerHTML = sh;
+  $p("m-serve").hidden = !r.serve || (!!tabs && RT !== 1);
+  $p("m-serve").textContent = r.serve || "";
+  $p("c-ing").textContent = gi;
+  $p("c-steps").textContent = n;
 }
-["m-ing", "m-steps"].forEach(id => $(id).addEventListener("change", e => {
-  if (e.target.checked) TICKS.add(e.target.id); else TICKS.delete(e.target.id);
-}));
+function bindRecipeView(V, scroller) {
+  $(V.P + "m-tabs").addEventListener("click", e => {
+    const b = e.target.closest("button[role=tab]"); if (!b) return;
+    V.tab = Number(b.dataset.t); drawRecipe(V);
+    if (scroller()) scroller().scrollTop = 0;
+    $(V.P + "rt-" + V.tab).focus({ preventScroll: true });
+  });
+  $(V.P + "m-tabs").addEventListener("keydown", e => {
+    const tabs = RECIPES[V.i].tabs; if (!tabs || (e.key !== "ArrowRight" && e.key !== "ArrowLeft")) return;
+    V.tab = (V.tab + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length; drawRecipe(V); $(V.P + "rt-" + V.tab).focus();
+  });
+  [V.P + "m-ing", V.P + "m-steps"].forEach(id => $(id).addEventListener("change", e => {
+    if (e.target.checked) V.ticks.add(e.target.id); else V.ticks.delete(e.target.id);
+  }));
+}
+bindRecipeView(MV, () => $("modal"));
+bindRecipeView(XV, () => null);
+$("m-pin").addEventListener("click", () => togglePin(MV.i, $("m-pin")));
+$("x-pin").addEventListener("click", () => togglePin(XV.i, $("x-pin")));
+$("xcombos").addEventListener("click", e => {
+  const b = e.target.closest("button[data-k]"); if (!b) return;
+  const k = Number(b.dataset.k); if (k === XV.i) return;
+  XV.i = k; XV.tab = 0; XV.ticks = new Set(); setCat("combo");
+});
 
 $("index").addEventListener("click", e => {
   const b = e.target.closest(".entry");
