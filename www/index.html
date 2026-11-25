@@ -581,19 +581,22 @@ ol.steps li::before { font-size: 13px; }
 .wset.run .wsplay { background: var(--fg); color: var(--bg); animation: wspulse 1.2s ease-in-out infinite; }
 @keyframes wspulse { 50% { transform: scale(.88); } }
 @media (prefers-reduced-motion: reduce) { .wset.run .wsplay { animation: none; } }
-.wrep { display: flex; align-items: center; gap: 5px; min-width: 0; padding-right: 12px; }
+.wrep { display: flex; align-items: center; justify-content: flex-end; min-width: 0; padding-right: 12px; }
+.wex.wrm { grid-template-columns: minmax(0, 1fr) auto; }
 .wrstart { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 18px 0 14px; border: 0; border-radius: 99px; background: var(--cta); color: var(--on-cta); font: inherit; font-weight: 700; font-size: .9rem; box-shadow: 0 4px 14px rgba(255,138,115,.3); }
 .wrstart svg { width: 16px; height: 16px; fill: currentColor; }
-.wrstart:active, .wrb:active, .wrok:active { transform: scale(.93); }
-.wrb { flex: none; width: 34px; height: 40px; padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--glass); color: var(--fg); font: inherit; font-size: 1.25rem; font-weight: 700; line-height: 1; touch-action: manipulation; }
-.wrin { flex: 0 1 48px; min-width: 34px; width: 48px; height: 40px; padding: 0; border: 1.5px solid var(--lit); border-radius: 12px; background: var(--glass); color: var(--fg); text-align: center; font: inherit; font-weight: 700; font-size: 1.1rem; font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; }
-.wrin::-webkit-outer-spin-button, .wrin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-.wrin.shake { animation: wrshake .35s; }
-@keyframes wrshake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
-.wrok { flex: none; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: var(--fg); color: var(--bg); }
-.wrok svg { width: 18px; height: 18px; }
-.wrsum { padding: 8px 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: .85rem; font-weight: 600; text-align: left; }
-.wsetof { font-size: .7rem; font-weight: 700; color: var(--num-b); white-space: nowrap; }
+.wrstart:active, .wrbig:active, .wrsum:active { transform: scale(.94); }
+.wrsum { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 99px; background: var(--seg); color: var(--fg); font: inherit; font-size: .88rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+.wrsum svg { width: 15px; height: 15px; color: var(--num-b); }
+.wrctr { display: grid; grid-template-columns: 72px minmax(0, 1fr) 72px; align-items: center; gap: 12px; padding: 8px 0 4px; }
+.wrbig { width: 72px; height: 72px; padding: 0; border: 1px solid var(--line); border-radius: 50%; background: var(--seg); color: var(--fg); font: inherit; font-size: 2rem; font-weight: 600; line-height: 1; touch-action: manipulation; }
+.wrbig.wrplus { border: 0; background: var(--cta); color: var(--on-cta); box-shadow: 0 6px 18px rgba(255,138,115,.35); }
+.wrnum { display: grid; justify-items: center; gap: 0; min-width: 0; }
+.wrnum input { width: 100%; min-width: 0; padding: 0; border: 0; background: none; color: var(--fg); text-align: center; font-family: var(--display); font-weight: 500; font-size: 3.4rem; line-height: 1.05; letter-spacing: -.03em; font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; outline: none; }
+.wrnum input::-webkit-outer-spin-button, .wrnum input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.wrnum span { font-size: .78rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.wrnum input.shake { animation: wrshake .35s; }
+@keyframes wrshake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 .wsadd { flex: none; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1.5px dashed var(--line); border-radius: 50%; background: none; color: var(--muted); font-size: 1.1rem; font-weight: 700; }
 .wyfor { margin: 0; font-weight: 600; }
 
@@ -629,12 +632,21 @@ ol.steps li::before { font-size: 13px; }
 .o-right { --oc: #E5AE45; background: radial-gradient(circle at 100% 50%, rgba(242,196,109,.26), transparent 62%), var(--glass) !important; }
 .o-bottom { --oc: var(--fg); background: radial-gradient(circle at 50% 100%, rgba(120,120,140,.16), transparent 62%), var(--glass) !important; }
 .ocenter { gap: 1px; }
-.cring { position: absolute; inset: -4%; width: 108%; height: 108%; pointer-events: none; }
+.cring { position: absolute; inset: 3%; width: 94%; height: 94%; pointer-events: none; }
 .cring circle { fill: none; stroke-width: 4; }
 .cring .crtr { stroke: var(--seg); }
 .cring .crarc { stroke: var(--cta); stroke-linecap: round; transition: stroke-dasharray .6s cubic-bezier(.3,.8,.3,1); }
 .crarc[stroke-dasharray^="0 "] { opacity: 0; }
 .opct { margin-top: 2px; font-size: clamp(10px, 2.8vw, 11.5px); font-weight: 700; color: var(--num-b, var(--cta)); font-variant-numeric: tabular-nums; }
+/* Home cards: tall rectangles around the date */
+.ocard { width: 28%; height: 33%; aspect-ratio: auto; border-radius: 26px; padding: 16px 10px; gap: 12px; align-content: center; }
+.o-top { top: 0; left: 36%; }
+.o-left { top: 33.5%; left: 0; }
+.o-right { top: 33.5%; right: 0; left: auto; }
+.o-bottom { bottom: 0; left: 36%; top: auto; }
+.ocard .oi { width: clamp(44px, 13vw, 54px); height: clamp(44px, 13vw, 54px); border-radius: 18px; }
+.ocard .oi svg { width: 26px; height: 26px; }
+.ocard b { font-size: clamp(14px, 4.1vw, 17px); }
 .hstats { width: min(100%, 440px); margin: 22px auto 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .hst { min-width: 0; display: grid; gap: 1px; padding: 12px 12px 11px; border: 1px solid var(--glass-line); border-radius: 20px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .hst .hsl { font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -873,11 +885,11 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 <section id="v-home" class="home" hidden aria-label="Home">
   <div class="orbit">
     <div class="oring" aria-hidden="true"></div>
-    <button type="button" class="ocard o-top" data-go="recipes"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-recipes" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><b>Recipes</b><span class="os" id="hs-recipes"></span></button>
-    <button type="button" class="ocard o-left" data-go="habits"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-habits" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><b>Habits</b><span class="os" id="hs-habits"></span></button>
+    <button type="button" class="ocard o-top" data-go="recipes"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><b>Recipes</b></button>
+    <button type="button" class="ocard o-left" data-go="habits"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><b>Habits</b></button>
     <div class="ocenter"><svg class="cring" viewBox="0 0 100 100" aria-hidden="true"><circle class="crtr" cx="50" cy="50" r="45"/><circle class="crarc" id="hc-arc" cx="50" cy="50" r="45" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oday" id="hc-day"></span><span class="odate" id="hc-date"></span><span class="opct" id="hc-pct"></span></div>
-    <button type="button" class="ocard o-right" data-go="todo"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-todo" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b><span class="os" id="hs-todo"></span></button>
-    <button type="button" class="ocard o-bottom" data-go="workout"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-workout" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b><span class="os" id="hs-workout"></span></button>
+    <button type="button" class="ocard o-right" data-go="todo"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b></button>
+    <button type="button" class="ocard o-bottom" data-go="workout"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b></button>
   </div>
   <div class="hstats">
     <div class="hst"><span class="hsl">Burned</span><b id="hst-kcal">0</b><span class="hsu">kcal today</span></div>
@@ -1229,6 +1241,21 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     <p class="wberr" id="wbErr" role="alert" hidden>Enter calories between 1 and 5000.</p>
     <div class="whacts"><button type="submit" class="wtdone" id="wbSave">Save</button><button type="button" class="closer" id="wbDel" hidden>Delete</button></div>
   </form>
+</div>
+<div class="whveil" id="wrVeil" hidden></div>
+<div class="wh" id="wr" role="dialog" aria-modal="true" aria-labelledby="wrTitle" hidden>
+  <div class="whin">
+    <div class="whtop">
+      <div><p class="label" id="wrSub">Count your reps</p><h2 id="wrTitle">Exercise</h2></div>
+      <button type="button" class="closer" id="wrClose">Close</button>
+    </div>
+    <div class="wrctr">
+      <button type="button" class="wrbig" id="wrMinus" aria-label="One rep less">&minus;</button>
+      <label class="wrnum"><input id="wrIn" type="number" inputmode="numeric" min="0" max="500" step="1" placeholder="0" aria-label="Reps"><span>reps</span></label>
+      <button type="button" class="wrbig wrplus" id="wrPlus" aria-label="One rep more">+</button>
+    </div>
+    <div class="whacts"><button type="button" class="wtdone" id="wrDone">Done</button><button type="button" class="closer" id="wrClear" hidden>Clear</button></div>
+  </div>
 </div>
 <div class="whveil" id="whVeil" hidden></div>
 <div class="wh" id="wh" role="dialog" aria-modal="true" aria-labelledby="whName" hidden>
@@ -1753,22 +1780,18 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   /* Home: four cards around today's date, each with a one-line status */
   function renderHome() {
     var d = new Date();
-    set('hc-day', d.toLocaleDateString('en-IN', { weekday: 'long' }));
+    set('hc-day', d.toLocaleDateString('en-IN', { weekday: 'short' }));
     set('hc-date', d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
     function txt(id) { var e = $(id); return e ? e.textContent.trim() : ''; }
     function frac(t) { var m = /(\d+) of (\d+)/.exec(t); return m ? [Number(m[1]), Number(m[2])] : null; }
     function arc(id, f) { var e = $(id); if (e) e.setAttribute('stroke-dasharray', (f && f[1] ? Math.round(f[0] / f[1] * 100) : 0) + ' 100'); }
     var fh = frac(txt('h-sum')), ft = frac(txt('h-tSum')), fw = null;
-    set('hs-habits', txt('h-sum') || 'Tap to open');
-    set('hs-todo', txt('h-tSum') || 'Tap to open');
     var w = '', sd = 0, sn = 0;
     try {
       fw = [FULL.filter(wDone).length, FULL.length];
       w = TYPES[cfg.wtype].name + ' \u00b7 ' + fw[0] + '/' + fw[1];
       FULL.forEach(function (k) { sd += Math.min(wCount(k), wBase(k)); sn += wBase(k); });
     } catch (e) { w = 'Tap to open'; }
-    set('hs-workout', w);
-    arc('op-habits', fh); arc('op-todo', ft); arc('op-workout', fw);
     var tot = [0, 0];
     [fh, ft, fw].forEach(function (f) { if (f) { tot[0] += f[0]; tot[1] += f[1]; } });
     arc('hc-arc', tot);
@@ -1776,7 +1799,6 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     set('hst-kcal', txt('wBurnTot') || '0');
     set('hst-sets', sn ? sd + '/' + sn : '0'); set('hst-setsu', 'sets today');
     var wkN = wWeekCount(); set('hst-week', String(wkN)); set('hst-weeku', wkN === 1 ? 'workout' : 'workouts');
-    set('hs-recipes', window.nealPinnedName && window.nealPinnedName() ? '\ud83d\udccc ' + window.nealPinnedName() : 'All recipes');
   }
   window.nealRenderHome = renderHome;
   window.addEventListener('hashchange', function () { showView(location.hash.slice(1)); });
@@ -1937,6 +1959,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   }
   /* Today's sets for a finished exercise */
   function wDoneOpen(k) {
+    var e1 = wLog().done[wKey(1, k)];
+    if (e1 && e1.rm) { wrOpen(k); return; }
     var log = wLog(), box = $('whList'), item = wNode('div', 'whday'), head = wNode('div', 'whhead'), sl = wNode('div', 'whsets'), s, n = wSets(k);
     set('whName', wName(k)); set('whKind', 'Done today');
     head.append(wNode('b', '', 'Today \u00b7 ' + n + (n === 1 ? ' set' : ' sets')), wNode('span', 'wdtag', TYPES[cfg.wtype].name));
@@ -2048,7 +2072,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       var ssWith = (TYPES[cfg.wtype].ss || {})[k];
       if (ssWith) { row.classList.add('wss'); if (FULL.indexOf(ssWith) > FULL.indexOf(k)) row.classList.add('wss1'); info.append(wNode('span', 'wsstag', 'Superset')); }
       left.append(mark, info);
-      if (cfg.repMode && !WARM[k]) { row.append(left, repCell(k, info)); list.append(row); return; }
+      if (cfg.repMode && !WARM[k]) { row.classList.add('wrm'); mark.onclick = function (ev) { ev.stopPropagation(); wrOpen(k); }; row.append(left, repCell(k)); list.append(row); return; }
       var chips = wNode('div', 'wsets'), s;
       for (s = 1; s <= sets; s++) chips.append(setChip(k, s));
       var more = wNode('button', 'wsadd', '+'); more.type = 'button'; more.setAttribute('aria-label', 'Add a set to ' + wName(k));
@@ -2060,60 +2084,67 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     });
     fitNames();
   }
-  /* Rep mode: Start an exercise, count reps with minus and plus, tick to log the set */
-  var repRun = {}, repVal = {};
-  function repNext(k) { var d = wLog().done, s; for (s = 1; s <= wSets(k); s++) if (!d[wKey(s, k)]) return s; return 0; }
-  function repCell(k, info) {
-    var box = wNode('div', 'wrep'), r = repNext(k), done = wDone(k);
-    box.setAttribute('aria-label', wName(k) + ' reps');
-    if (done) {
-      var tot = 0, n = 0, s, d = wLog().done;
-      for (s = 1; s <= wSets(k); s++) { var e = d[wKey(s, k)]; if (e) { n++; tot += Number(e.reps) || 0; } }
-      var sm = wNode('button', 'wrsum', n + ' sets \u00b7 ' + tot + ' reps'); sm.type = 'button';
-      sm.onclick = function () { wDoneOpen(k); };
+  /* Rep mode: no sets. Start opens a counter; Done logs all the reps for the exercise at once */
+  function repEntries(k) { var d = wLog().done, out = [], x; for (x in d) { var p = x.split(':'); if (p[0] === cfg.wtype && p[2] === k) out.push(x); } return out; }
+  function repTotal(k) { var d = wLog().done; return repEntries(k).reduce(function (a, x) { return a + (Number(d[x] && d[x].reps) || 0); }, 0); }
+  function repCell(k) {
+    var box = wNode('div', 'wrep');
+    if (wDone(k)) {
+      var sm = wNode('button', 'wrsum'); sm.type = 'button';
+      sm.innerHTML = CHECK + '<span>' + repTotal(k) + ' reps</span>';
+      sm.setAttribute('aria-label', wName(k) + ': ' + repTotal(k) + ' reps. Edit');
+      sm.onclick = function () { wrOpen(k); };
       box.append(sm); return box;
     }
-    if (!repRun[k]) {
-      var st = wNode('button', 'wrstart'); st.type = 'button';
-      st.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z"/></svg><span>Start</span>';
-      st.setAttribute('aria-label', 'Start ' + wName(k) + ', set ' + r);
-      st.onclick = function () { repRun[k] = true; renderWeights(); };
-      box.append(st);
-      if (wCount(k)) info.append(wNode('span', 'wsetof', 'Set ' + r + ' of ' + wSets(k)));
-      return box;
-    }
-    info.append(wNode('span', 'wsetof', 'Set ' + r + ' of ' + wSets(k)));
-    var inp = document.createElement('input');
-    inp.type = 'number'; inp.className = 'wrin'; inp.min = '0'; inp.max = '200'; inp.inputMode = 'numeric'; inp.placeholder = '';
-    inp.value = repVal[k] ? String(repVal[k]) : '';
-    inp.setAttribute('aria-label', wName(k) + ' reps, set ' + r);
-    inp.addEventListener('input', function () { var v = Math.round(Number(inp.value)); repVal[k] = isFinite(v) && v > 0 ? Math.min(200, v) : 0; });
-    function step(d) {
-      var v = Math.max(0, Math.min(200, (repVal[k] || 0) + d)); repVal[k] = v; inp.value = v ? String(v) : '';
-      try { if (navigator.vibrate) navigator.vibrate(12); } catch (x) {}
-    }
-    var mi = wNode('button', 'wrb', '\u2212'); mi.type = 'button'; mi.setAttribute('aria-label', 'One rep less'); mi.onclick = function () { step(-1); };
-    var pl = wNode('button', 'wrb', '+'); pl.type = 'button'; pl.setAttribute('aria-label', 'One rep more'); pl.onclick = function () { step(1); };
-    var ok = wNode('button', 'wrok'); ok.type = 'button'; ok.innerHTML = CHECK; ok.setAttribute('aria-label', 'Log set ' + r);
-    ok.onclick = function () {
-      var v = repVal[k] || 0;
-      if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); return; }
-      var e = { reps: v };
-      if (!LIFT[k].noKg) { var kg = Number(wSetKg(k, r)); if (isFinite(kg)) e.kg = kg; }
-      wLog().done[wKey(r, k)] = e; todayLog().kcal += wCalOf(k, e);
-      repVal[k] = 0;
-      try { if (navigator.vibrate) navigator.vibrate(30); } catch (x) {}
-      var t = window.nealToast || function () {};
-      if (wDone(k)) {
-        delete repRun[k];
-        if (wAllDone()) { t(TYPES[cfg.wtype].name + ' done'); if (window.nealConfetti) window.nealConfetti(); }
-        else t(wName(k) + ' done');
-      } else t('Set ' + r + ' \u00b7 ' + v + ' reps logged');
-      wRecord(); save(); renderWeights(); paint();
-    };
-    box.append(mi, inp, pl, ok);
+    var st = wNode('button', 'wrstart'); st.type = 'button';
+    st.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z"/></svg><span>Start</span>';
+    st.setAttribute('aria-label', 'Start ' + wName(k));
+    st.onclick = function () { wrOpen(k); };
+    box.append(st);
     return box;
   }
+  var wrK = null;
+  function wrVal() { var v = Math.round(Number($('wrIn').value)); return isFinite(v) && v > 0 ? Math.min(500, v) : 0; }
+  function wrOpen(k) {
+    wrK = k;
+    var done = wDone(k), tot = done ? repTotal(k) : 0;
+    set('wrTitle', wName(k)); set('wrSub', done ? 'Done today \u00b7 edit reps' : 'Count your reps');
+    $('wrIn').value = tot ? String(tot) : '';
+    $('wrClear').hidden = !done;
+    $('wr').hidden = false; $('wrVeil').hidden = false; document.body.style.overflow = 'hidden';
+  }
+  function wrClose() { $('wr').hidden = true; $('wrVeil').hidden = true; document.body.style.overflow = ''; wrK = null; }
+  function wrWipe(k) {
+    var d = wLog().done;
+    repEntries(k).forEach(function (x) { todayLog().kcal = Math.max(0, todayLog().kcal - wCalOf(k, d[x])); delete d[x]; });
+  }
+  function wrStep(n) {
+    var v = Math.max(0, Math.min(500, wrVal() + n)); $('wrIn').value = v ? String(v) : '';
+    try { if (navigator.vibrate) navigator.vibrate(12); } catch (x) {}
+  }
+  $('wrMinus').onclick = function () { wrStep(-1); };
+  $('wrPlus').onclick = function () { wrStep(1); };
+  $('wrClose').onclick = wrClose; $('wrVeil').onclick = wrClose;
+  $('wrDone').onclick = function () {
+    var k = wrK, v = wrVal(), inp = $('wrIn');
+    if (!k) return;
+    if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); return; }
+    wrWipe(k);
+    var e = { reps: v, rm: 1 }, d = wLog().done, s;
+    if (!LIFT[k].noKg) { var kg = Number(wSetKg(k, 1)); if (isFinite(kg)) e.kg = kg; }
+    d[wKey(1, k)] = e; todayLog().kcal += wCalOf(k, e);
+    for (s = 2; s <= wBase(k); s++) d[wKey(s, k)] = { reps: 0, rm: 1 };
+    try { if (navigator.vibrate) navigator.vibrate(30); } catch (x) {}
+    var t = window.nealToast || function () {};
+    if (wAllDone()) { t(TYPES[cfg.wtype].name + ' done'); if (window.nealConfetti) window.nealConfetti(); }
+    else t(wName(k) + ' \u00b7 ' + v + ' reps done');
+    wrClose(); wRecord(); save(); renderWeights(); paint();
+  };
+  $('wrClear').onclick = function () {
+    var k = wrK; if (!k) return;
+    wrWipe(k); wrClose(); wRecord(); save(); renderWeights(); paint();
+    if (window.nealToast) window.nealToast(wName(k) + ' cleared');
+  };
   /* Keep every exercise name on one line: shrink the font a little where a name is too wide */
   function fitNames() {
     var els = $('wList').querySelectorAll('.wnm');
@@ -2436,7 +2467,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     paintTools(); save();
   };
   $('repBtn').onclick = function () {
-    cfg.repMode = !cfg.repMode; repRun = {};
+    cfg.repMode = !cfg.repMode;
     paintTools(); save(); renderWeights();
     if (window.nealToast) window.nealToast(cfg.repMode ? 'Rep mode on: tap Start on an exercise' : 'Rep mode off');
   };
@@ -2491,6 +2522,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     if (d) d.close();
     else if (!$('wy').hidden) wyClose();
     else if (!$('wb').hidden) wbClose();
+    else if (!$('wr').hidden) wrClose();
     else if (!$('wh').hidden) wHistClose();
     else if (wt) wtClose();
     else if (window.nealHabitsBack && window.nealHabitsBack()) return;
