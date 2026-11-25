@@ -179,14 +179,26 @@ body { padding-bottom: calc(86px + var(--sab, env(safe-area-inset-bottom, 0px)))
 .wstep input { width: 52px; height: 34px; padding: 0 4px; border: 0; background: transparent; color: var(--fg); font: inherit; font-weight: 600; font-size: 1.05rem; text-align: right; -moz-appearance: textfield; }
 .wstep input::-webkit-outer-spin-button, .wstep input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 .wweek { display: grid; gap: 10px; }
-.wburn { display: grid; gap: 12px; padding: 16px; border: 1px solid var(--glass-line); border-radius: 22px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px) saturate(165%); backdrop-filter: blur(18px) saturate(165%); }
-.wburntop { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.wburn { display: grid; gap: 8px; padding: 10px 12px 10px 16px; border: 1px solid var(--glass-line); border-radius: 22px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px) saturate(165%); backdrop-filter: blur(18px) saturate(165%); }
+.wburntop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .wburntot { margin: 2px 0 0; font-weight: 600; color: var(--muted); }
-.wburntot b { font-family: var(--display); font-weight: 500; font-size: 2.2rem; letter-spacing: -.03em; color: var(--fg); font-variant-numeric: tabular-nums; margin-right: 2px; }
-.wburnadd { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 16px; border: 0; border-radius: 99px; background: var(--cta); color: var(--on-cta); font-weight: 700; font-size: .92rem; }
+.wburntot b { font-family: var(--display); font-weight: 500; font-size: 1.6rem; letter-spacing: -.03em; color: var(--fg); font-variant-numeric: tabular-nums; margin-right: 2px; }
+.wburnadd { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 6px 14px; border: 0; border-radius: 99px; background: var(--cta); color: var(--on-cta); font-weight: 700; font-size: .92rem; }
 .wburnadd svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
 .wburnlist { display: flex; flex-wrap: wrap; gap: 8px; }
-.wburnlist:empty::before { content: 'Log calories from walks, sports or other activities.'; color: var(--muted); font-size: .86rem; }
+.wburnlist:empty { display: none; }
+.wburntop .label { margin: 0; }
+.wburntot { line-height: 1.1; }
+.wweek { gap: 6px; }
+.wweek .h-days { gap: 4px; }
+.wweek .h-day { padding: 6px 1px 5px; gap: 0; box-shadow: none; }
+.wweek .h-day .h-mon { display: none; }
+.wweek .h-day .h-dow { font-size: .62rem; }
+.wweek .h-day .h-dnum { font-size: .9rem; line-height: 1.2; }
+.wweek .h-ring { width: 24px; height: 24px; margin-top: 3px; }
+.wkind { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.wkind button { min-width: 0; min-height: 46px; padding: 6px 4px; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--seg); color: var(--fg); font: inherit; font-weight: 600; font-size: .88rem; }
+.wkind button[aria-pressed="true"] { background: var(--lit); border-color: var(--lit); color: var(--on-lit); }
 .wbadge { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border: 1px solid var(--glass-line); border-radius: 99px; background: var(--seg); color: var(--fg); font-weight: 600; font-size: .86rem; max-width: 100%; }
 .wbadge span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .wbadge b { font-variant-numeric: tabular-nums; }
@@ -739,6 +751,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 .h-tag { padding: 0 8px; border-radius: 99px; background: var(--lit); color: var(--on-lit); font-size: 0.8rem; font-weight: 600; line-height: 1.5; white-space: nowrap; }
 .h-tick { flex: none; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border-radius: 50%; border: 2px solid var(--lit); background: transparent; color: transparent; transition: background .2s, transform .15s; touch-action: manipulation; }
 .h-tick svg { width: 22px; height: 22px; }
+.h-tick.h-cnt { color: var(--fg); font-weight: 700; font-size: .78rem; font-variant-numeric: tabular-nums; }
 .h-tick:active { transform: scale(.92); }
 .h-tick[aria-pressed="true"] { background: var(--lit); color: var(--on-lit); }
 .h-nothing { padding: 22px; color: var(--muted); }
@@ -1164,7 +1177,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       <div><p class="label">Calories burned</p><h2 id="wbTitle">Add activity</h2></div>
       <button type="button" class="closer" id="wbClose">Close</button>
     </div>
-    <label class="wbf"><span class="label">Activity</span><input id="wbName" type="text" maxlength="30" placeholder="e.g. Walk, Badminton" autocomplete="off"></label>
+    <div class="wbf"><span class="label" id="wbKindL">Activity</span><div class="wkind" id="wbKind" role="group" aria-labelledby="wbKindL"><button type="button">Workout</button><button type="button">Chores</button><button type="button">Walk</button><button type="button">Cardio</button></div></div>
     <label class="wbf"><span class="label">Calories (kcal)</span><input id="wbKcal" type="number" inputmode="numeric" min="1" max="5000" step="1" placeholder="0"></label>
     <p class="wberr" id="wbErr" role="alert" hidden>Enter calories between 1 and 5000.</p>
     <div class="whacts"><button type="submit" class="wtdone" id="wbSave">Save</button><button type="button" class="closer" id="wbDel" hidden>Delete</button></div>
@@ -1293,10 +1306,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     wKnees: { name: 'High Knees', cal: 14, sec: 30 }
   };
   var TYPES = {
-    d1: { name: 'Day 1', items: ['fbChest', 'oneRow', 'fbCurl', 'squat', 'wSpotKnees'] },
-    d2: { name: 'Day 2', items: ['fbSkull', 'shPress', 'latRev', 'lunge', 'wKnees'] },
     /* sets: this day's set count where it differs; ss: exercises done back to back as a superset */
-    d3: { name: 'Day 3', items: ['oneRow', 'squat', 'fbChest', 'shrug', 'latRaise', 'fbSkull', 'altHammer'],
+    d3: { name: 'Full Body', items: ['oneRow', 'squat', 'fbChest', 'shrug', 'latRaise', 'fbSkull', 'altHammer'],
       sets: { oneRow: 4, squat: 2, fbChest: 4, shrug: 4, latRaise: 3, fbSkull: 3, altHammer: 3 },
       names: { fbChest: 'Chest DB Press', oneRow: 'One Arm DB Row' },
       ss: { fbChest: 'shrug', shrug: 'fbChest' } }
@@ -1315,7 +1326,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     fbCurl: 'https://youtube.com/shorts/2jpteC44QKg',
     squat: 'https://youtube.com/shorts/eFEVKmp3M4g'
   };
-  var FULL = TYPES.d1.items;
+  var FULL = TYPES.d3.items;
   var PLANK = { name: 'Plank', sec: 30, cal: 3, cue: 'Forearms down, body in a straight line. Keep your hips level.' };
   var CHECK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>';
   var CARDIO = [
@@ -1336,7 +1347,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     { name: 'Pelvic tilt', sec: 60, cue: 'Knees bent, press your lower back into the floor for 3 to 5 seconds, then release.' }
   ];
 
-  var cfg = { mode: 'weights', kg: BASE_KG, sound: true, theme: null, lifts: {}, today: { date: '', kcal: 0 }, last: null, wk: null, wkg: 5, wkHist: {}, wtype: 'd1', wkPast: {}, burn: {}, yt: {}, setKg: {}, setReps: {}, planV: 0 };
+  var cfg = { mode: 'weights', kg: BASE_KG, sound: true, theme: null, lifts: {}, today: { date: '', kcal: 0 }, last: null, wk: null, wkg: 5, wkHist: {}, wtype: 'd3', wkPast: {}, burn: {}, yt: {}, setKg: {}, setReps: {}, planV: 0 };
   function todayLog() {
     var d = new Date().toDateString();
     if (cfg.today.date !== d) cfg.today = { date: d, kcal: 0 };
@@ -1805,7 +1816,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       ring.setAttribute('aria-label', d.toDateString() + ': ' + (future ? 'not started' : pct + '% done'));
       cell.append(ring);
       var tags = Object.keys(c.t || {}).filter(function (t) { return c.t[t] === 2 && TYPES[t]; });
-      if (tags.length) {
+      if (tags.length && Object.keys(TYPES).length > 1) {
         var tg = document.createElement('span'); tg.className = 'wdtags';
         tags.forEach(function (t) {
           var x = document.createElement('span'); x.className = 'wdtag' + (c.t[t] === 2 ? ' full' : '');
@@ -1821,7 +1832,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   }
   function wKey(r, k) { return cfg.wtype + ':' + r + ':' + k; }
   function setType(t) {
-    if (!TYPES[t]) t = 'd1';
+    if (!TYPES[t]) t = 'd3';
     cfg.wtype = t; FULL = TYPES[t].items;
   }
   function wBase(k, t) { var T = TYPES[t || cfg.wtype]; if (T && T.sets && T.sets[k]) return T.sets[k]; return PLAN[k] ? PLAN[k][0] : 3; }
@@ -1916,17 +1927,20 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     var arr = burnToday(), e = i >= 0 ? arr[i] : null;
     wbIdx = e ? i : -1;
     set('wbTitle', e ? 'Edit activity' : 'Add activity');
-    $('wbName').value = e ? e.n : ''; $('wbKcal').value = e ? e.kcal : '';
+    wbKind(e && WB_KINDS.indexOf(e.n) >= 0 ? e.n : 'Workout'); $('wbKcal').value = e ? e.kcal : '';
     $('wbDel').hidden = !e; $('wbErr').hidden = true;
     $('wb').hidden = false; $('wbVeil').hidden = false; document.body.style.overflow = 'hidden';
-    (e ? $('wbKcal') : $('wbName')).focus({ preventScroll: true });
+    $('wbKcal').focus({ preventScroll: true });
   }
+  var WB_KINDS = ['Workout', 'Chores', 'Walk', 'Cardio'], wbSel = 'Workout';
+  function wbKind(n) { wbSel = n; Array.prototype.forEach.call($('wbKind').children, function (b) { b.setAttribute('aria-pressed', String(b.textContent === n)); }); }
+  Array.prototype.forEach.call($('wbKind').children, function (b) { b.onclick = function () { wbKind(b.textContent); }; });
   function wbClose() { $('wb').hidden = true; $('wbVeil').hidden = true; document.body.style.overflow = ''; }
   $('wBurnAdd').onclick = function () { wbOpen(-1); };
   $('wbClose').onclick = wbClose; $('wbVeil').onclick = wbClose;
   $('wbForm').onsubmit = function (ev) {
     ev.preventDefault();
-    var kc = Math.round(Number($('wbKcal').value)), nm = $('wbName').value.trim() || 'Activity';
+    var kc = Math.round(Number($('wbKcal').value)), nm = wbSel || 'Workout';
     if (!(kc >= 1 && kc <= 5000)) { $('wbErr').hidden = false; $('wbKcal').focus(); return; }
     var arr = burnToday().slice();
     if (wbIdx >= 0) arr[wbIdx] = { n: nm, kcal: kc }; else arr.push({ n: nm, kcal: kc });
@@ -1956,7 +1970,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     var log = wLog(), list = $('wList'), tb = $('wTypes');
     renderBurn(); renderMark();
     renderWeek();
-    tb.textContent = '';
+    tb.textContent = ''; tb.hidden = Object.keys(TYPES).length < 2;
     Object.keys(TYPES).forEach(function (t) {
       var b = wNode('button', '', TYPES[t].name); b.type = 'button'; b.setAttribute('role', 'tab');
       b.setAttribute('aria-selected', String(t === cfg.wtype));
@@ -2336,7 +2350,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 
   /* Boot: an unfinished session from today comes back paused */
   var saved = load();
-  if (!TYPES[cfg.wtype]) cfg.wtype = 'd1';
+  if (!TYPES[cfg.wtype]) cfg.wtype = 'd3';
   if (!cfg.planV || cfg.planV < 3) {
     Object.keys(PLAN_KG).forEach(function (k) { liftVal(k).kg = PLAN_KG[k]; });
     var PR = { fbChest: 10, oneRow: 10, fbCurl: 12, squat: 12, fbSkull: 10, shPress: 10, latRev: 12, lunge: 10 };
@@ -3457,7 +3471,31 @@ renderIndex();
   function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2, 6); }
 
   /* State: pills, plants and vaccines are habits with a repeat and a next date */
-  function empty() { return { v: 2, mode: '', sample: false, ordered: true, habits: [], days: {}, snooze: {}, t: 0 }; }
+  function empty() { return { v: 2, mode: '', sample: false, ordered: true, habits: [], days: {}, snooze: {}, t: 0, gone: [], mv: 1 }; }
+  /* Master habits live in the app itself: they come back after a reinstall and are removed only from the menu */
+  var MASTERS = [
+    { m: 'trash', name: 'Take the trash out' },
+    { m: 'burn', name: 'Burn 100 calories', goal: 6 },
+    { m: 'study', name: 'Study' },
+    { m: 'cook', name: 'Cook' }
+  ];
+  function ensureMasters() {
+    S.gone = S.gone || [];
+    if (S.mv !== 1) { S.habits = S.habits.filter(function (h) { return !h.ex; }); S.sample = false; S.mv = 1; }
+    var add = [];
+    MASTERS.forEach(function (M) {
+      if (S.gone.indexOf(M.m) >= 0) return;
+      var h = S.habits.filter(function (x) { return x.m === M.m; })[0] || S.habits.filter(function (x) { return !x.m && !isTask(x) && x.name.trim().toLowerCase() === M.name.toLowerCase(); })[0];
+      if (h) { h.m = M.m; if (M.goal) h.goal = M.goal; return; }
+      h = { id: 'm-' + M.m, m: M.m, name: M.name, kind: 'h', time: '', rep: '1d', next: today(), log: {} };
+      if (M.goal) h.goal = M.goal;
+      add.push(h);
+    });
+    if (add.length) S.habits = add.concat(S.habits);
+  }
+  /* A habit with a goal is ticked several times a day */
+  function cnt(h, k) { var v = h.log[k]; return v === true ? 1 : Number(v) || 0; }
+  function fin(h, k) { return h.goal ? cnt(h, k) >= h.goal : !!h.log[k]; }
   /* A to do task is a habit that repeats once */
   function isTask(h) { return h.rep === 'once'; }
   function tidy() {
@@ -3471,25 +3509,7 @@ renderIndex();
     S.ordered = true;
   }
   function seed() {
-    var t = today(), o = empty(), i, log = {};
-    for (i = 1; i <= 6; i++) log[addDays(t, -i)] = 1;
-    function h(id, name, k, time, rep, next, l) { return { id: id, ex: 1, name: name, kind: k, time: time, rep: rep, next: next, log: l || {} }; }
-    o.sample = true;
-    o.habits = [
-      h('ex1', 'Stretch', 'h', '07:30', '1d', addDays(t, 1), Object.assign({}, log)),
-      h('ex2', 'Take Vitamin D3', 'p', '09:00', '1d', t, Object.assign({}, log)),
-      h('ex3', 'Water the Tulsi', 'w', '08:00', '2d', t),
-      h('ex4', 'Drink 2 litres of water', 'h', '', '1d', t),
-      h('ex5', 'Read', 'h', '21:30', '1d', t),
-      h('ex6', 'Water the Monstera', 'w', '09:00', '7d', addDays(t, 3)),
-      h('ex7', 'Bruno: rabies booster', 'v', '10:00', '1y', addDays(t, 6)),
-      h('ex8', 'Buy vegetables', 'h', '', 'once', t),
-      h('ex9', 'Call the gym', 'h', '18:00', 'once', t),
-      h('ex10', 'Book a dentist appointment', 'h', '', 'once', addDays(t, 3))
-    ];
-    o.habits[0].log[t] = 1;
-    [5, 3, 4, 5, 2, 5].forEach(function (d, n) { o.days[addDays(t, -n - 1)] = { d: d, n: 5 }; });
-    return o;
+    return empty();
   }
   /* Entries saved by the earlier version of this page */
   function migrate(o) {
@@ -3517,7 +3537,7 @@ renderIndex();
   function adopt(o) {
     if (o && o.v !== 2) o = migrate(o);
     if (!o || !Array.isArray(o.habits)) { S = seed(); return; }
-    S = { v: 2, mode: o.mode === 'dark' || o.mode === 'light' ? o.mode : '', sample: !!o.sample, ordered: !!o.ordered, habits: o.habits, days: trim(o.days), snooze: o.snooze || {}, t: Number.isFinite(o.t) ? o.t : 0 };
+    S = { v: 2, mode: o.mode === 'dark' || o.mode === 'light' ? o.mode : '', sample: !!o.sample, ordered: !!o.ordered, habits: o.habits, days: trim(o.days), snooze: o.snooze || {}, t: Number.isFinite(o.t) ? o.t : 0, gone: Array.isArray(o.gone) ? o.gone : [], mv: o.mv || 0 };
     S.habits.forEach(function (h) { h.log = trim(h.log); });
   }
 
@@ -3544,7 +3564,7 @@ renderIndex();
   }
   /* What is due */
   function status(h) {
-    var t = today(), n = Date.now(), out = { h: h, done: !!h.log[t], due: h.next <= t, tag: '', when: '', at: 0 };
+    var t = today(), n = Date.now(), out = { h: h, done: fin(h, t), due: h.next <= t, tag: '', when: '', at: 0 };
     if (out.done || !out.due) return out;
     var late = h.rep === '1d' ? 0 : diff(h.next, t);
     if (h.time) {
@@ -3559,8 +3579,8 @@ renderIndex();
   function streak(h) {
     if (h.rep !== '1d') return 0;
     var k = today(), n = 0, i;
-    if (!h.log[k]) k = addDays(k, -1);
-    for (i = 0; i < 120 && h.log[k]; i++) { n++; k = addDays(k, -1); }
+    if (!fin(h, k)) k = addDays(k, -1);
+    for (i = 0; i < 120 && fin(h, k); i++) { n++; k = addDays(k, -1); }
     return n;
   }
   function order(a, b) {
@@ -3575,7 +3595,7 @@ renderIndex();
   function countsFor(k) {
     if (k === today()) return dayCounts();
     if (S.days[k]) return S.days[k];
-    var d = S.habits.filter(function (h) { return !isTask(h) && h.log[k]; }).length;
+    var d = S.habits.filter(function (h) { return !isTask(h) && fin(h, k); }).length;
     return { d: d, n: Math.max(d, S.habits.filter(function (h) { return h.rep === '1d'; }).length) };
   }
   function ringSvg(c) {
@@ -3606,11 +3626,15 @@ renderIndex();
   }
   function toggle(h) {
     var t = today(), task = isTask(h), before = allDone(task);
-    if (h.log[t]) {
+    if (fin(h, t)) {
       delete h.log[t];
       if (!task) { h.next = h.undo || t; delete h.undo; }
+    } else if (h.goal && cnt(h, t) + 1 < h.goal) {
+      h.log[t] = cnt(h, t) + 1;
+      try { if (navigator.vibrate) navigator.vibrate(20); } catch (e) {}
+      toast(h.name + ' \u00b7 ' + h.log[t] + ' of ' + h.goal);
     } else {
-      h.log[t] = 1; delete S.snooze[h.id];
+      h.log[t] = h.goal || 1; delete S.snooze[h.id];
       if (!task) { h.undo = h.next; h.next = step(t, h.rep); }
       try { if (navigator.vibrate) navigator.vibrate(30); } catch (e) {}
       if (!before && allDone(task)) { toast(task ? 'All your tasks are done' : 'All habits done for today'); confetti(); }
@@ -3674,12 +3698,14 @@ renderIndex();
       var c = node('button', 'tick'); c.type = 'button'; c.innerHTML = TICK;
       c.setAttribute('aria-pressed', st.done ? 'true' : 'false');
       c.setAttribute('aria-label', 'Done: ' + h.name);
+      if (h.goal && !st.done) { c.innerHTML = ''; c.classList.add('h-cnt'); c.textContent = cnt(h, today()) + '/' + h.goal; c.setAttribute('aria-label', h.name + ': ' + cnt(h, today()) + ' of ' + h.goal + '. Add one'); }
       c.onclick = function () { toggle(h); };
       r.append(c);
     }
     return r;
   }
   function render() {
+    ensureMasters();
     var now = new Date(), all = S.habits.filter(function (h) { return !isTask(h); }).map(status);
     var day = all.filter(function (s) { return s.due || s.done; }).sort(order);
     var soon = all.filter(function (s) { return !s.due && !s.done; }).sort(function (a, b) { return a.h.next < b.h.next ? -1 : 1; });
@@ -3694,6 +3720,7 @@ renderIndex();
     day.forEach(function (s, i) {
       var bits = [];
       if (s.when) bits.push(s.when);
+      else if (s.h.goal) bits.push(cnt(s.h, today()) + ' of ' + s.h.goal + ' today');
       else if (!s.tag && !s.done && !s.h.time) bits.push('Any time');
       var run = streak(s.h);
       bits.push(run > 1 ? run + ' days in a row' : repText(s.h.rep));
@@ -3771,12 +3798,13 @@ renderIndex();
       });
       o.type = 'button'; o.setAttribute('aria-label', 'Edit ' + h.name); o.style.paddingLeft = '0';
       o.onclick = function () { openSheet(h); };
-      t.append(node('b', '', h.name), node('span', 'meta', repText(h.rep)));
+      t.append(node('b', '', h.name), node('span', 'meta', (h.m ? 'Master \u00b7 ' : '') + repText(h.rep) + (h.goal ? ' \u00b7 ' + h.goal + ' times' : '')));
       o.append(t);
       rm.type = 'button'; rm.setAttribute('aria-label', 'Remove ' + h.name);
       rm.onclick = function () {
         if (!armed) { armed = true; rm.textContent = 'Tap again'; setTimeout(function () { armed = false; rm.textContent = 'Remove'; }, 3000); return; }
         S.habits = S.habits.filter(function (x) { return x !== h; });
+        if (h.m) { S.gone = S.gone || []; if (S.gone.indexOf(h.m) < 0) S.gone.push(h.m); }
         save(); render(); renderEditor(); toast('Removed ' + h.name);
       };
       r.append(g, o, rm); box.append(r);
@@ -3851,7 +3879,8 @@ renderIndex();
         closeSheet(); save(); render(); if (!$('editor').hidden) renderEditor(); toast('Removed ' + h.name);
       };
       if (!task) links.append(a);
-      links.append(del);
+      if (h.m) links.append(node('span', 'meta', 'Master habit \u00b7 remove it from the menu under Edit habits'));
+      else links.append(del);
     }
     $('veil').hidden = false; $('sheet').hidden = false;
     $('main').inert = true; $('todoMain').inert = true; $('addBtn').inert = true; $('addTask').inert = true;
@@ -4037,7 +4066,9 @@ renderIndex();
       var h = { id: String(x.id || uid()), name: x.name.trim().slice(0, 60), kind: 'hpwv'.indexOf(x.kind) >= 0 && x.kind ? x.kind : 'h',
         time: /^\d\d:\d\d$/.test(x.time) ? x.time : '', rep: /^([1-9]\d*[dmy]|once)$/.test(x.rep) ? x.rep : '1d', next: date.test(x.next) ? x.next : today(), log: {} };
       if (x.ex) h.ex = 1;
-      Object.keys(x.log || {}).forEach(function (k) { if (date.test(k)) h.log[k] = 1; });
+      if (typeof x.m === 'string') h.m = x.m;
+      if (Number(x.goal) > 1) h.goal = Math.min(50, Math.round(Number(x.goal)));
+      Object.keys(x.log || {}).forEach(function (k) { if (date.test(k)) h.log[k] = Number(x.log[k]) > 1 ? Math.round(Number(x.log[k])) : 1; });
       out.habits.push(h);
     }
     Object.keys(o.days || {}).forEach(function (k) {
@@ -4045,6 +4076,7 @@ renderIndex();
       if (date.test(k) && c && Number.isFinite(c.d) && Number.isFinite(c.n)) out.days[k] = { d: c.d, n: c.n };
     });
     out.sample = !!o.sample; out.ordered = !!o.ordered;
+    out.gone = Array.isArray(o.gone) ? o.gone.filter(function (g) { return typeof g === 'string'; }) : [];
     return out;
   }
   $('impBtn').onclick = function () { resetImport(); $('impFile').click(); };
