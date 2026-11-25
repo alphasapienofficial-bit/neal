@@ -57,12 +57,6 @@ jobs:
           name: Neal-App-apk
           path: Neal-App.apk
           if-no-files-found: error
-      - name: Publish the APK as the latest release
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          gh release delete latest --yes --cleanup-tag || true
-          gh release create latest Neal-App.apk --title "Neal App" --notes "Latest Neal App build. Download Neal-App.apk on your phone to install it."
       - name: Save the APK on the apk branch
         run: |
           mkdir apk-out
@@ -74,3 +68,10 @@ jobs:
           git add Neal-App.apk
           git commit -q -m "Latest Neal App APK"
           git push -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git" apk
+      - name: Publish the APK as the latest release
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete latest --yes --cleanup-tag || true
+          gh release create latest Neal-App.apk --title "Neal App" --notes "Latest Neal App build. Download Neal-App.apk on your phone to install it."
