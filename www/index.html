@@ -65,7 +65,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: var(--band
 .ttlapp { margin: 0; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); }
 .ttl h1 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 1.55rem; line-height: 1.15; letter-spacing: -.03em; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 /* Bottom navigation */
-body { padding-bottom: calc(86px + var(--sab, env(safe-area-inset-bottom, 0px))); }
+body { padding-bottom: calc(24px + var(--sab, env(safe-area-inset-bottom, 0px))); }
+#v-habits, #v-todo { padding-bottom: 72px; }
+.backBtn svg { stroke-width: 2.6; }
 .bnav { position: fixed; z-index: 12; left: 0; right: 0; bottom: 0; pointer-events: none;
   padding-bottom: calc(10px + var(--sab, env(safe-area-inset-bottom, 0px))); padding-left: max(14px, var(--sal, env(safe-area-inset-left, 0px))); padding-right: max(14px, var(--sar, env(safe-area-inset-right, 0px))); }
 .bnav::before { content: ""; position: absolute; z-index: -1; inset: -18px 0 0; pointer-events: none; background: linear-gradient(transparent, var(--bg) 70%); opacity: .9; }
@@ -189,13 +191,26 @@ body { padding-bottom: calc(86px + var(--sab, env(safe-area-inset-bottom, 0px)))
 .wburnlist:empty { display: none; }
 .wburntop .label { margin: 0; }
 .wburntot { line-height: 1.1; }
-.wweek { gap: 6px; }
-.wweek .h-days { gap: 4px; }
-.wweek .h-day { padding: 6px 1px 5px; gap: 0; box-shadow: none; }
-.wweek .h-day .h-mon { display: none; }
-.wweek .h-day .h-dow { font-size: .62rem; }
-.wweek .h-day .h-dnum { font-size: .9rem; line-height: 1.2; }
-.wweek .h-ring { width: 24px; height: 24px; margin-top: 3px; }
+.wweek { gap: 10px; padding: 12px 10px 12px; border: 1px solid var(--glass-line); border-radius: 24px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.wwhead { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding-inline: 6px; }
+.wwhead .label { margin: 0; }
+.wwsum { font-size: .78rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
+.wk7 { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
+.wd { display: grid; justify-items: center; gap: 6px; min-width: 0; padding-bottom: 8px; position: relative; }
+.wdl { font-size: .68rem; font-weight: 700; letter-spacing: .06em; color: var(--muted); }
+.wdc { position: relative; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; }
+.wdc svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.wdc circle { fill: none; stroke-width: 2.6; }
+.wdc .t { stroke: var(--seg); }
+.wdc .a { stroke: var(--lit); stroke-linecap: round; }
+.wdc b { position: relative; font-family: var(--display); font-weight: 500; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.wd.full .wdc { background: var(--lit); color: var(--on-lit); box-shadow: 0 4px 12px rgba(255,138,115,.35); }
+.wd.full .wdc svg { display: none; }
+.wd.now .wdl { color: var(--fg); }
+.wd.now:not(.full) .wdc .t { stroke: var(--fg); opacity: .25; }
+.wd.now:not(.full) .wdc b { font-weight: 700; }
+.wd.now::after { content: ""; position: absolute; bottom: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--lit); }
+.wd.future { opacity: .45; }
 .wkind { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .wkind button { min-width: 0; min-height: 46px; padding: 6px 4px; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--seg); color: var(--fg); font: inherit; font-weight: 600; font-size: .88rem; }
 .wkind button[aria-pressed="true"] { background: var(--lit); border-color: var(--lit); color: var(--on-lit); }
@@ -566,14 +581,25 @@ ol.steps li::before { font-size: 13px; }
 .wset.run .wsplay { background: var(--fg); color: var(--bg); animation: wspulse 1.2s ease-in-out infinite; }
 @keyframes wspulse { 50% { transform: scale(.88); } }
 @media (prefers-reduced-motion: reduce) { .wset.run .wsplay { animation: none; } }
+.wrep { display: flex; align-items: center; gap: 5px; min-width: 0; padding-right: 12px; }
+.wrstart { display: inline-flex; align-items: center; gap: 6px; height: 40px; padding: 0 18px 0 14px; border: 0; border-radius: 99px; background: var(--cta); color: var(--on-cta); font: inherit; font-weight: 700; font-size: .9rem; box-shadow: 0 4px 14px rgba(255,138,115,.3); }
+.wrstart svg { width: 16px; height: 16px; fill: currentColor; }
+.wrstart:active, .wrb:active, .wrok:active { transform: scale(.93); }
+.wrb { flex: none; width: 34px; height: 40px; padding: 0; border: 1px solid var(--line); border-radius: 12px; background: var(--glass); color: var(--fg); font: inherit; font-size: 1.25rem; font-weight: 700; line-height: 1; touch-action: manipulation; }
+.wrin { flex: 0 1 48px; min-width: 34px; width: 48px; height: 40px; padding: 0; border: 1.5px solid var(--lit); border-radius: 12px; background: var(--glass); color: var(--fg); text-align: center; font: inherit; font-weight: 700; font-size: 1.1rem; font-variant-numeric: tabular-nums; -moz-appearance: textfield; appearance: textfield; }
+.wrin::-webkit-outer-spin-button, .wrin::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.wrin.shake { animation: wrshake .35s; }
+@keyframes wrshake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+.wrok { flex: none; width: 40px; height: 40px; display: grid; place-items: center; padding: 0; border: 0; border-radius: 50%; background: var(--fg); color: var(--bg); }
+.wrok svg { width: 18px; height: 18px; }
+.wrsum { padding: 8px 0; border: 0; background: none; color: var(--muted); font: inherit; font-size: .85rem; font-weight: 600; text-align: left; }
+.wsetof { font-size: .7rem; font-weight: 700; color: var(--num-b); white-space: nowrap; }
 .wsadd { flex: none; width: 36px; height: 36px; display: grid; place-items: center; padding: 0; border: 1.5px dashed var(--line); border-radius: 50%; background: none; color: var(--muted); font-size: 1.1rem; font-weight: 700; }
 .wyfor { margin: 0; font-weight: 600; }
 
 /* Home: four cards in a circle around today's date */
 .home { padding: 8px max(16px, var(--sal, env(safe-area-inset-left, 0px))) 24px max(16px, var(--sar, env(safe-area-inset-right, 0px))); }
 .orbit { position: relative; width: min(100%, 440px); aspect-ratio: 1; margin: 12px auto 0; }
-.oring { position: absolute; inset: 18%; border-radius: 50%; border: 2px dashed var(--line); }
-.oring::after { content: ""; position: absolute; inset: 14%; border-radius: 50%; background: radial-gradient(circle, rgba(255,138,115,.16), transparent 70%); }
 .ocard { position: absolute; width: 34%; aspect-ratio: 1; display: grid; place-content: center; justify-items: center; gap: 4px; padding: 10px; border: 1px solid var(--glass-line); border-radius: 50%; background: var(--glass); box-shadow: var(--glass-shadow), 0 10px 26px rgba(0,0,0,.08); -webkit-backdrop-filter: blur(18px) saturate(165%); backdrop-filter: blur(18px) saturate(165%); color: var(--fg); font: inherit; text-align: center; transition: transform .2s cubic-bezier(.3,1.5,.5,1); -webkit-tap-highlight-color: transparent; }
 .ocard:active { transform: scale(.94); }
 .ocard:focus-visible { outline: 3px solid var(--cta); outline-offset: 3px; }
@@ -591,6 +617,29 @@ ol.steps li::before { font-size: 13px; }
 .ocenter { position: absolute; left: 36%; top: 36%; width: 28%; aspect-ratio: 1; display: grid; place-content: center; text-align: center; border-radius: 50%; }
 .oday { font-size: clamp(11px, 3vw, 13px); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .odate { font-family: var(--display); font-weight: 500; font-size: clamp(18px, 5.6vw, 26px); letter-spacing: -.02em; }
+.oring { position: absolute; inset: 17%; border-radius: 50%; border: 0; background: conic-gradient(from 0deg, var(--cta), #F2C46D, var(--fg), #9CC59A, var(--cta)); -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px)); mask: radial-gradient(farthest-side, transparent calc(100% - 2px), #000 calc(100% - 1.5px)); opacity: .45; }
+.orbit::before { content: ""; position: absolute; inset: 22%; border-radius: 50%; background: radial-gradient(circle, rgba(255,138,115,.22), transparent 68%); filter: blur(6px); }
+.oprog { position: absolute; inset: -6px; width: calc(100% + 12px); height: calc(100% + 12px); pointer-events: none; overflow: visible; }
+.oprog circle { fill: none; stroke-width: 2.6; }
+.oprog .optr { stroke: var(--line); opacity: .7; }
+.oprog .oparc { stroke: var(--oc, var(--cta)); stroke-linecap: round; transition: stroke-dasharray .6s cubic-bezier(.3,.8,.3,1); }
+.oparc[stroke-dasharray^="0 "] { opacity: 0; }
+.o-top { --oc: var(--cta); background: radial-gradient(circle at 50% 0%, rgba(255,138,115,.20), transparent 62%), var(--glass) !important; }
+.o-left { --oc: #7FB27C; background: radial-gradient(circle at 0% 50%, rgba(156,197,154,.26), transparent 62%), var(--glass) !important; }
+.o-right { --oc: #E5AE45; background: radial-gradient(circle at 100% 50%, rgba(242,196,109,.26), transparent 62%), var(--glass) !important; }
+.o-bottom { --oc: var(--fg); background: radial-gradient(circle at 50% 100%, rgba(120,120,140,.16), transparent 62%), var(--glass) !important; }
+.ocenter { gap: 1px; }
+.cring { position: absolute; inset: -4%; width: 108%; height: 108%; pointer-events: none; }
+.cring circle { fill: none; stroke-width: 4; }
+.cring .crtr { stroke: var(--seg); }
+.cring .crarc { stroke: var(--cta); stroke-linecap: round; transition: stroke-dasharray .6s cubic-bezier(.3,.8,.3,1); }
+.crarc[stroke-dasharray^="0 "] { opacity: 0; }
+.opct { margin-top: 2px; font-size: clamp(10px, 2.8vw, 11.5px); font-weight: 700; color: var(--num-b, var(--cta)); font-variant-numeric: tabular-nums; }
+.hstats { width: min(100%, 440px); margin: 22px auto 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.hst { min-width: 0; display: grid; gap: 1px; padding: 12px 12px 11px; border: 1px solid var(--glass-line); border-radius: 20px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.hst .hsl { font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.hst b { font-family: var(--display); font-weight: 500; font-size: 1.45rem; line-height: 1.15; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.hst .hsu { font-size: .74rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Pin */
 .pinbtn { flex: none; display: inline-flex; align-items: center; gap: 5px; min-height: 36px; padding: 6px 12px; border: 1.5px solid #E1E3DD; border-radius: 99px; background: #FFFFFF; color: #3A403B; font: inherit; font-size: 13px; font-weight: 700; }
 .pinbtn svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linejoin: round; }
@@ -757,7 +806,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 .h-nothing { padding: 22px; color: var(--muted); }
 
 /* Add habit, with the sheen from the Restart button running on a loop */
-.h-add { position: fixed; z-index: 6; left: 50%; bottom: calc(100px + var(--sab, env(safe-area-inset-bottom, 0px))); transform: translateX(-50%); overflow: hidden; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; min-height: 62px; padding: 0 30px; border: 1px solid rgba(255,255,255,.6); border-radius: 99px; color: #000000; font-weight: 700; font-size: 1.14rem; white-space: nowrap; background: linear-gradient(135deg, rgba(255,171,150,.97), rgba(255,122,97,.97)); box-shadow: 0 16px 36px rgba(255,122,97,.42), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -8px 16px rgba(214,84,60,.18); transition: transform .22s cubic-bezier(.3,1.6,.5,1); touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
+.h-add { position: fixed; z-index: 6; left: 50%; bottom: calc(22px + var(--sab, env(safe-area-inset-bottom, 0px))); transform: translateX(-50%); overflow: hidden; isolation: isolate; display: inline-flex; align-items: center; gap: 10px; min-height: 62px; padding: 0 30px; border: 1px solid rgba(255,255,255,.6); border-radius: 99px; color: #000000; font-weight: 700; font-size: 1.14rem; white-space: nowrap; background: linear-gradient(135deg, rgba(255,171,150,.97), rgba(255,122,97,.97)); box-shadow: 0 16px 36px rgba(255,122,97,.42), inset 0 1px 0 rgba(255,255,255,.7), inset 0 -8px 16px rgba(214,84,60,.18); transition: transform .22s cubic-bezier(.3,1.6,.5,1); touch-action: manipulation; -webkit-tap-highlight-color: transparent; }
 .h-add svg { width: 22px; height: 22px; flex: none; }
 .h-add::before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: -60%; width: 40%; background: linear-gradient(100deg, transparent, rgba(255,255,255,.7), transparent); transform: skewX(-18deg); animation: shimmer 3.4s ease-in-out infinite; }
 @keyframes shimmer { 0% { left: -60%; } 45%, 100% { left: 130%; } }
@@ -812,6 +861,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
 
 <nav class="bar" aria-label="Sections">
   <div class="barin">
+    <button type="button" class="icon backBtn" id="backBtn" aria-label="Back to home" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
     <div class="ttl"><p class="ttlapp">Neal</p><h1 id="pageTitle">Habits</h1></div>
     <div class="tools" id="tools">
       <button type="button" class="icon" id="menuBtn" aria-label="Menu" aria-haspopup="true" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M8 12h12M12 17h8"/></svg></button>
@@ -819,24 +869,20 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   </div>
 </nav>
 
-<nav class="bnav" aria-label="Sections">
-  <div class="bnavin">
-    <button type="button" id="nav-home"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5 12 5l8 6.5"/><path d="M6.5 10v9h11v-9"/></svg></span><span class="bl">Home</span></button>
-    <button type="button" id="nav-habits" aria-current="true"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><span class="bl">Habits</span></button>
-    <button type="button" id="nav-todo"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><span class="bl">To do</span></button>
-    <button type="button" id="nav-workout"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><span class="bl">Workout</span></button>
-    <button type="button" id="nav-recipes"><span class="bi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><span class="bl">Recipes</span></button>
-  </div>
-</nav>
 
 <section id="v-home" class="home" hidden aria-label="Home">
   <div class="orbit">
     <div class="oring" aria-hidden="true"></div>
-    <button type="button" class="ocard o-top" data-go="recipes"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><b>Recipes</b><span class="os" id="hs-recipes"></span></button>
-    <button type="button" class="ocard o-left" data-go="habits"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><b>Habits</b><span class="os" id="hs-habits"></span></button>
-    <div class="ocenter"><span class="oday" id="hc-day"></span><span class="odate" id="hc-date"></span></div>
-    <button type="button" class="ocard o-right" data-go="todo"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b><span class="os" id="hs-todo"></span></button>
-    <button type="button" class="ocard o-bottom" data-go="workout"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b><span class="os" id="hs-workout"></span></button>
+    <button type="button" class="ocard o-top" data-go="recipes"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-recipes" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M9 8c0-1.5 1-1.5 1-3M13 8c0-1.5 1-1.5 1-3"/></svg></span><b>Recipes</b><span class="os" id="hs-recipes"></span></button>
+    <button type="button" class="ocard o-left" data-go="habits"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-habits" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20v-7"/><path d="M12 13c0-4 3-7 8-7 0 4-3 7-8 7Z"/><path d="M12 15c0-3.3-2.4-5.5-7-5.5 0 3.3 2.4 5.5 7 5.5Z"/></svg></span><b>Habits</b><span class="os" id="hs-habits"></span></button>
+    <div class="ocenter"><svg class="cring" viewBox="0 0 100 100" aria-hidden="true"><circle class="crtr" cx="50" cy="50" r="45"/><circle class="crarc" id="hc-arc" cx="50" cy="50" r="45" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oday" id="hc-day"></span><span class="odate" id="hc-date"></span><span class="opct" id="hc-pct"></span></div>
+    <button type="button" class="ocard o-right" data-go="todo"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-todo" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b><span class="os" id="hs-todo"></span></button>
+    <button type="button" class="ocard o-bottom" data-go="workout"><svg class="oprog" viewBox="0 0 100 100" aria-hidden="true"><circle class="optr" cx="50" cy="50" r="47"/><circle class="oparc" id="op-workout" cx="50" cy="50" r="47" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 50 50)"/></svg><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b><span class="os" id="hs-workout"></span></button>
+  </div>
+  <div class="hstats">
+    <div class="hst"><span class="hsl">Burned</span><b id="hst-kcal">0</b><span class="hsu">kcal today</span></div>
+    <div class="hst"><span class="hsl">Sets</span><b id="hst-sets">0</b><span class="hsu" id="hst-setsu">done today</span></div>
+    <div class="hst"><span class="hsl">This week</span><b id="hst-week">0</b><span class="hsu" id="hst-weeku">workouts</span></div>
   </div>
 </section>
 
@@ -956,8 +1002,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       <div class="wburnlist" id="wBurnList"></div>
     </div>
     <div class="wweek">
-      <p class="label">This week</p>
-      <div class="h-days" id="wDays"></div>
+      <div class="wwhead"><p class="label">This week</p><span class="wwsum" id="wWeekSum"></span></div>
+      <div class="wk7" id="wDays"></div>
     </div>
     <div class="wtypes" id="wTypes" role="tablist" aria-label="Workout type"></div>
     <div class="wcard" id="wList"></div>
@@ -1068,6 +1114,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       <div class="mcard">
         <button type="button" class="item" id="soundBtn" role="switch" aria-checked="true"></button>
         <button type="button" class="item" id="modeBtn" role="switch" aria-checked="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M12 4a8 8 0 0 1 0 16Z" fill="currentColor"/></svg><span>Dark mode</span><i class="switch" aria-hidden="true"></i></button>
+        <button type="button" class="item" id="repBtn" role="switch" aria-checked="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h4M7 10v4M15 12h4"/><rect x="3" y="6" width="18" height="12" rx="4"/></svg><span>Rep mode</span><i class="switch" aria-hidden="true"></i></button>
         <label class="item" for="kg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 7h12l2 13H4L6 7Zm3 0a3 3 0 0 1 6 0"/></svg><span>Body weight</span><span class="kgbox"><input type="number" id="kg" min="35" max="200" step="1" inputmode="numeric" aria-label="Body weight in kilograms">kg</span></label>
       </div>
     </div>
@@ -1631,6 +1678,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   function paintTools() {
     var s = $('soundBtn');
     $('modeBtn').setAttribute('aria-checked', String(isDark()));
+    $('repBtn').setAttribute('aria-checked', String(!!cfg.repMode));
     var want = cfg.sound ? 'on' : 'off';
     if (s.dataset.s !== want) { s.dataset.s = want; s.innerHTML = (cfg.sound ? SOUND_ON : SOUND_OFF) + '<span>Sound</span><i class="switch" aria-hidden="true"></i>'; }
     s.setAttribute('aria-checked', String(cfg.sound));
@@ -1685,12 +1733,10 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   var VIEWS = { home: 'v-home', habits: 'v-habits', todo: 'v-todo', workout: 'app', recipes: 'v-recipes' };
   function showView(v) {
     if (!VIEWS[v]) v = 'home';
-    Object.keys(VIEWS).forEach(function (k) {
-      $(VIEWS[k]).hidden = k !== v;
-      if (k === v) $('nav-' + k).setAttribute('aria-current', 'true');
-      else $('nav-' + k).removeAttribute('aria-current');
-    });
-    set('pageTitle', { home: 'Home', habits: 'Habits', todo: 'To do', workout: 'Workout', recipes: 'Recipes' }[v]);
+    Object.keys(VIEWS).forEach(function (k) { $(VIEWS[k]).hidden = k !== v; });
+    $('backBtn').hidden = v === 'home';
+    var hr = new Date().getHours();
+    set('pageTitle', { home: hr < 5 ? 'Good night' : hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening', habits: 'Habits', todo: 'To do', workout: 'Workout', recipes: 'Recipes' }[v]);
     if (v === 'home') renderHome();
     document.body.classList.toggle('rl', v === 'recipes');
     window.scrollTo(0, 0);
@@ -1702,7 +1748,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     showView(v);
     if (v === 'recipes' && window.nealOpenPinned) window.nealOpenPinned();
   }
-  Object.keys(VIEWS).forEach(function (v) { $('nav-' + v).onclick = function () { go(v); }; });
+  $('backBtn').onclick = function () { go('home'); };
   Array.prototype.forEach.call(document.querySelectorAll('#v-home [data-go]'), function (b) { b.onclick = function () { go(b.dataset.go); }; });
   /* Home: four cards around today's date, each with a one-line status */
   function renderHome() {
@@ -1710,11 +1756,26 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     set('hc-day', d.toLocaleDateString('en-IN', { weekday: 'long' }));
     set('hc-date', d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
     function txt(id) { var e = $(id); return e ? e.textContent.trim() : ''; }
+    function frac(t) { var m = /(\d+) of (\d+)/.exec(t); return m ? [Number(m[1]), Number(m[2])] : null; }
+    function arc(id, f) { var e = $(id); if (e) e.setAttribute('stroke-dasharray', (f && f[1] ? Math.round(f[0] / f[1] * 100) : 0) + ' 100'); }
+    var fh = frac(txt('h-sum')), ft = frac(txt('h-tSum')), fw = null;
     set('hs-habits', txt('h-sum') || 'Tap to open');
     set('hs-todo', txt('h-tSum') || 'Tap to open');
-    var w = '';
-    try { w = TYPES[cfg.wtype].name + ' \u00b7 ' + FULL.filter(wDone).length + '/' + FULL.length + ' done'; } catch (e) { w = 'Tap to open'; }
+    var w = '', sd = 0, sn = 0;
+    try {
+      fw = [FULL.filter(wDone).length, FULL.length];
+      w = TYPES[cfg.wtype].name + ' \u00b7 ' + fw[0] + '/' + fw[1];
+      FULL.forEach(function (k) { sd += Math.min(wCount(k), wBase(k)); sn += wBase(k); });
+    } catch (e) { w = 'Tap to open'; }
     set('hs-workout', w);
+    arc('op-habits', fh); arc('op-todo', ft); arc('op-workout', fw);
+    var tot = [0, 0];
+    [fh, ft, fw].forEach(function (f) { if (f) { tot[0] += f[0]; tot[1] += f[1]; } });
+    arc('hc-arc', tot);
+    set('hc-pct', tot[1] ? Math.round(tot[0] / tot[1] * 100) + '% today' : '');
+    set('hst-kcal', txt('wBurnTot') || '0');
+    set('hst-sets', sn ? sd + '/' + sn : '0'); set('hst-setsu', 'sets today');
+    var wkN = wWeekCount(); set('hst-week', String(wkN)); set('hst-weeku', wkN === 1 ? 'workout' : 'workouts');
     set('hs-recipes', window.nealPinnedName && window.nealPinnedName() ? '\ud83d\udccc ' + window.nealPinnedName() : 'All recipes');
   }
   window.nealRenderHome = renderHome;
@@ -1801,34 +1862,29 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     best.t = per;
     cfg.wkHist[wDayKey(new Date())] = best;
   }
+  function wMonday() { var n = new Date(); return new Date(n.getFullYear(), n.getMonth(), n.getDate() - (n.getDay() + 6) % 7); }
+  /* Days this week with at least one exercise finished */
+  function wWeekCount() {
+    var mon = wMonday(), n = 0, i;
+    for (i = 0; i < 7; i++) { var c = (cfg.wkHist || {})[wDayKey(new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i))]; if (c && c.d > 0) n++; }
+    return n;
+  }
   function renderWeek() {
-    var box = $('wDays'), now = new Date(), mon = new Date(now.getFullYear(), now.getMonth(), now.getDate() - (now.getDay() + 6) % 7), i;
-    var WK = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'], MO = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    var box = $('wDays'), now = new Date(), mon = wMonday(), i;
+    var WK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
     box.textContent = '';
     for (i = 0; i < 7; i++) {
       var d = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i), today = wDayKey(d) === wDayKey(now), future = d > now && !today;
       var c = (cfg.wkHist || {})[wDayKey(d)] || { d: 0, n: 0 }, pct = c.n ? Math.round(c.d / c.n * 100) : 0;
-      var cell = document.createElement('div'); cell.className = 'h-day' + (today ? ' h-now' : '');
-      [['h-dow', WK[d.getDay()]], ['h-dnum', String(d.getDate())], ['h-mon', MO[d.getMonth()]]].forEach(function (x) { var e = document.createElement('span'); e.className = x[0]; e.textContent = x[1]; cell.append(e); });
-      var ring = document.createElement('span'); ring.className = 'h-ring';
-      ring.innerHTML = '<svg viewBox="0 0 36 36" aria-hidden="true"><circle class="h-track" cx="18" cy="18" r="15"/>' + (pct ? '<circle class="h-arc" cx="18" cy="18" r="15" pathLength="100" stroke-dasharray="' + pct + ' 100" transform="rotate(-90 18 18)"/>' : '') + (pct === 100 ? '<path class="h-ok" d="m12.5 18.5 3.8 3.8 7.2-7.6"/>' : '') + '</svg>';
-      ring.setAttribute('role', 'img');
-      ring.setAttribute('aria-label', d.toDateString() + ': ' + (future ? 'not started' : pct + '% done'));
-      cell.append(ring);
-      var tags = Object.keys(c.t || {}).filter(function (t) { return c.t[t] === 2 && TYPES[t]; });
-      if (tags.length && Object.keys(TYPES).length > 1) {
-        var tg = document.createElement('span'); tg.className = 'wdtags';
-        tags.forEach(function (t) {
-          var x = document.createElement('span'); x.className = 'wdtag' + (c.t[t] === 2 ? ' full' : '');
-          x.textContent = t.toUpperCase();
-          if (c.t[t] === 2) x.insertAdjacentHTML('beforeend', '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>');
-          tg.append(x);
-        });
-        cell.append(tg);
-        ring.setAttribute('aria-label', ring.getAttribute('aria-label') + ', ' + tags.map(function (t) { return TYPES[t].name + (c.t[t] === 2 ? ' complete' : ' started'); }).join(', '));
-      }
+      var cell = document.createElement('div');
+      cell.className = 'wd' + (today ? ' now' : '') + (future ? ' future' : '') + (pct >= 100 ? ' full' : pct ? ' part' : '');
+      cell.setAttribute('role', 'img');
+      cell.setAttribute('aria-label', d.toDateString() + ': ' + (future ? 'not started' : pct + '% done'));
+      cell.innerHTML = '<span class="wdl">' + WK[d.getDay()] + '</span><span class="wdc"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="t" cx="18" cy="18" r="16"/>' + (pct && pct < 100 ? '<circle class="a" cx="18" cy="18" r="16" pathLength="100" stroke-dasharray="' + pct + ' 100"/>' : '') + '</svg><b>' + d.getDate() + '</b></span>';
       box.append(cell);
     }
+    var n = wWeekCount();
+    set('wWeekSum', n ? n + (n === 1 ? ' workout' : ' workouts') + ' this week' : 'No workouts yet');
   }
   function wKey(r, k) { return cfg.wtype + ':' + r + ':' + k; }
   function setType(t) {
@@ -1992,6 +2048,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       var ssWith = (TYPES[cfg.wtype].ss || {})[k];
       if (ssWith) { row.classList.add('wss'); if (FULL.indexOf(ssWith) > FULL.indexOf(k)) row.classList.add('wss1'); info.append(wNode('span', 'wsstag', 'Superset')); }
       left.append(mark, info);
+      if (cfg.repMode && !WARM[k]) { row.append(left, repCell(k, info)); list.append(row); return; }
       var chips = wNode('div', 'wsets'), s;
       for (s = 1; s <= sets; s++) chips.append(setChip(k, s));
       var more = wNode('button', 'wsadd', '+'); more.type = 'button'; more.setAttribute('aria-label', 'Add a set to ' + wName(k));
@@ -2002,6 +2059,60 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       list.append(row);
     });
     fitNames();
+  }
+  /* Rep mode: Start an exercise, count reps with minus and plus, tick to log the set */
+  var repRun = {}, repVal = {};
+  function repNext(k) { var d = wLog().done, s; for (s = 1; s <= wSets(k); s++) if (!d[wKey(s, k)]) return s; return 0; }
+  function repCell(k, info) {
+    var box = wNode('div', 'wrep'), r = repNext(k), done = wDone(k);
+    box.setAttribute('aria-label', wName(k) + ' reps');
+    if (done) {
+      var tot = 0, n = 0, s, d = wLog().done;
+      for (s = 1; s <= wSets(k); s++) { var e = d[wKey(s, k)]; if (e) { n++; tot += Number(e.reps) || 0; } }
+      var sm = wNode('button', 'wrsum', n + ' sets \u00b7 ' + tot + ' reps'); sm.type = 'button';
+      sm.onclick = function () { wDoneOpen(k); };
+      box.append(sm); return box;
+    }
+    if (!repRun[k]) {
+      var st = wNode('button', 'wrstart'); st.type = 'button';
+      st.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z"/></svg><span>Start</span>';
+      st.setAttribute('aria-label', 'Start ' + wName(k) + ', set ' + r);
+      st.onclick = function () { repRun[k] = true; renderWeights(); };
+      box.append(st);
+      if (wCount(k)) info.append(wNode('span', 'wsetof', 'Set ' + r + ' of ' + wSets(k)));
+      return box;
+    }
+    info.append(wNode('span', 'wsetof', 'Set ' + r + ' of ' + wSets(k)));
+    var inp = document.createElement('input');
+    inp.type = 'number'; inp.className = 'wrin'; inp.min = '0'; inp.max = '200'; inp.inputMode = 'numeric'; inp.placeholder = '';
+    inp.value = repVal[k] ? String(repVal[k]) : '';
+    inp.setAttribute('aria-label', wName(k) + ' reps, set ' + r);
+    inp.addEventListener('input', function () { var v = Math.round(Number(inp.value)); repVal[k] = isFinite(v) && v > 0 ? Math.min(200, v) : 0; });
+    function step(d) {
+      var v = Math.max(0, Math.min(200, (repVal[k] || 0) + d)); repVal[k] = v; inp.value = v ? String(v) : '';
+      try { if (navigator.vibrate) navigator.vibrate(12); } catch (x) {}
+    }
+    var mi = wNode('button', 'wrb', '\u2212'); mi.type = 'button'; mi.setAttribute('aria-label', 'One rep less'); mi.onclick = function () { step(-1); };
+    var pl = wNode('button', 'wrb', '+'); pl.type = 'button'; pl.setAttribute('aria-label', 'One rep more'); pl.onclick = function () { step(1); };
+    var ok = wNode('button', 'wrok'); ok.type = 'button'; ok.innerHTML = CHECK; ok.setAttribute('aria-label', 'Log set ' + r);
+    ok.onclick = function () {
+      var v = repVal[k] || 0;
+      if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); return; }
+      var e = { reps: v };
+      if (!LIFT[k].noKg) { var kg = Number(wSetKg(k, r)); if (isFinite(kg)) e.kg = kg; }
+      wLog().done[wKey(r, k)] = e; todayLog().kcal += wCalOf(k, e);
+      repVal[k] = 0;
+      try { if (navigator.vibrate) navigator.vibrate(30); } catch (x) {}
+      var t = window.nealToast || function () {};
+      if (wDone(k)) {
+        delete repRun[k];
+        if (wAllDone()) { t(TYPES[cfg.wtype].name + ' done'); if (window.nealConfetti) window.nealConfetti(); }
+        else t(wName(k) + ' done');
+      } else t('Set ' + r + ' \u00b7 ' + v + ' reps logged');
+      wRecord(); save(); renderWeights(); paint();
+    };
+    box.append(mi, inp, pl, ok);
+    return box;
   }
   /* Keep every exercise name on one line: shrink the font a little where a name is too wide */
   function fitNames() {
@@ -2324,6 +2435,11 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     if (cfg.sound) { openAudio(); beep(880, .12); } else { try { speechSynthesis.cancel(); } catch (e) {} }
     paintTools(); save();
   };
+  $('repBtn').onclick = function () {
+    cfg.repMode = !cfg.repMode; repRun = {};
+    paintTools(); save(); renderWeights();
+    if (window.nealToast) window.nealToast(cfg.repMode ? 'Rep mode on: tap Start on an exercise' : 'Rep mode off');
+  };
   $('modeBtn').onclick = function () {
     cfg.theme = isDark() ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', cfg.theme);
@@ -2379,7 +2495,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     else if (wt) wtClose();
     else if (window.nealHabitsBack && window.nealHabitsBack()) return;
     else if (menuOpen()) setMenu(false);
-    else if ($('v-habits').hidden) showView('habits');
+    else if ($('v-home').hidden) go('home');
     else nativeApp.exitApp();
   });
 })();
