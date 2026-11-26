@@ -18,6 +18,7 @@ import java.util.Locale;
 public class MainActivity extends BridgeActivity {
 
     private Insets bars = Insets.NONE;
+    private int ime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,9 +42,8 @@ public class MainActivity extends BridgeActivity {
         WebView web = getBridge().getWebView();
         ViewCompat.setOnApplyWindowInsetsListener(web, (view, insets) -> {
             bars = insets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.displayCutout());
-            // Keep text fields above the keyboard, which no longer resizes the page by itself.
-            int keyboard = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-            view.setPadding(0, 0, 0, keyboard);
+            // The keyboard no longer resizes the page: tell it how tall the keyboard is instead.
+            ime = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
             sendInsets();
             return insets;
         });
@@ -62,11 +62,15 @@ public class MainActivity extends BridgeActivity {
             Locale.US,
             "(function(){var s=document.documentElement.style;"
                 + "s.setProperty('--sat','%.1fpx');s.setProperty('--sab','%.1fpx');"
-                + "s.setProperty('--sal','%.1fpx');s.setProperty('--sar','%.1fpx');})()",
+                + "s.setProperty('--sal','%.1fpx');s.setProperty('--sar','%.1fpx');"
+                + "var r=document.documentElement,k=%.1f;r.dataset.nativeKb='1';"
+                + "if(k>80){s.setProperty('--kb',k+'px');r.classList.add('kbup');}else{s.removeProperty('--kb');r.classList.remove('kbup');}"
+                + "if(k>80){var a=document.activeElement;if(a&&a.scrollIntoView)setTimeout(function(){a.scrollIntoView({block:'nearest',behavior:'smooth'});},120);}})()",
             bars.top / density,
             bars.bottom / density,
             bars.left / density,
-            bars.right / density
+            bars.right / density,
+            Math.max(0, ime - bars.bottom) / density
         );
         WebView web = getBridge().getWebView();
         web.post(() -> web.evaluateJavascript(js, null));

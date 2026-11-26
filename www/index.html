@@ -298,6 +298,24 @@ body { padding-bottom: calc(24px + var(--sab, env(safe-area-inset-bottom, 0px)))
 .wdtag.full { background: var(--lit); color: var(--on-lit); }
 .wdtag svg { width: 9px; height: 9px; fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .whveil { position: fixed; inset: 0; z-index: 44; background: var(--h-veil); }
+.wh { transition: bottom .18s ease-out; }
+.wh, .h-sheet { transition: bottom .18s ease-out; }
+html.kbup .wh, html.kbup .h-sheet { bottom: var(--kb, 0px) !important; max-height: calc(100% - var(--kb, 0px) - var(--sat, 0px) - 16px) !important; border-radius: 28px; }
+html.kbup body { padding-bottom: calc(var(--kb, 0px) + 24px); }
+.wrquick { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; }
+.wrquick button { min-height: 44px; padding: 0; border: 1px solid var(--line); border-radius: 99px; background: var(--seg); color: var(--fg); font: inherit; font-weight: 700; font-size: .95rem; font-variant-numeric: tabular-nums; touch-action: manipulation; }
+.wrquick button:active { transform: scale(.94); background: var(--lit); color: var(--on-lit); }
+.wrline { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; margin-top: 3px; }
+.wrtoday { min-height: 26px; padding: 2px 10px; border: 0; border-radius: 99px; background: color-mix(in srgb, #2FA89A 16%, transparent); color: #1E8A7E; font: inherit; font-size: .74rem; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+:root[data-theme="dark"] .wrtoday { color: #5FD0C2; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .wrtoday { color: #5FD0C2; } }
+.wladds { display: grid; gap: 8px; }
+.wladd { display: grid; grid-template-columns: minmax(0, 1fr) 80px auto 40px; align-items: center; gap: 8px; padding: 8px 8px 8px 14px; border: 1px solid var(--glass-line); border-radius: 18px; background: var(--seg); }
+.wltm { font-weight: 600; font-variant-numeric: tabular-nums; }
+.wladd input { width: 100%; min-height: 44px; padding: 0 8px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--fg); text-align: center; font: inherit; font-weight: 700; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
+.wladd input:focus { outline: 2px solid var(--cta); outline-offset: 1px; }
+.wlun { color: var(--muted); font-size: .82rem; }
+.wldel { width: 40px; height: 40px; padding: 0; border: 0; border-radius: 50%; background: transparent; color: var(--muted); font-size: 1.4rem; line-height: 1; }
 .wh { position: fixed; z-index: 45; left: 0; right: 0; bottom: 0; max-height: 82%; overflow-y: auto; background: var(--sheet); border-radius: 28px 28px 0 0; border-top: 1px solid var(--glass-line); box-shadow: 0 -16px 40px rgba(0,0,0,.18);
   padding-top: 18px; padding-bottom: calc(22px + var(--sab, env(safe-area-inset-bottom, 0px))); padding-left: max(20px, var(--sal, env(safe-area-inset-left, 0px))); padding-right: max(20px, var(--sar, env(safe-area-inset-right, 0px))); }
 .whin { max-width: 560px; margin-inline: auto; display: grid; gap: 16px; }
@@ -1259,7 +1277,19 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       <label class="wrnum"><input id="wrIn" type="number" inputmode="numeric" min="0" max="500" step="1" placeholder="0" aria-label="Reps"><span>reps</span></label>
       <button type="button" class="wrbig wrplus" id="wrPlus" aria-label="One rep more">+</button>
     </div>
+    <div class="wrquick" id="wrQuick" role="group" aria-label="Quick add"><button type="button" data-n="10">+10</button><button type="button" data-n="20">+20</button><button type="button" data-n="30">+30</button><button type="button" data-n="50">+50</button></div>
     <div class="whacts"><button type="button" class="wtdone" id="wrDone">Done</button><button type="button" class="closer" id="wrClear" hidden>Clear</button></div>
+  </div>
+</div>
+<div class="whveil" id="wlVeil" hidden></div>
+<div class="wh" id="wa" role="dialog" aria-modal="true" aria-labelledby="wlTitle" hidden>
+  <div class="whin">
+    <div class="whtop">
+      <div><p class="label" id="wlSub">Today</p><h2 id="wlTitle">Exercise</h2></div>
+      <button type="button" class="closer" id="wlClose">Close</button>
+    </div>
+    <div class="wladds" id="wlList"></div>
+    <p class="whint">Change a number to fix it. Set it to 0 or tap × to remove it.</p>
   </div>
 </div>
 <div class="whveil" id="whVeil" hidden></div>
@@ -2109,10 +2139,15 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   function repTotal(k) { var d = wLog().done; return repEntries(k).reduce(function (a, x) { return a + (Number(d[x] && d[x].reps) || 0); }, 0); }
   function repLast(k) { var p = wPastFor(k)[0]; return p ? p.sets.reduce(function (a, e) { return a + (Number(e && e.reps) || 0); }, 0) : 0; }
   function repInfo(k, info) {
-    var t = wDone(k) ? repTotal(k) : 0, l = repLast(k), bits = [];
-    if (t) bits.push('Today ' + t);
-    if (l) bits.push('Last ' + l + ' reps'); else if (!t) bits.push('No reps yet');
-    info.append(wNode('span', 'wsetof wrlast', bits.join(' \u00b7 ')));
+    var t = wDone(k) ? repTotal(k) : 0, l = repLast(k), line = wNode('span', 'wrline');
+    if (t) {
+      var tb = wNode('button', 'wrtoday', 'Today ' + t + ' reps'); tb.type = 'button';
+      tb.setAttribute('aria-label', 'Today ' + t + ' reps. Show and edit what you added');
+      tb.onclick = function (ev) { ev.stopPropagation(); wlOpen(k); };
+      line.append(tb);
+    }
+    if (l || !t) line.append(wNode('span', 'wsetof wrlast', l ? 'Last ' + l : 'No reps yet'));
+    info.append(line);
   }
   function repCell(k) {
     var box = wNode('div', 'wrep');
@@ -2158,6 +2193,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     var v = Math.max(0, Math.min(500, wrVal() + n)); $('wrIn').value = v ? String(v) : '';
     try { if (navigator.vibrate) navigator.vibrate(12); } catch (x) {}
   }
+  Array.prototype.forEach.call($('wrQuick').children, function (b) { b.onclick = function () { wrStep(Number(b.dataset.n)); }; });
   $('wrMinus').onclick = function () { wrStep(-1); };
   $('wrPlus').onclick = function () { wrStep(1); };
   $('wrClose').onclick = wrClose; $('wrVeil').onclick = wrClose;
@@ -2166,9 +2202,12 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     if (!k) return;
     if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); return; }
     var add = !!TYPES[cfg.wtype].rep, prev = add && wDone(k) ? repTotal(k) : 0;
+    var old = wLog().done[wKey(1, k)], adds = add ? (old && old.adds ? old.adds.slice() : prev ? [{ t: 0, n: prev }] : []) : null;
+    if (add) adds.push({ t: Date.now(), n: v });
     wrWipe(k);
     v += prev;
     var e = { reps: v, rm: 1 }, d = wLog().done, s;
+    if (adds) e.adds = adds;
     if (!LIFT[k].noKg) { var kg = Number(wSetKg(k, 1)); if (isFinite(kg)) e.kg = kg; }
     d[wKey(1, k)] = e; todayLog().kcal += wCalOf(k, e);
     for (s = 2; s <= wBase(k); s++) d[wKey(s, k)] = { reps: 0, rm: 1 };
@@ -2178,6 +2217,72 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     else t(wName(k) + ' \u00b7 ' + (prev ? v - prev + ' added, ' + v + ' today' : v + ' reps done'));
     wrClose(); wRecord(); save(); renderWeights(); paint();
   };
+  /* Today's adds for a cardio exercise, each with its time, editable */
+  var wlK = null;
+  function wlTime(t) { if (!t) return 'Earlier'; var d = new Date(t), h = d.getHours(), m = d.getMinutes(); return (h % 12 || 12) + ':' + (m < 10 ? '0' : '') + m + (h < 12 ? ' am' : ' pm'); }
+  function wlApply(k, adds) {
+    var d = wLog().done, key = wKey(1, k), e = d[key];
+    if (!e) return;
+    adds = adds.filter(function (a) { return a.n > 0; });
+    if (!adds.length) { wrWipe(k); }
+    else {
+      todayLog().kcal = Math.max(0, todayLog().kcal - wCalOf(k, e));
+      e.adds = adds; e.reps = adds.reduce(function (a, x) { return a + x.n; }, 0);
+      todayLog().kcal += wCalOf(k, e);
+    }
+    wRecord(); save(); renderWeights(); paint();
+  }
+  function wlOpen(k) {
+    wlK = k; wlPaint();
+    $('wa').hidden = false; $('wlVeil').hidden = false; document.body.style.overflow = 'hidden';
+  }
+  function wlClose() { $('wa').hidden = true; $('wlVeil').hidden = true; document.body.style.overflow = ''; wlK = null; }
+  function wlPaint() {
+    var k = wlK, e = wLog().done[wKey(1, k)], box = $('wlList');
+    var adds = e ? (e.adds || [{ t: 0, n: Number(e.reps) || 0 }]) : [];
+    set('wlTitle', wName(k));
+    set('wlSub', 'Today \u00b7 ' + adds.reduce(function (a, x) { return a + x.n; }, 0) + ' reps');
+    box.textContent = '';
+    if (!adds.length) { box.append(wNode('p', 'whint', 'Nothing added today.')); return; }
+    adds.forEach(function (a, i) {
+      var row = wNode('div', 'wladd'), tm = wNode('span', 'wltm', wlTime(a.t));
+      var inp = document.createElement('input');
+      inp.type = 'number'; inp.inputMode = 'numeric'; inp.min = '0'; inp.max = '500'; inp.value = String(a.n);
+      inp.setAttribute('aria-label', 'Reps added at ' + wlTime(a.t));
+      inp.onchange = function () {
+        var v = Math.round(Number(inp.value)); v = isFinite(v) ? Math.max(0, Math.min(500, v)) : a.n;
+        var list = adds.slice(); list[i] = { t: a.t, n: v };
+        wlApply(k, list);
+        if (!wLog().done[wKey(1, k)]) wlClose(); else wlPaint();
+      };
+      var un = wNode('span', 'wlun', 'reps');
+      var del = wNode('button', 'wldel', '\u00d7'); del.type = 'button'; del.setAttribute('aria-label', 'Remove ' + a.n + ' reps added at ' + wlTime(a.t));
+      del.onclick = function () {
+        var list = adds.slice(); list.splice(i, 1);
+        wlApply(k, list);
+        if (!wLog().done[wKey(1, k)]) wlClose(); else wlPaint();
+      };
+      row.append(tm, inp, un, del); box.append(row);
+    });
+  }
+  $('wlClose').onclick = wlClose; $('wlVeil').onclick = wlClose;
+  /* Keep bottom sheets above the on-screen keyboard */
+  (function () {
+    var vv = window.visualViewport, root = document.documentElement;
+    function fit() {
+      if (root.dataset.nativeKb) return;
+      var kb = vv ? Math.max(0, Math.round(window.innerHeight - vv.height - vv.offsetTop)) : 0;
+      if (kb > 80) { root.style.setProperty('--kb', kb + 'px'); root.classList.add('kbup'); }
+      else { root.style.removeProperty('--kb'); root.classList.remove('kbup'); }
+    }
+    if (vv) { vv.addEventListener('resize', fit); vv.addEventListener('scroll', fit); }
+    document.addEventListener('focusin', function (ev) {
+      var t = ev.target;
+      if (!t.matches || !t.matches('input, textarea')) return;
+      setTimeout(function () { fit(); try { t.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (x) {} }, 300);
+    });
+    document.addEventListener('focusout', function () { setTimeout(fit, 200); });
+  })();
   $('wrClear').onclick = function () {
     var k = wrK; if (!k) return;
     wrWipe(k); wrClose(); wRecord(); save(); renderWeights(); paint();
@@ -2561,6 +2666,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     else if (!$('wy').hidden) wyClose();
     else if (!$('wb').hidden) wbClose();
     else if (!$('wr').hidden) wrClose();
+    else if (!$('wa').hidden) wlClose();
     else if (!$('wh').hidden) wHistClose();
     else if (wt) wtClose();
     else if (window.nealHabitsBack && window.nealHabitsBack()) return;
