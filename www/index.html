@@ -196,21 +196,30 @@ body { padding-bottom: calc(24px + var(--sab, env(safe-area-inset-bottom, 0px)))
 .wwhead .label { margin: 0; }
 .wwsum { font-size: .78rem; font-weight: 600; color: var(--muted); white-space: nowrap; }
 .wk7 { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; }
-.wd { display: grid; justify-items: center; gap: 6px; min-width: 0; padding-bottom: 8px; position: relative; }
-.wdl { font-size: .68rem; font-weight: 700; letter-spacing: .06em; color: var(--muted); }
-.wdc { position: relative; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; }
-.wdc svg { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
-.wdc circle { fill: none; stroke-width: 2.6; }
-.wdc .t { stroke: var(--seg); }
-.wdc .a { stroke: var(--lit); stroke-linecap: round; }
-.wdc b { position: relative; font-family: var(--display); font-weight: 500; font-size: .95rem; font-variant-numeric: tabular-nums; }
-.wd.full .wdc { background: var(--lit); color: var(--on-lit); box-shadow: 0 4px 12px rgba(255,138,115,.35); }
-.wd.full .wdc svg { display: none; }
-.wd.now .wdl { color: var(--fg); }
-.wd.now:not(.full) .wdc .t { stroke: var(--fg); opacity: .25; }
-.wd.now:not(.full) .wdc b { font-weight: 700; }
-.wd.now::after { content: ""; position: absolute; bottom: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--lit); }
+.wweek { --tw: var(--lit); --tc: #2FA89A; }
+.wleg { display: flex; gap: 14px; padding-inline: 6px; margin-top: -4px; font-size: .72rem; font-weight: 600; color: var(--muted); }
+.wleg span { display: inline-flex; align-items: center; gap: 5px; }
+.wleg i { width: 8px; height: 8px; border-radius: 50%; }
+.wleg i.tw { background: var(--tw); } .wleg i.tc { background: var(--tc); }
+.wd { display: grid; justify-items: center; gap: 6px; min-width: 0; }
+.wdl { width: 22px; height: 18px; display: grid; place-items: center; border-radius: 99px; font-size: .66rem; font-weight: 700; letter-spacing: .04em; color: var(--muted); }
+.wd.now .wdl { background: var(--fg); color: var(--bg); }
+.wdc { position: relative; width: 38px; height: 38px; display: grid; place-items: center; border-radius: 50%; background: var(--seg); color: var(--fg); }
+.wdc b { font-family: var(--display); font-weight: 500; font-size: .95rem; font-variant-numeric: tabular-nums; }
+.wd.now .wdc { box-shadow: inset 0 0 0 1.5px var(--fg); }
+.wd.part .wdc { background: transparent; box-shadow: inset 0 0 0 2.5px var(--wc, var(--tw)); }
+.wd.full .wdc { background: var(--wc, var(--tw)); color: #fff; box-shadow: 0 4px 12px color-mix(in srgb, var(--wc, var(--tw)) 40%, transparent); }
+.wd.both .wdc { background: conic-gradient(var(--tw) 0 50%, var(--tc) 0); box-shadow: 0 4px 12px rgba(0,0,0,.15); }
+.wd.tw { --wc: var(--tw); } .wd.tc { --wc: var(--tc); }
+.wdck { width: 20px; height: 20px; fill: none; stroke: #fff; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.wdt { display: flex; gap: 2px; height: 14px; }
+.wdt i { width: 14px; height: 14px; display: grid; place-items: center; border-radius: 4px; font-style: normal; font-size: .55rem; font-weight: 800; color: #fff; }
+.wdt i.tw { background: var(--tw); } .wdt i.tc { background: var(--tc); }
+.wdt i.half { background: transparent; color: var(--muted); box-shadow: inset 0 0 0 1.2px currentColor; }
 .wd.future { opacity: .45; }
+.wex .wsetof.wrlast { color: var(--muted); font-weight: 600; font-size: .72rem; line-height: 1.3; }
+.wrstart.wradd { background: var(--seg); color: var(--fg); border: 1px solid var(--line); box-shadow: none; }
+.wrstart.wradd svg { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
 .wkind { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
 .wkind button { min-width: 0; min-height: 46px; padding: 6px 4px; border: 1px solid var(--glass-line); border-radius: 14px; background: var(--seg); color: var(--fg); font: inherit; font-weight: 600; font-size: .88rem; }
 .wkind button[aria-pressed="true"] { background: var(--lit); border-color: var(--lit); color: var(--on-lit); }
@@ -1010,6 +1019,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     </div>
     <div class="wweek">
       <div class="wwhead"><p class="label">This week</p><span class="wwsum" id="wWeekSum"></span></div>
+      <div class="wleg" aria-hidden="true"><span><i class="tw"></i>Weights</span><span><i class="tc"></i>Cardio</span></div>
       <div class="wk7" id="wDays"></div>
     </div>
     <div class="wtypes" id="wTypes" role="tablist" aria-label="Workout type"></div>
@@ -1363,7 +1373,13 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     deadBug: { key: 'deadBug', name: 'Dead Bugs', sec: 45, cal: 4, reps: 10, kg: 0, noKg: true, cue: '' },
     fbSkull: { key: 'fbSkull', name: 'Skull Crushers', sec: 45, cal: 5, reps: 12, kg: 5, cue: 'Bend only at the elbows.' },
     latRev: { key: 'latRev', name: 'Lat Raise + Rev Fly', sec: 60, cal: 6, reps: 12, kg: 6.5, cue: '' },
-    altHammer: { key: 'altHammer', name: 'Alt DB Hammer Curls', sec: 60, cal: 6, reps: 10, kg: 8, cue: '' }
+    altHammer: { key: 'altHammer', name: 'Alt DB Hammer Curls', sec: 60, cal: 6, reps: 10, kg: 8, cue: '' },
+    xSpot: { key: 'xSpot', name: 'Spot Run', sec: 60, cal: 0, perRep: 0.12, reps: 100, noKg: true, cue: '' },
+    xMarch: { key: 'xMarch', name: 'March in Place', sec: 60, cal: 0, perRep: 0.06, reps: 100, noKg: true, cue: '' },
+    xKnees: { key: 'xKnees', name: 'High Knees', sec: 60, cal: 0, perRep: 0.15, reps: 60, noKg: true, cue: '' },
+    xKclap: { key: 'xKclap', name: 'High Knees Claps', sec: 60, cal: 0, perRep: 0.17, reps: 40, noKg: true, cue: '' },
+    xJacks: { key: 'xJacks', name: 'Jumping Jacks', sec: 60, cal: 0, perRep: 0.2, reps: 40, noKg: true, cue: '' },
+    xPunch: { key: 'xPunch', name: 'Punches', sec: 60, cal: 0, perRep: 0.08, reps: 100, noKg: true, cue: '' }
   };
   /* Full body: 3 rounds of these, in order. The plank is timed. */
   var ROUNDS = 3, ROUND_REST = 60;
@@ -1376,10 +1392,13 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   };
   var TYPES = {
     /* sets: this day's set count where it differs; ss: exercises done back to back as a superset */
-    d3: { name: 'Full Body', items: ['oneRow', 'squat', 'fbChest', 'shrug', 'latRaise', 'fbSkull', 'altHammer'],
+    d3: { name: 'Weights', items: ['oneRow', 'squat', 'fbChest', 'shrug', 'latRaise', 'fbSkull', 'altHammer'],
       sets: { oneRow: 4, squat: 2, fbChest: 4, shrug: 4, latRaise: 3, fbSkull: 3, altHammer: 3 },
       names: { fbChest: 'Chest DB Press', oneRow: 'One Arm DB Row' },
-      ss: { fbChest: 'shrug', shrug: 'fbChest' } }
+      ss: { fbChest: 'shrug', shrug: 'fbChest' } },
+    /* rep: counted only in reps, and each Done adds to today's count */
+    cardio: { name: 'Cardio', rep: true, items: ['xSpot', 'xMarch', 'xKnees', 'xKclap', 'xJacks', 'xPunch'],
+      sets: { xSpot: 1, xMarch: 1, xKnees: 1, xKclap: 1, xJacks: 1, xPunch: 1 } }
   };
   /* Sets and the target shown under each name */
   var PLAN = {
@@ -1854,6 +1873,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     var f = cfg.kg / BASE_KG, sec = entry && entry.sec ? entry.sec : null;
     if (WARM[k]) return WARM[k].cal * (sec || warmSec(k)) / 60 * f;
     if (k === 'plank' && sec) return PLANK.cal * sec / 30 * f;
+    if (LIFT[k] && LIFT[k].perRep) return LIFT[k].perRep * (Number(entry && entry.reps) || 0) * f;
     return ((k === 'plank' ? PLANK.cal : LIFT[k].cal) + 1) * f;
   }
   /* This week: share of the day's list done, kept per day */
@@ -1883,22 +1903,30 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     for (i = 0; i < 7; i++) { var c = (cfg.wkHist || {})[wDayKey(new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i))]; if (c && c.d > 0) n++; }
     return n;
   }
+  var WTYPE_CLS = { d3: 'tw', cardio: 'tc' };
   function renderWeek() {
     var box = $('wDays'), now = new Date(), mon = wMonday(), i;
     var WK = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+    var CK = '<svg class="wdck" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>';
     box.textContent = '';
     for (i = 0; i < 7; i++) {
       var d = new Date(mon.getFullYear(), mon.getMonth(), mon.getDate() + i), today = wDayKey(d) === wDayKey(now), future = d > now && !today;
-      var c = (cfg.wkHist || {})[wDayKey(d)] || { d: 0, n: 0 }, pct = c.n ? Math.round(c.d / c.n * 100) : 0;
+      var c = (cfg.wkHist || {})[wDayKey(d)] || { d: 0, n: 0 };
+      var per = c.t || (c.d ? { d3: c.d >= c.n ? 2 : 1 } : {});
+      var full = Object.keys(per).filter(function (t) { return per[t] === 2 && WTYPE_CLS[t]; });
+      var part = Object.keys(per).filter(function (t) { return per[t] === 1 && WTYPE_CLS[t]; });
       var cell = document.createElement('div');
-      cell.className = 'wd' + (today ? ' now' : '') + (future ? ' future' : '') + (pct >= 100 ? ' full' : pct ? ' part' : '');
+      cell.className = 'wd' + (today ? ' now' : '') + (future ? ' future' : '') + (full.length ? ' full' : part.length ? ' part' : '') + (full.length === 2 ? ' both' : full.length ? ' ' + WTYPE_CLS[full[0]] : part.length ? ' ' + WTYPE_CLS[part[0]] : '');
       cell.setAttribute('role', 'img');
-      cell.setAttribute('aria-label', d.toDateString() + ': ' + (future ? 'not started' : pct + '% done'));
-      cell.innerHTML = '<span class="wdl">' + WK[d.getDay()] + '</span><span class="wdc"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="t" cx="18" cy="18" r="16"/>' + (pct && pct < 100 ? '<circle class="a" cx="18" cy="18" r="16" pathLength="100" stroke-dasharray="' + pct + ' 100"/>' : '') + '</svg><b>' + d.getDate() + '</b></span>';
+      var said = full.map(function (t) { return TYPES[t].name + ' done'; }).concat(part.map(function (t) { return TYPES[t].name + ' started'; }));
+      cell.setAttribute('aria-label', d.toDateString() + ': ' + (said.length ? said.join(', ') : future ? 'upcoming' : 'rest'));
+      var tags = '';
+      ['d3', 'cardio'].forEach(function (t) { if (per[t] && TYPES[t]) tags += '<i class="' + WTYPE_CLS[t] + (per[t] === 2 ? '' : ' half') + '">' + TYPES[t].name.charAt(0) + '</i>'; });
+      cell.innerHTML = '<span class="wdl">' + WK[d.getDay()] + '</span><span class="wdc">' + (full.length ? CK : '<b>' + d.getDate() + '</b>') + '</span><span class="wdt">' + tags + '</span>';
       box.append(cell);
     }
     var n = wWeekCount();
-    set('wWeekSum', n ? n + (n === 1 ? ' workout' : ' workouts') + ' this week' : 'No workouts yet');
+    set('wWeekSum', n ? n + (n === 1 ? ' active day' : ' active days') : 'No workouts yet');
   }
   function wKey(r, k) { return cfg.wtype + ':' + r + ':' + k; }
   function setType(t) {
@@ -2064,7 +2092,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       var ssWith = (TYPES[cfg.wtype].ss || {})[k];
       if (ssWith) { row.classList.add('wss'); if (FULL.indexOf(ssWith) > FULL.indexOf(k)) row.classList.add('wss1'); info.append(wNode('span', 'wsstag', 'Superset')); }
       left.append(mark, info);
-      if (cfg.repMode && !WARM[k]) { row.classList.add('wrm'); mark.onclick = function (ev) { ev.stopPropagation(); wrOpen(k); }; row.append(left, repCell(k)); list.append(row); return; }
+      if ((cfg.repMode || TYPES[cfg.wtype].rep) && !WARM[k]) { row.classList.add('wrm'); if (TYPES[cfg.wtype].rep) repInfo(k, info); mark.onclick = function (ev) { ev.stopPropagation(); wrOpen(k); }; row.append(left, repCell(k)); list.append(row); return; }
       var chips = wNode('div', 'wsets'), s;
       for (s = 1; s <= sets; s++) chips.append(setChip(k, s));
       var more = wNode('button', 'wsadd', '+'); more.type = 'button'; more.setAttribute('aria-label', 'Add a set to ' + wName(k));
@@ -2079,8 +2107,22 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   /* Rep mode: no sets. Start opens a counter; Done logs all the reps for the exercise at once */
   function repEntries(k) { var d = wLog().done, out = [], x; for (x in d) { var p = x.split(':'); if (p[0] === cfg.wtype && p[2] === k) out.push(x); } return out; }
   function repTotal(k) { var d = wLog().done; return repEntries(k).reduce(function (a, x) { return a + (Number(d[x] && d[x].reps) || 0); }, 0); }
+  function repLast(k) { var p = wPastFor(k)[0]; return p ? p.sets.reduce(function (a, e) { return a + (Number(e && e.reps) || 0); }, 0) : 0; }
+  function repInfo(k, info) {
+    var t = wDone(k) ? repTotal(k) : 0, l = repLast(k), bits = [];
+    if (t) bits.push('Today ' + t);
+    if (l) bits.push('Last ' + l + ' reps'); else if (!t) bits.push('No reps yet');
+    info.append(wNode('span', 'wsetof wrlast', bits.join(' \u00b7 ')));
+  }
   function repCell(k) {
     var box = wNode('div', 'wrep');
+    if (TYPES[cfg.wtype].rep) {
+      var ad = wNode('button', 'wrstart' + (wDone(k) ? ' wradd' : '')); ad.type = 'button';
+      ad.innerHTML = wDone(k) ? '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg><span>Add</span>' : '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l10.5-6.5Z"/></svg><span>Start</span>';
+      ad.setAttribute('aria-label', (wDone(k) ? 'Add reps to ' : 'Start ') + wName(k));
+      ad.onclick = function () { wrOpen(k); };
+      box.append(ad); return box;
+    }
     if (wDone(k)) {
       var sm = wNode('button', 'wrsum'); sm.type = 'button';
       sm.innerHTML = CHECK + '<span>' + repTotal(k) + ' reps</span>';
@@ -2099,9 +2141,11 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   function wrVal() { var v = Math.round(Number($('wrIn').value)); return isFinite(v) && v > 0 ? Math.min(500, v) : 0; }
   function wrOpen(k) {
     wrK = k;
-    var done = wDone(k), tot = done ? repTotal(k) : 0;
-    set('wrTitle', wName(k)); set('wrSub', done ? 'Done today \u00b7 edit reps' : 'Count your reps');
-    $('wrIn').value = tot ? String(tot) : '';
+    var done = wDone(k), tot = done ? repTotal(k) : 0, add = !!TYPES[cfg.wtype].rep;
+    set('wrTitle', wName(k));
+    set('wrSub', add ? (tot ? 'Today ' + tot + ' reps \u00b7 adding more' : (repLast(k) ? 'Last time ' + repLast(k) + ' reps' : 'Count your reps')) : done ? 'Done today \u00b7 edit reps' : 'Count your reps');
+    $('wrIn').value = !add && tot ? String(tot) : '';
+    set('wrDone', add && tot ? 'Add to today' : 'Done');
     $('wrClear').hidden = !done;
     $('wr').hidden = false; $('wrVeil').hidden = false; document.body.style.overflow = 'hidden';
   }
@@ -2121,7 +2165,9 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     var k = wrK, v = wrVal(), inp = $('wrIn');
     if (!k) return;
     if (!v) { inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake'); return; }
+    var add = !!TYPES[cfg.wtype].rep, prev = add && wDone(k) ? repTotal(k) : 0;
     wrWipe(k);
+    v += prev;
     var e = { reps: v, rm: 1 }, d = wLog().done, s;
     if (!LIFT[k].noKg) { var kg = Number(wSetKg(k, 1)); if (isFinite(kg)) e.kg = kg; }
     d[wKey(1, k)] = e; todayLog().kcal += wCalOf(k, e);
@@ -2129,7 +2175,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     try { if (navigator.vibrate) navigator.vibrate(30); } catch (x) {}
     var t = window.nealToast || function () {};
     if (wAllDone()) { t(TYPES[cfg.wtype].name + ' done'); if (window.nealConfetti) window.nealConfetti(); }
-    else t(wName(k) + ' \u00b7 ' + v + ' reps done');
+    else t(wName(k) + ' \u00b7 ' + (prev ? v - prev + ' added, ' + v + ' today' : v + ' reps done'));
     wrClose(); wRecord(); save(); renderWeights(); paint();
   };
   $('wrClear').onclick = function () {
