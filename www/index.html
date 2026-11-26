@@ -691,6 +691,8 @@ ol.steps li::before { font-size: 13px; }
 .mpopts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 3px; }
 .mpopts span { display: inline-grid; padding: 6px 11px; border-radius: 14px; background: var(--seg); font-size: .88rem; font-weight: 600; line-height: 1.25; }
 .mpopts small { font-size: .72rem; font-weight: 500; color: var(--muted); }
+.mpopts.mpq span { display: inline-flex; align-items: baseline; gap: 4px; padding: 5px 10px; font-size: .84rem; font-weight: 600; }
+.mpopts.mpq b { color: var(--num-b); font-weight: 800; }
 .mprec { justify-self: start; display: inline-flex; align-items: center; gap: 2px; margin-top: 4px; min-height: 32px; padding: 0 8px 0 12px; border: 0; border-radius: 99px; background: var(--cta); color: var(--on-cta); font: inherit; font-size: .8rem; font-weight: 700; }
 .mprec svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 .mp.now .mpbody { position: relative; }
@@ -969,8 +971,9 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       <li class="mp" data-m="1"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Lunch</span><p>Regular home-cooked meal</p></div></li>
       <li class="mp" data-m="2"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Snacks <em>choose any</em></span>
         <div class="mpopts"><span>Boiled eggs <small>piri piri masala</small></span><span>Sweet corn <small>chaat masala</small></span><span>Cucumber sticks <small>hummus</small></span></div></div></li>
-      <li class="mp" data-m="3"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Dinner</span><p>Muesli, whey, chia, curd and water</p><p class="mpnote">Mix and rest 10 min before eating</p>
-        <button type="button" class="mprec" id="dnOpen" aria-haspopup="dialog">See recipe<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div></li>
+      <li class="mp" data-m="3"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Dinner</span><p>Muesli, whey, chia, curd and water</p>
+        <div class="mpopts mpq"><span><b>30 g</b> whey</span><span><b>150 g</b> curd</span><span><b>35 g</b> muesli</span><span><b>1 tbsp</b> chia</span><span>splash of water</span></div>
+        <p class="mpnote">Mix and rest 10 min before eating</p></div></li>
     </ol>
   </section>
 </section>
@@ -2344,7 +2347,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   $('wlClose').onclick = wlClose; $('wlVeil').onclick = wlClose;
   /* Home: dinner recipe card */
   function dnClose() { $('dnSheet').hidden = true; $('dnVeil').hidden = true; document.body.style.overflow = ''; }
-  $('dnOpen').onclick = function () { $('dnSheet').hidden = false; $('dnVeil').hidden = false; document.body.style.overflow = 'hidden'; };
+  if ($('dnOpen')) $('dnOpen').onclick = function () { $('dnSheet').hidden = false; $('dnVeil').hidden = false; document.body.style.overflow = 'hidden'; };
   $('dnClose').onclick = dnClose; $('dnVeil').onclick = dnClose;
   /* Keep bottom sheets above the on-screen keyboard */
   (function () {
