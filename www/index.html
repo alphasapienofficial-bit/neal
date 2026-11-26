@@ -690,8 +690,11 @@ ol.steps li::before { font-size: 13px; }
 .dnb { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px 7px 7px; border: 1px solid var(--glass-line); border-radius: 99px; background: var(--seg); font-size: .9rem; font-weight: 600; }
 .dnb b { padding: 3px 8px; border-radius: 99px; background: var(--cta); color: var(--on-cta); font-size: .78rem; font-weight: 700; white-space: nowrap; }
 .dnsteps { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: dn; display: grid; gap: 10px; }
-.dnsteps li { counter-increment: dn; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; line-height: 1.55; }
-.dnsteps li::before { content: counter(dn); width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: .8rem; font-weight: 700; }
+.dnsteps li { counter-increment: dn; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; line-height: 2.3; }
+.dnsteps .dnb { margin: 2px 1px; padding: 3px 10px 3px 3px; font-size: .86rem; line-height: 1.4; vertical-align: middle; }
+.dnsteps .dnb b { margin-right: 5px; }
+.dnsteps .dnb b:only-child { margin-right: -7px; }
+.dnsteps li::before { content: counter(dn); margin-top: 4px; width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: .8rem; font-weight: 700; }
 .dnq { padding: 1px 7px; border-radius: 8px; background: color-mix(in srgb, var(--cta) 18%, transparent); font-weight: 700; white-space: nowrap; }
 .home:not([hidden]) { min-height: calc(100svh - 150px); display: grid; align-content: center; }
 .hst { min-width: 0; display: grid; gap: 1px; padding: 12px 12px 11px; border: 1px solid var(--glass-line); border-radius: 20px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
@@ -1313,13 +1316,12 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
       <button type="button" class="closer" id="dnClose">Close</button>
     </div>
     <div class="dnstats"><span><b>~470</b>kcal</span><span><b>~36 g</b>protein</span><span><b>10 min</b>soak</span></div>
-    <div><p class="label">Add to the bowl</p><div class="dnbs"><span class="dnb"><b>30 g</b>Whey</span><span class="dnb"><b>150 g</b>Dahi</span><span class="dnb"><b>Splash</b>Water</span><span class="dnb"><b>35 g</b>Muesli</span><span class="dnb"><b>1 tbsp</b>Chia seeds</span><span class="dnb"><b>50 g</b>Berries</span><span class="dnb"><b>&frac12;</b>Banana, sliced</span></div></div>
     <div><p class="label">Method</p>
       <ol class="dnsteps">
-        <li><span>Whisk <span class="dnq">30 g whey</span> into <span class="dnq">150 g dahi</span> with a <span class="dnq">splash of water</span> until smooth.</span></li>
-        <li><span>Stir in <span class="dnq">35 g muesli</span> and <span class="dnq">1 tbsp chia</span>.</span></li>
-        <li><span>Fold in <span class="dnq">50 g berries</span> and <span class="dnq">&frac12; banana</span>, sliced.</span></li>
-        <li><span>Soak for <span class="dnq">10 minutes</span>, then eat.</span></li>
+        <li><span>Whisk <span class="dnb"><b>30 g</b>Whey</span> into <span class="dnb"><b>150 g</b>Dahi</span> with a <span class="dnb"><b>Splash</b>Water</span> until smooth.</span></li>
+        <li><span>Stir in <span class="dnb"><b>35 g</b>Muesli</span> and <span class="dnb"><b>1 tbsp</b>Chia seeds</span>.</span></li>
+        <li><span>Fold in <span class="dnb"><b>50 g</b>Berries</span> and <span class="dnb"><b>&frac12;</b>Banana, sliced</span>.</span></li>
+        <li><span>Soak for <span class="dnb"><b>10 min</b></span> then eat.</span></li>
       </ol>
     </div>
     <p class="whint">Calories and protein are rough estimates.</p>
