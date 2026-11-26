@@ -26,6 +26,10 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Create the Android project
         run: npx cap add android
+      - name: Give every build a higher version number
+        run: |
+          sed -i "s/versionCode [0-9]*/versionCode $((100 + ${{ github.run_number }}))/; s/versionName \"[^\"]*\"/versionName \"1.${{ github.run_number }}\"/" android/app/build.gradle
+          grep -E "versionCode|versionName" android/app/build.gradle
       - name: Add the transparent system bars code
         run: cp native/*.java android/app/src/main/java/com/neal/app/
       - name: Allow habit notifications
