@@ -674,6 +674,25 @@ ol.steps li::before { font-size: 13px; }
 .ocard .oi { width: clamp(44px, 13vw, 54px); height: clamp(44px, 13vw, 54px); border-radius: 18px; }
 .ocard .oi svg { width: 26px; height: 26px; }
 .ocard b { font-size: clamp(14px, 4.1vw, 17px); }
+.dncard { width: min(100%, 440px); margin: 22px auto 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 14px 14px 14px 14px; border: 1px solid var(--glass-line); border-radius: 24px; background: radial-gradient(circle at 0% 0%, rgba(255,138,115,.18), transparent 60%), var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); color: var(--fg); font: inherit; text-align: left; }
+.dncard:active { transform: scale(.98); }
+.dnico { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 16px; background: var(--cta); color: var(--on-cta); }
+.dnico svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+.dntx { display: grid; gap: 1px; min-width: 0; }
+.dnlab { font-size: .66rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--num-b); }
+.dntx b { font-family: var(--display); font-weight: 500; font-size: 1.12rem; letter-spacing: -.01em; }
+.dnmeta { font-size: .76rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.dnarr { width: 20px; height: 20px; fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.dnstats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.dnstats span { display: grid; padding: 10px 12px; border-radius: 16px; background: var(--seg); font-size: .74rem; color: var(--muted); }
+.dnstats b { font-family: var(--display); font-weight: 500; font-size: 1.2rem; color: var(--fg); }
+.dnbs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.dnb { display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px 7px 7px; border: 1px solid var(--glass-line); border-radius: 99px; background: var(--seg); font-size: .9rem; font-weight: 600; }
+.dnb b { padding: 3px 8px; border-radius: 99px; background: var(--cta); color: var(--on-cta); font-size: .78rem; font-weight: 700; white-space: nowrap; }
+.dnsteps { margin: 8px 0 0; padding: 0; list-style: none; counter-reset: dn; display: grid; gap: 10px; }
+.dnsteps li { counter-increment: dn; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 10px; align-items: start; line-height: 1.55; }
+.dnsteps li::before { content: counter(dn); width: 28px; height: 28px; display: grid; place-items: center; border-radius: 50%; background: var(--fg); color: var(--bg); font-size: .8rem; font-weight: 700; }
+.dnq { padding: 1px 7px; border-radius: 8px; background: color-mix(in srgb, var(--cta) 18%, transparent); font-weight: 700; white-space: nowrap; }
 .home:not([hidden]) { min-height: calc(100svh - 150px); display: grid; align-content: center; }
 .hst { min-width: 0; display: grid; gap: 1px; padding: 12px 12px 11px; border: 1px solid var(--glass-line); border-radius: 20px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
 .hst .hsl { font-size: .66rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -918,6 +937,11 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     <button type="button" class="ocard o-right" data-go="todo"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b></button>
     <button type="button" class="ocard o-bottom" data-go="workout"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b></button>
   </div>
+  <button type="button" class="dncard" id="dnOpen" aria-haspopup="dialog">
+    <span class="dnico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M8 9c1-2 3-2 4-4M13 9c.6-1.4 2-1.6 3-3"/></svg></span>
+    <span class="dntx"><span class="dnlab">Dinner</span><b>Fat loss &middot; Muesli</b><span class="dnmeta">~470 kcal &middot; 36 g protein &middot; 10 min soak</span></span>
+    <svg class="dnarr" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
+  </button>
 </section>
 
 <section id="v-habits">
@@ -1279,6 +1303,26 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     </div>
     <div class="wrquick" id="wrQuick" role="group" aria-label="Quick add"><button type="button" data-n="10">+10</button><button type="button" data-n="20">+20</button><button type="button" data-n="30">+30</button><button type="button" data-n="50">+50</button></div>
     <div class="whacts"><button type="button" class="wtdone" id="wrDone">Done</button><button type="button" class="closer" id="wrClear" hidden>Clear</button></div>
+  </div>
+</div>
+<div class="whveil" id="dnVeil" hidden></div>
+<div class="wh" id="dnSheet" role="dialog" aria-modal="true" aria-labelledby="dnTitle" hidden>
+  <div class="whin">
+    <div class="whtop">
+      <div><p class="label">Dinner &middot; fat loss</p><h2 id="dnTitle">Protein Muesli Bowl</h2></div>
+      <button type="button" class="closer" id="dnClose">Close</button>
+    </div>
+    <div class="dnstats"><span><b>~470</b>kcal</span><span><b>~36 g</b>protein</span><span><b>10 min</b>soak</span></div>
+    <div><p class="label">Add to the bowl</p><div class="dnbs"><span class="dnb"><b>30 g</b>Whey</span><span class="dnb"><b>150 g</b>Dahi</span><span class="dnb"><b>Splash</b>Water</span><span class="dnb"><b>35 g</b>Muesli</span><span class="dnb"><b>1 tbsp</b>Chia seeds</span><span class="dnb"><b>50 g</b>Berries</span><span class="dnb"><b>&frac12;</b>Banana, sliced</span></div></div>
+    <div><p class="label">Method</p>
+      <ol class="dnsteps">
+        <li><span>Whisk <span class="dnq">30 g whey</span> into <span class="dnq">150 g dahi</span> with a <span class="dnq">splash of water</span> until smooth.</span></li>
+        <li><span>Stir in <span class="dnq">35 g muesli</span> and <span class="dnq">1 tbsp chia</span>.</span></li>
+        <li><span>Fold in <span class="dnq">50 g berries</span> and <span class="dnq">&frac12; banana</span>, sliced.</span></li>
+        <li><span>Soak for <span class="dnq">10 minutes</span>, then eat.</span></li>
+      </ol>
+    </div>
+    <p class="whint">Calories and protein are rough estimates.</p>
   </div>
 </div>
 <div class="whveil" id="wlVeil" hidden></div>
@@ -2266,6 +2310,10 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     });
   }
   $('wlClose').onclick = wlClose; $('wlVeil').onclick = wlClose;
+  /* Home: dinner recipe card */
+  function dnClose() { $('dnSheet').hidden = true; $('dnVeil').hidden = true; document.body.style.overflow = ''; }
+  $('dnOpen').onclick = function () { $('dnSheet').hidden = false; $('dnVeil').hidden = false; document.body.style.overflow = 'hidden'; };
+  $('dnClose').onclick = dnClose; $('dnVeil').onclick = dnClose;
   /* Keep bottom sheets above the on-screen keyboard */
   (function () {
     var vv = window.visualViewport, root = document.documentElement;
@@ -2667,6 +2715,7 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     else if (!$('wb').hidden) wbClose();
     else if (!$('wr').hidden) wrClose();
     else if (!$('wa').hidden) wlClose();
+    else if (!$('dnSheet').hidden) dnClose();
     else if (!$('wh').hidden) wHistClose();
     else if (wt) wtClose();
     else if (window.nealHabitsBack && window.nealHabitsBack()) return;
