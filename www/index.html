@@ -674,6 +674,28 @@ ol.steps li::before { font-size: 13px; }
 .ocard .oi { width: clamp(44px, 13vw, 54px); height: clamp(44px, 13vw, 54px); border-radius: 18px; }
 .ocard .oi svg { width: 26px; height: 26px; }
 .ocard b { font-size: clamp(14px, 4.1vw, 17px); }
+.mplan { width: min(100%, 440px); margin: 22px auto 0; padding: 16px 16px 8px; border: 1px solid var(--glass-line); border-radius: 26px; background: var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); }
+.mphead { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.mphead h2 { margin: 0; font-family: var(--display); font-weight: 500; font-size: 1.15rem; letter-spacing: -.01em; }
+.mptag { padding: 3px 10px; border-radius: 99px; background: color-mix(in srgb, var(--cta) 16%, transparent); color: var(--num-b); font-size: .7rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.mplist { margin: 0; padding: 0; list-style: none; display: grid; }
+.mp { --mc: var(--cta); position: relative; display: grid; grid-template-columns: 14px minmax(0, 1fr); gap: 14px; padding: 10px 0 12px; }
+.mp[data-m="0"] { --mc: #E5AE45; } .mp[data-m="1"] { --mc: #7FB27C; } .mp[data-m="2"] { --mc: #2FA89A; } .mp[data-m="3"] { --mc: var(--cta); }
+.mp:not(:last-child)::before { content: ""; position: absolute; left: 6px; top: 26px; bottom: -8px; width: 2px; border-radius: 2px; background: var(--line); }
+.mpdot { width: 14px; height: 14px; margin-top: 3px; border-radius: 50%; background: var(--mc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--mc) 18%, transparent); }
+.mpbody { min-width: 0; display: grid; gap: 3px; }
+.mpwhen { font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--mc); }
+.mpwhen em { margin-left: 4px; font-style: normal; font-weight: 600; letter-spacing: .02em; text-transform: none; color: var(--muted); }
+.mpbody p { margin: 0; font-size: .98rem; font-weight: 600; line-height: 1.35; }
+.mpbody p.mpnote { font-size: .82rem; font-weight: 500; color: var(--muted); }
+.mpopts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 3px; }
+.mpopts span { display: inline-grid; padding: 6px 11px; border-radius: 14px; background: var(--seg); font-size: .88rem; font-weight: 600; line-height: 1.25; }
+.mpopts small { font-size: .72rem; font-weight: 500; color: var(--muted); }
+.mprec { justify-self: start; display: inline-flex; align-items: center; gap: 2px; margin-top: 4px; min-height: 32px; padding: 0 8px 0 12px; border: 0; border-radius: 99px; background: var(--cta); color: var(--on-cta); font: inherit; font-size: .8rem; font-weight: 700; }
+.mprec svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.mp.now .mpbody { position: relative; }
+.mp.now .mpwhen::after { content: "Now"; margin-left: 8px; padding: 1px 7px; border-radius: 99px; background: var(--mc); color: #fff; font-size: .62rem; letter-spacing: .06em; vertical-align: 1px; }
+.mp.now .mpdot { box-shadow: 0 0 0 5px color-mix(in srgb, var(--mc) 30%, transparent); }
 .dncard { width: min(100%, 440px); margin: 22px auto 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 14px 14px 14px 14px; border: 1px solid var(--glass-line); border-radius: 24px; background: radial-gradient(circle at 0% 0%, rgba(255,138,115,.18), transparent 60%), var(--glass); box-shadow: var(--glass-shadow); -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px); color: var(--fg); font: inherit; text-align: left; }
 .dncard:active { transform: scale(.98); }
 .dnico { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 16px; background: var(--cta); color: var(--on-cta); }
@@ -940,11 +962,17 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
     <button type="button" class="ocard o-right" data-go="todo"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 7 1.6 1.6L8.5 5.7"/><path d="m4 15 1.6 1.6 2.9-2.9"/><path d="M12 7h8M12 15h8"/></svg></span><b>To do</b></button>
     <button type="button" class="ocard o-bottom" data-go="workout"><span class="oi"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7v10M4 9.5v5M17 7v10M20 9.5v5M7 12h10"/></svg></span><b>Workout</b></button>
   </div>
-  <button type="button" class="dncard" id="dnOpen" aria-haspopup="dialog">
-    <span class="dnico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12h16a8 8 0 0 1-16 0Z"/><path d="M8 9c1-2 3-2 4-4M13 9c.6-1.4 2-1.6 3-3"/></svg></span>
-    <span class="dntx"><span class="dnlab">Dinner</span><b>Fat loss &middot; Muesli</b><span class="dnmeta">~470 kcal &middot; 36 g protein &middot; 10 min soak</span></span>
-    <svg class="dnarr" viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg>
-  </button>
+  <section class="mplan" aria-labelledby="mpTitle">
+    <div class="mphead"><h2 id="mpTitle">Today&rsquo;s meals</h2><span class="mptag">Fat loss</span></div>
+    <ol class="mplist">
+      <li class="mp" data-m="0"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Breakfast</span><p>Whey protein mixed with water</p></div></li>
+      <li class="mp" data-m="1"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Lunch</span><p>Regular home-cooked meal</p></div></li>
+      <li class="mp" data-m="2"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Snacks <em>choose any</em></span>
+        <div class="mpopts"><span>Boiled eggs <small>piri piri masala</small></span><span>Sweet corn <small>chaat masala</small></span><span>Cucumber sticks <small>hummus</small></span></div></div></li>
+      <li class="mp" data-m="3"><span class="mpdot" aria-hidden="true"></span><div class="mpbody"><span class="mpwhen">Dinner</span><p>Muesli, whey, chia, curd and water</p><p class="mpnote">Mix and rest 10 min before eating</p>
+        <button type="button" class="mprec" id="dnOpen" aria-haspopup="dialog">See recipe<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div></li>
+    </ol>
+  </section>
 </section>
 
 <section id="v-habits">
@@ -1869,6 +1897,8 @@ body.rl .cat-tabs .tab[aria-selected="true"] { background: #FFFFFF; color: var(-
   Array.prototype.forEach.call(document.querySelectorAll('#v-home [data-go]'), function (b) { b.onclick = function () { go(b.dataset.go); }; });
   /* Home: four cards around today's date, each with a one-line status */
   function renderHome() {
+    var hh = new Date().getHours(), cur = hh < 11 ? 0 : hh < 16 ? 1 : hh < 19 ? 2 : 3;
+    Array.prototype.forEach.call(document.querySelectorAll('.mp'), function (li) { li.classList.toggle('now', Number(li.dataset.m) === cur); });
     var d = new Date();
     set('hc-day', d.toLocaleDateString('en-IN', { weekday: 'short' }));
     set('hc-date', d.toLocaleDateString('en-IN', { day: 'numeric', month: 'short' }));
