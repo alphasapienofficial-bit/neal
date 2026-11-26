@@ -23,7 +23,6 @@ public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         registerPlugin(NealBarsPlugin.class);
-        LiveUpdate.prepare(this);
         super.onCreate(savedInstanceState);
 
         Window window = getWindow();
@@ -55,30 +54,6 @@ public class MainActivity extends BridgeActivity {
             }
         });
         ViewCompat.requestApplyInsets(web);
-    }
-
-    private boolean away = false;
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        away = true;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // A new version downloaded earlier: show it now that the person is back in the app.
-        String ready = LiveUpdate.pending(this);
-        if (ready != null && away) {
-            LiveUpdate.clearPending(this);
-            getBridge().setServerBasePath(ready);
-        }
-        away = false;
-        LiveUpdate.check(this, folder -> runOnUiThread(() -> {
-            WebView web = getBridge().getWebView();
-            web.evaluateJavascript("window.nealToast&&window.nealToast('Update downloaded. It shows next time you open Neal.')", null);
-        }));
     }
 
     private void sendInsets() {
